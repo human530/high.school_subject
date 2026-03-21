@@ -1,0 +1,8 @@
+# 自動偵測文字檔並統一換行符號
+* text=auto
+
+# Markdown 檔案強制使用 LF 換行
+*.md text eol=lf
+
+# 確保 UTF-8 編碼的檔案正確處理
+*.md diff=markdown
