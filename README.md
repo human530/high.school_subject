@@ -2,21 +2,51 @@
 
 高中學科筆記與學習資源整理。
 
-## 電腦版使用說明
+## Windows 使用 Claude Code
 
-Clone 後如果中文資料夾名稱顯示為亂碼，請執行：
+### 安裝方式
+
+**方法一：原生 Windows（建議）**
+
+需先安裝 [Git for Windows](https://git-scm.com/downloads/win)，然後在 PowerShell 執行：
+
+```powershell
+irm https://claude.ai/install.ps1 | iex
+```
+
+或用 WinGet：
+
+```powershell
+winget install Anthropic.ClaudeCode
+```
+
+**方法二：WSL**
+
+```bash
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+### 常見問題
+
+**找不到 Git Bash**：在 Claude Code 的 `settings.json` 加入：
+
+```json
+{
+  "env": {
+    "CLAUDE_CODE_GIT_BASH_PATH": "C:\\Program Files\\Git\\bin\\bash.exe"
+  }
+}
+```
+
+**中文資料夾顯示亂碼**：
 
 ```bash
 git config --global core.quotePath false
-```
-
-Windows 使用者建議額外設定：
-
-```bash
-git config --global core.autocrlf true
 git config --global i18n.logOutputEncoding utf-8
 git config --global i18n.commitEncoding utf-8
 ```
+
+**診斷工具**：遇到問題可執行 `claude doctor` 檢查環境設定。
 
 ## 學科目錄
 
