@@ -74,6 +74,7 @@
       '<a class="qbtn" href="#gsat">🧠 學測風格題</a>' +
       '<a class="qbtn" href="#points">🎯 整合考點（跨章高頻）</a>' +
       '<a class="qbtn" href="#exam">📝 模擬考（學測/段考）</a>' +
+      '<a class="qbtn" href="#photo">📷 拍照解題</a>' +
       '<a class="qbtn" href="#analysis">📊 個人弱點分析</a>' +
       '</div>' +
       '</section>' +
@@ -498,6 +499,96 @@
   }
 
   /* ============================================================
+   * 拍照解題：拍/上傳題目照片 → 視覺 AI 給秒殺解法
+   * ============================================================ */
+  function viewPhoto() {
+    app.innerHTML = "";
+    app.appendChild(el(
+      '<div class="view"><h1>📷 拍照解題</h1>' +
+      '<p class="muted">拍下或上傳一張數學題照片，AI 會讀題並給「最快解法」步驟。圖片只送到出題用的 AI，不會公開儲存。</p>' +
+      '<section class="panel">' +
+      '<div class="photobtns">' +
+      '<label class="qbtn">📸 拍照<input id="camIn" type="file" accept="image/*" capture="environment" hidden></label> ' +
+      '<label class="qbtn">🖼️ 從相簿選<input id="fileIn" type="file" accept="image/*" hidden></label>' +
+      '</div>' +
+      '<div id="photoPreview"></div>' +
+      '<button id="solveBtn" class="qbtn big" style="display:none">🧠 開始解題</button>' +
+      '<p id="photoStatus" class="muted"></p>' +
+      '<div id="photoResult"></div>' +
+      '</section></div>'
+    ));
+
+    var dataUrl = null;
+    function onPick(input) {
+      var f = input.files && input.files[0];
+      if (!f) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        // 壓縮到最長邊 1280，省流量也加速
+        compressImage(reader.result, 1280, function (out) {
+          dataUrl = out;
+          $("#photoPreview").innerHTML = '<img class="photoimg" src="' + out + '" alt="題目照片">';
+          $("#solveBtn").style.display = "block";
+          $("#photoResult").innerHTML = "";
+          $("#photoStatus").textContent = "";
+        });
+      };
+      reader.readAsDataURL(f);
+    }
+    $("#camIn").onchange = function () { onPick(this); };
+    $("#fileIn").onchange = function () { onPick(this); };
+
+    $("#solveBtn").onclick = async function () {
+      if (!dataUrl) return;
+      var status = $("#photoStatus"), result = $("#photoResult");
+      // 確認視覺來源可用
+      await LLM.probeProxy();
+      if (!LLM.photoReady()) {
+        result.innerHTML = '<p class="bad">拍照解題需要「看得懂圖」的 AI：請站長在 Vercel 設 ANTHROPIC_API_KEY，或到「設定」貼上 Anthropic／OpenAI(gpt-4o) 金鑰。<br><span class="muted">（Ollama 多數模型不支援看圖，故此功能不適用）</span></p>';
+        return;
+      }
+      status.textContent = "AI 讀題解題中…（首次可能較久）";
+      this.disabled = true;
+      try {
+        var text = await LLM.solvePhoto(dataUrl);
+        result.innerHTML = '<div class="panel sol photosol">' + mdToHtml(text) + '</div>';
+        renderMath(result);
+        status.textContent = "";
+      } catch (e) {
+        result.innerHTML = '<p class="bad">解題失敗：' + e.message + '</p>';
+        status.textContent = "";
+      }
+      this.disabled = false;
+    };
+  }
+
+  // 簡易壓縮：把 dataURL 縮到最長邊 maxEdge 的 JPEG
+  function compressImage(dataUrl, maxEdge, cb) {
+    var img = new Image();
+    img.onload = function () {
+      var w = img.width, h = img.height, scale = Math.min(1, maxEdge / Math.max(w, h));
+      var cw = Math.round(w * scale), ch = Math.round(h * scale);
+      var c = document.createElement("canvas"); c.width = cw; c.height = ch;
+      c.getContext("2d").drawImage(img, 0, 0, cw, ch);
+      try { cb(c.toDataURL("image/jpeg", 0.85)); } catch (e) { cb(dataUrl); }
+    };
+    img.onerror = function () { cb(dataUrl); };
+    img.src = dataUrl;
+  }
+
+  // 極簡 Markdown → HTML（標題/粗體/換行/清單），數學式交給 KaTeX
+  function mdToHtml(md) {
+    var esc = md.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    esc = esc.replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>");
+    var lines = esc.split(/\n/).map(function (ln) {
+      if (/^\s*[-*]\s+/.test(ln)) return "<li>" + ln.replace(/^\s*[-*]\s+/, "") + "</li>";
+      if (/^\s*#{1,3}\s+/.test(ln)) return "<h3>" + ln.replace(/^\s*#{1,3}\s+/, "") + "</h3>";
+      return ln.trim() ? "<p>" + ln + "</p>" : "";
+    });
+    return lines.join("").replace(/(<li>.*?<\/li>)+/g, function (m) { return "<ul>" + m + "</ul>"; });
+  }
+
+  /* ============================================================
    * 設定（LLM 金鑰 + LLM 出題）
    * ============================================================ */
   function viewSettings() {
@@ -589,6 +680,7 @@
       case "points": viewExamPoints(parts[1]); break;
       case "exam": viewExam(); break;
       case "analysis": viewAnalysis(); break;
+      case "photo": viewPhoto(); break;
       case "settings": viewSettings(); break;
       default: viewDashboard();
     }

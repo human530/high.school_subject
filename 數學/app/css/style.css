@@ -268,3 +268,10 @@ label { display: block; margin: .5rem 0; font-weight: 600; }
 }
 .subbtn:hover { background: #e3cfac; }
 .subbtn.on { background: var(--berry); color: #fff3ea; border-color: var(--berry); box-shadow: 3px 3px 0 var(--berry); }
+
+/* ---- 拍照解題 ---- */
+.photobtns { display: flex; gap: .6rem; flex-wrap: wrap; margin-bottom: .6rem; }
+.photoimg { display: block; max-width: 100%; max-height: 320px; margin: .6rem auto; border: 3px solid var(--line); border-radius: 12px; box-shadow: 3px 3px 0 rgba(58,77,107,.4); }
+.photosol p { margin: .4rem 0; }
+.photosol h3 { margin: .5rem 0 .2rem; font-size: 1.05rem; color: var(--berry); }
+.photosol ul { margin: .3rem 0 .3rem 1.1rem; }
