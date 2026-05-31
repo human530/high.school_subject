@@ -5,11 +5,11 @@
  * 在 app.js 章節頁以 DIAGRAMS.render(chapter.diagram) 插入。
  * ============================================================ */
 (function () {
-  // 共用樣式：羊皮紙底上的墨線手繪（warm storybook 主題）
+  // 共用樣式：土色系手繪墨線（SPACE CADET/SLATE/TAN/COFFEE/CAPUT MORTUUM）
   var C = {
-    axis: "#5b4636", grid: "#cdb98c", ink: "#3a2c1a",
-    a: "#7a5a33", b: "#6b8e4e", c: "#d99a3a", d: "#b5532f",
-    hl: "#5b4636", paper: "#fbf4e2"
+    axis: "#6f4d38", grid: "#cbb088", ink: "#25344f",
+    a: "#6f4d38", b: "#4f6b4a", c: "#b07a3c", d: "#632024",
+    hl: "#617891", paper: "#f3e7d2"
   };
 
   function svg(w, h, body) {

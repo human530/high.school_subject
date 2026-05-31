@@ -22,18 +22,19 @@
 }
 
 :root {
-  --paper: #f4e9d2;          /* 主紙底 */
-  --paper2: #efe2c6;         /* 深一階紙 */
-  --card: #fbf3e0;           /* 卡片紙 */
-  --ink: #3a2c1a;            /* 墨色文字 */
-  --ink-soft: #6b5946;       /* 次要墨 */
-  --line: #5b4636;           /* 手繪線（深褐） */
-  --brand: #7a5a33;          /* 木褐主色 */
-  --brand2: #a9794a;         /* 淺木 */
-  --leaf: #6b8e4e;           /* 葉綠 */
-  --berry: #b5532f;          /* 莓紅 */
-  --sun: #d99a3a;            /* 暖黃 */
-  --sky: #6c98a6;            /* 霧藍 */
+  /* 配色：SPACE CADET / SLATE GRAY / TAN / COFFEE / CAPUT MORTUUM（高級土色系） */
+  --paper: #ead9c0;          /* 主紙底（TAN 調淡） */
+  --paper2: #e0cbac;         /* 深一階紙（TAN 本色附近） */
+  --card: #f3e7d2;           /* 卡片紙（更淺 TAN） */
+  --ink: #25344f;            /* 墨色文字（SPACE CADET 深藍） */
+  --ink-soft: #617891;       /* 次要墨（SLATE GRAY 霧藍灰） */
+  --line: #6f4d38;           /* 手繪線（COFFEE 咖啡） */
+  --brand: #6f4d38;          /* 主色（COFFEE） */
+  --brand2: #8a6347;         /* 淺咖啡 */
+  --leaf: #4f6b4a;           /* 沉穩綠（配土色） */
+  --berry: #632024;          /* 強調暗紅（CAPUT MORTUUM） */
+  --sun: #b07a3c;            /* 暖褐黃 */
+  --sky: #617891;            /* 霧藍（SLATE GRAY） */
   --radius: 18px;
 }
 
@@ -47,12 +48,12 @@ html, body {
   /* 紙質紋理：細點 + 暖漸層 + 角落塗鴉裝飾（葉子/星星/鉛筆） */
   background-color: var(--paper);
   background-image:
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='70' height='70' viewBox='0 0 70 70'><g fill='none' stroke='%235b4636' stroke-width='2' stroke-linecap='round' opacity='0.10'><path d='M14 40 q8 -16 22 -18 q-2 14 -22 18 z'/><path d='M22 33 q6 -3 12 -7'/></g></svg>"),
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='90' height='90' viewBox='0 0 90 90'><g fill='none' stroke='%235b4636' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' opacity='0.09'><path d='M64 20 l3 7 l7 1 l-5 5 l1 7 l-6 -3 l-6 3 l1 -7 l-5 -5 l7 -1 z'/></g></svg>"),
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><g fill='none' stroke='%235b4636' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' opacity='0.08'><path d='M18 56 l28 -28 l6 6 l-28 28 l-8 2 z'/><path d='M44 30 l6 6'/></g></svg>"),
-    radial-gradient(rgba(120, 90, 50, .05) 1px, transparent 1px),
-    radial-gradient(rgba(120, 90, 50, .04) 1px, transparent 1px),
-    linear-gradient(180deg, #f7eed9, #efe1c2 80%);
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='70' height='70' viewBox='0 0 70 70'><g fill='none' stroke='%236f4d38' stroke-width='2' stroke-linecap='round' opacity='0.10'><path d='M14 40 q8 -16 22 -18 q-2 14 -22 18 z'/><path d='M22 33 q6 -3 12 -7'/></g></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='90' height='90' viewBox='0 0 90 90'><g fill='none' stroke='%236f4d38' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' opacity='0.09'><path d='M64 20 l3 7 l7 1 l-5 5 l1 7 l-6 -3 l-6 3 l1 -7 l-5 -5 l7 -1 z'/></g></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><g fill='none' stroke='%236f4d38' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' opacity='0.08'><path d='M18 56 l28 -28 l6 6 l-28 28 l-8 2 z'/><path d='M44 30 l6 6'/></g></svg>"),
+    radial-gradient(rgba(111, 77, 56, .05) 1px, transparent 1px),
+    radial-gradient(rgba(111, 77, 56, .04) 1px, transparent 1px),
+    linear-gradient(180deg, #efe0c6, #e4d0b0 80%);
   background-size: 70px 70px, 90px 90px, 80px 80px, 22px 22px, 22px 22px, 100% 100%;
   background-position: 8px 120px, right 16px top 90px, left 24px bottom 60px, 0 0, 11px 11px, 0 0;
   background-repeat: repeat-y, repeat-y, repeat-y, repeat, repeat, no-repeat;
@@ -66,7 +67,7 @@ a:hover { text-decoration: underline wavy; }
   position: sticky; top: 0; z-index: 50;
   display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
   padding: .6rem 1rem;
-  background: rgba(244, 233, 210, .92);
+  background: rgba(234, 217, 192, .92);
   backdrop-filter: blur(4px);
   border-bottom: 4px solid var(--line);
 }
@@ -88,7 +89,7 @@ a:hover { text-decoration: underline wavy; }
 }
 
 .container { max-width: 920px; margin: 0 auto; padding: 1rem; min-height: 70vh; }
-.view h1 { font-size: 1.55rem; margin: .3rem 0 .2rem; text-shadow: 1.5px 1.5px 0 rgba(91, 70, 54, .15); }
+.view h1 { font-size: 1.55rem; margin: .3rem 0 .2rem; text-shadow: 1.5px 1.5px 0 rgba(111, 77, 56, .15); }
 
 .muted { color: var(--ink-soft); }
 .bad { color: var(--berry); }
@@ -97,13 +98,13 @@ a:hover { text-decoration: underline wavy; }
 .panel {
   background: var(--card); border: 3px solid var(--line);
   border-radius: 20px 16px 22px 15px; padding: 1rem 1.1rem; margin: 1rem 0;
-  box-shadow: 5px 5px 0 rgba(91, 70, 54, .5);
+  box-shadow: 5px 5px 0 rgba(111, 77, 56, .5);
 }
 .panel h2 { margin: .1rem 0 .6rem; font-size: 1.18rem; }
 .hero {
-  background: linear-gradient(135deg, #f3e3bf, #f8efd6);
+  background: linear-gradient(135deg, #e6d2b2, #f1e2c8);
   border: 4px solid var(--line); border-radius: 24px 18px 26px 16px;
-  padding: 1.3rem; margin: 1rem 0; box-shadow: 6px 6px 0 rgba(91, 70, 54, .5);
+  padding: 1.3rem; margin: 1rem 0; box-shadow: 6px 6px 0 rgba(111, 77, 56, .5);
 }
 .hero h1 { margin: 0 0 .2rem; }
 
@@ -112,14 +113,14 @@ a:hover { text-decoration: underline wavy; }
 .card {
   background: var(--paper2); border: 3px solid var(--line);
   border-radius: 16px 13px 17px 12px; padding: .9rem;
-  box-shadow: 4px 4px 0 rgba(91, 70, 54, .45);
+  box-shadow: 4px 4px 0 rgba(111, 77, 56, .45);
 }
 .card.stat { text-align: center; }
 .card.stat .big { font-size: 1.9rem; font-weight: 800; color: var(--brand); }
 
 /* 進度條：木槽 + 葉綠填充 */
-.progress { height: 16px; background: #e3d2ac; border-radius: 999px; overflow: hidden; border: 3px solid var(--line); }
-.progress .bar { height: 100%; background: repeating-linear-gradient(45deg, var(--leaf), var(--leaf) 8px, #79a05a 8px, #79a05a 16px); }
+.progress { height: 16px; background: #d8c2a0; border-radius: 999px; overflow: hidden; border: 3px solid var(--line); }
+.progress .bar { height: 100%; background: repeating-linear-gradient(45deg, var(--leaf), var(--leaf) 8px, #6a8560 8px, #6a8560 16px); }
 
 /* ---- 快速鍵：木牌按鈕 ---- */
 .quick { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: .7rem; }
@@ -146,16 +147,16 @@ a:hover { text-decoration: underline wavy; }
 .chapcard {
   background: var(--paper2); border: 3px solid var(--line);
   border-radius: 16px 13px 18px 12px; padding: .9rem; color: var(--ink) !important;
-  box-shadow: 4px 4px 0 rgba(91, 70, 54, .45);
+  box-shadow: 4px 4px 0 rgba(111, 77, 56, .45);
 }
 .chapcard:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--line); text-decoration: none; }
 .chapcard .ct { font-weight: 800; margin-bottom: .4rem; }
-.tags span { display: inline-block; font-size: .75rem; background: #e9d6ad; color: var(--ink); padding: .12rem .55rem; border-radius: 999px; margin: .12rem; border: 1.5px solid var(--line); }
+.tags span { display: inline-block; font-size: .75rem; background: #dcc8a4; color: var(--ink); padding: .12rem .55rem; border-radius: 999px; margin: .12rem; border: 1.5px solid var(--line); }
 
 /* ---- 章節內文 ---- */
 .back { display: inline-block; margin: .3rem 0; color: var(--ink-soft); font-weight: 700; }
-.five { background: linear-gradient(135deg, #dfecc8, #eef4dc); border-color: #6f8a4d; }
-.trick { background: linear-gradient(135deg, #f6e2c0, #fdf0d6); border-color: #b5853f; }
+.five { background: linear-gradient(135deg, #dde7d4, #eaf0e0); border-color: #4f6b4a; }
+.trick { background: linear-gradient(135deg, #ecd9b8, #f4e7cc); border-color: #6f4d38; }
 .concepts li, .formulas li { margin: .45rem 0; }
 .formulas { list-style: none; padding-left: 0; }
 .formulas li { background: var(--paper2); border: 2.5px solid var(--line); border-radius: 12px 10px 13px 9px; padding: .4rem .65rem; }
@@ -165,32 +166,32 @@ a:hover { text-decoration: underline wavy; }
 .prob {
   background: var(--paper2); border: 3px solid var(--line);
   border-radius: 14px 12px 16px 11px; padding: .9rem;
-  box-shadow: 4px 4px 0 rgba(91, 70, 54, .42);
+  box-shadow: 4px 4px 0 rgba(111, 77, 56, .42);
 }
 .prob .q { font-weight: 700; margin: .3rem 0 .5rem; }
-.badge { display: inline-block; font-size: .75rem; background: #e3d2ac; color: var(--ink); padding: .12rem .55rem; border-radius: 999px; border: 1.5px solid var(--line); font-weight: 700; }
+.badge { display: inline-block; font-size: .75rem; background: #d8c2a0; color: var(--ink); padding: .12rem .55rem; border-radius: 999px; border: 1.5px solid var(--line); font-weight: 700; }
 .badge.gsat { background: var(--berry); color: #fff3ea; }
 details { margin: .3rem 0; }
 summary { cursor: pointer; color: var(--berry); font-weight: 700; }
-.hint { background: #fbeccb; border-left: 5px solid var(--sun); padding: .5rem .7rem; margin: .4rem 0; border-radius: 10px; }
-.sol { background: #e6f0d4; border-left: 5px solid var(--leaf); padding: .5rem .7rem; margin: .4rem 0; border-radius: 10px; }
-.ans { margin-top: .4rem; font-weight: 800; color: #4e7233; }
+.hint { background: #f1e2c4; border-left: 5px solid var(--sun); padding: .5rem .7rem; margin: .4rem 0; border-radius: 10px; }
+.sol { background: #e2ead8; border-left: 5px solid var(--leaf); padding: .5rem .7rem; margin: .4rem 0; border-radius: 10px; }
+.ans { margin-top: .4rem; font-weight: 800; color: #4f6b4a; }
 .selfcheck { margin-top: .5rem; font-size: .92rem; color: var(--ink-soft); }
 .selfcheck button { margin-left: .4rem; padding: .28rem .65rem; border-radius: 10px; border: 2.5px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; font-weight: 700; }
-.selfcheck button:hover { background: #efe0bf; }
-.flashmsg { color: #4e7233; font-weight: 700; }
+.selfcheck button:hover { background: #e3cfac; }
+.flashmsg { color: #4f6b4a; font-weight: 700; }
 
 /* ---- 控制列 ---- */
 .ctrl { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; margin: .6rem 0; }
 select, input[type=text], input[type=password], input[type=number] {
-  background: #fdf6e6; color: var(--ink); border: 2.5px solid var(--line); border-radius: 10px; padding: .4rem .6rem; font-size: .95rem;
+  background: #f6ecd6; color: var(--ink); border: 2.5px solid var(--line); border-radius: 10px; padding: .4rem .6rem; font-size: .95rem;
 }
 label { display: block; margin: .5rem 0; font-weight: 600; }
 
 /* ---- 模擬考 ---- */
 .examcard { display: flex; flex-direction: column; gap: .4rem; }
 .timer { font-size: 1.25rem; font-weight: 800; color: var(--berry); margin: .4rem 0; }
-.examq.done { border-color: var(--leaf); box-shadow: 2px 2px 0 #6f8a4d; }
+.examq.done { border-color: var(--leaf); box-shadow: 2px 2px 0 #4f6b4a; }
 .examq.wrong { border-color: var(--berry); box-shadow: 2px 2px 0 var(--berry); }
 .bandnote { background: var(--paper2); padding: .6rem; border-radius: 12px; border: 2.5px solid var(--line); }
 .bookchecks { display: grid; gap: .2rem; }
@@ -199,11 +200,11 @@ label { display: block; margin: .5rem 0; font-weight: 600; }
 /* ---- 分析表 ---- */
 .statstable { width: 100%; border-collapse: collapse; font-size: .92rem; }
 .statstable th, .statstable td { text-align: left; padding: .45rem .5rem; border-bottom: 2.5px dashed var(--line); }
-.statstable tr.good td:first-child { color: #4e7233; font-weight: 700; }
-.statstable tr.mid td:first-child { color: #b5853f; font-weight: 700; }
+.statstable tr.good td:first-child { color: #4f6b4a; font-weight: 700; }
+.statstable tr.mid td:first-child { color: #6f4d38; font-weight: 700; }
 .statstable tr.bad td:first-child { color: var(--berry); font-weight: 700; }
 .statstable tr.na td:first-child { color: var(--ink-soft); }
-.minibar { background: #e3d2ac; height: 10px; border-radius: 999px; overflow: hidden; border: 2.5px solid var(--line); }
+.minibar { background: #d8c2a0; height: 10px; border-radius: 999px; overflow: hidden; border: 2.5px solid var(--line); }
 .minibar div { height: 100%; background: var(--leaf); }
 
 .foot { text-align: center; padding: 1.5rem 1rem; border-top: 4px solid var(--line); margin-top: 2rem; color: var(--ink-soft); }
@@ -219,12 +220,12 @@ label { display: block; margin: .5rem 0; font-weight: 600; }
 /* ---- 圖解分析：羊皮地圖框 ---- */
 .diagrampanel { background: linear-gradient(135deg, #efdcb4, #f8edcf); border-color: var(--line); }
 .diagramwrap {
-  background: #fbf4e2;
+  background: #f3e7d2;
   border: 3px solid var(--line);
   border-radius: 14px 12px 16px 11px;
   padding: .6rem;
   overflow-x: auto;
-  box-shadow: inset 0 0 0 2px #e8d6ab;
+  box-shadow: inset 0 0 0 2px #d8c2a0;
 }
 .diagram { display: block; max-width: 100%; height: auto; margin: 0 auto; }
 .diagcap { margin: .6rem 0 0; font-size: .9rem; }
@@ -237,7 +238,7 @@ label { display: block; margin: .5rem 0; font-weight: 600; }
 .eptags { margin: .4rem 0; font-size: .9rem; color: var(--ink-soft); }
 .eptag {
   display: inline-block; margin: .15rem .2rem; padding: .12rem .55rem;
-  background: #efe0bf; color: var(--ink); border: 2px solid var(--line);
+  background: #e3cfac; color: var(--ink); border: 2px solid var(--line);
   border-radius: 999px; font-size: .82rem; font-weight: 700;
 }
 .eptag:hover { background: var(--sun); text-decoration: none; }
@@ -261,7 +262,7 @@ label { display: block; margin: .5rem 0; font-weight: 600; }
   padding: .3rem .7rem; border-radius: 12px 14px 11px 15px;
   border: 2.5px solid var(--line); background: var(--card); color: var(--ink);
   font-weight: 700; font-size: .9rem; cursor: pointer;
-  box-shadow: 2px 2px 0 rgba(91,70,54,.3);
+  box-shadow: 2px 2px 0 rgba(111,77,56,.3);
 }
-.subbtn:hover { background: #efe0bf; }
+.subbtn:hover { background: #e3cfac; }
 .subbtn.on { background: var(--brand); color: #fff8ea; box-shadow: 3px 3px 0 var(--line); }
