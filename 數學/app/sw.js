@@ -4,7 +4,7 @@
  *  - 字型/KaTeX/圖示等靜態資產走 cache-first（很少變，省流量）。
  *  - 換版時自動 skipWaiting + claim，配合頁面的 controllerchange 自動重載。
  */
-var CACHE = "math-a-v13";
+var CACHE = "math-a-v14";
 var CORE = [
   "./", "./index.html",
   "./css/style.css",
