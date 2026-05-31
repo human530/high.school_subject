@@ -351,6 +351,57 @@
     };
   };
 
+  /* ---------- 物理 ---------- */
+  G.phKinematics = function () {
+    var v0 = ri(0, 8), a = ri(1, 5), t = ri(2, 6);
+    var v = v0 + a * t;
+    return { topic: "等加速運動", q: "初速 $" + v0 + "\\,m/s$，加速度 $" + a + "\\,m/s^2$，經過 $" + t + "$ 秒，末速為？",
+      hint: "$v=v_0+at$。", sol: "$v=" + v0 + "+" + a + "\\times" + t + "=" + v + "\\,m/s$。", answer: "$" + v + "\\,m/s$" };
+  };
+  G.phNewton = function () {
+    var m = ri(1, 6), a = ri(1, 6), F = m * a;
+    return { topic: "牛頓第二定律", q: "質量 $" + m + "\\,kg$ 物體受淨力 $" + F + "\\,N$，加速度為？",
+      hint: "$a=F/m$。", sol: "$a=" + F + "/" + m + "=" + a + "\\,m/s^2$。", answer: "$" + a + "\\,m/s^2$" };
+  };
+  G.phKinetic = function () {
+    var m = ri(1, 5), v = ri(2, 6), ke = 0.5 * m * v * v;
+    return { topic: "動能", q: "質量 $" + m + "\\,kg$、速度 $" + v + "\\,m/s$ 的動能為？",
+      hint: "$KE=\\frac12 mv^2$。", sol: "$\\frac12\\times" + m + "\\times" + v + "^2=" + fmt(ke) + "\\,J$。", answer: "$" + fmt(ke) + "\\,J$" };
+  };
+  G.phFreeFall = function () {
+    var h = pick([5, 10, 20, 45, 80]); var g = 10; var v = Math.sqrt(2 * g * h);
+    return { topic: "自由落體", q: "物體自 $" + h + "\\,m$ 高自由落下，落地速度為？(g=10)",
+      hint: "能量守恆 $v=\\sqrt{2gh}$。", sol: "$v=\\sqrt{2\\times10\\times" + h + "}=\\sqrt{" + (2 * g * h) + "}=" + fmt(v) + "\\,m/s$。", answer: "$" + fmt(v) + "\\,m/s$" };
+  };
+  G.phOhm = function () {
+    var I = ri(1, 6), R = ri(2, 10), V = I * R;
+    return { topic: "歐姆定律", q: "電阻 $" + R + "\\,\\Omega$ 通過 $" + I + "\\,A$ 電流，電壓為？",
+      hint: "$V=IR$。", sol: "$V=" + I + "\\times" + R + "=" + V + "\\,V$。", answer: "$" + V + "\\,V$" };
+  };
+  G.phPower = function () {
+    var I = ri(1, 5), R = ri(2, 8), P = I * I * R;
+    return { topic: "電功率", q: "電流 $" + I + "\\,A$ 流過 $" + R + "\\,\\Omega$ 電阻，消耗功率為？",
+      hint: "$P=I^2R$。", sol: "$P=" + I + "^2\\times" + R + "=" + P + "\\,W$。", answer: "$" + P + "\\,W$" };
+  };
+  G.phWave = function () {
+    var f = pick([100, 200, 250, 500]), lam = pick([0.5, 0.68, 1, 1.5, 2]); var v = f * lam;
+    return { topic: "波速", q: "頻率 $" + f + "\\,Hz$、波長 $" + lam + "\\,m$ 的波，波速為？",
+      hint: "$v=f\\lambda$。", sol: "$v=" + f + "\\times" + lam + "=" + fmt(v) + "\\,m/s$。", answer: "$" + fmt(v) + "\\,m/s$" };
+  };
+
+  /* ---------- 化學 ---------- */
+  G.chMole = function () {
+    var M = pick([18, 44, 28, 32, 16, 40]); var n = ri(1, 5); var m = M * n;
+    var names = { 18: "H₂O", 44: "CO₂", 28: "N₂", 32: "O₂", 16: "CH₄", 40: "NaOH" };
+    return { topic: "莫耳計算", q: "$" + m + "\\,g$ 的 " + names[M] + "（M=" + M + "）是幾莫耳？",
+      hint: "$n=m/M$。", sol: "$n=" + m + "/" + M + "=" + n + "\\,mol$。", answer: "$" + n + "\\,mol$" };
+  };
+  G.chPH = function () {
+    var p = ri(1, 6);
+    return { topic: "pH 計算", q: "$[H^+]=10^{-" + p + "}\\,M$ 的溶液，pH 為？",
+      hint: "$pH=-\\log[H^+]$。", sol: "$pH=-\\log10^{-" + p + "}=" + p + "$（" + (p < 7 ? "酸性" : "中/鹼") + "）。", answer: "$pH=" + p + "$" };
+  };
+
   /* ---------- 工具 ---------- */
   function comb(n, r) { var p = 1, f = 1; for (var i = 0; i < r; i++) { p *= (n - i); f *= (i + 1); } return p / f; }
   function fmt(x) {

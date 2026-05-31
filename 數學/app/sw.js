@@ -4,12 +4,14 @@
  *  - 字型/KaTeX/圖示等靜態資產走 cache-first（很少變，省流量）。
  *  - 換版時自動 skipWaiting + claim，配合頁面的 controllerchange 自動重載。
  */
-var CACHE = "math-a-v11";
+var CACHE = "math-a-v12";
 var CORE = [
   "./", "./index.html",
   "./css/style.css",
   "./data/curriculum.js", "./data/book1.js", "./data/book2.js", "./data/book3.js", "./data/book4.js",
   "./data/exampoints.js",
+  "./data/subj_chinese.js", "./data/subj_english.js", "./data/subj_physics.js",
+  "./data/subj_chemistry.js", "./data/subj_biology.js", "./data/subj_earth.js",
   "./js/generator.js", "./js/diagrams.js", "./js/llm.js", "./js/scoring.js", "./js/analytics.js", "./js/exam.js", "./js/app.js",
   "./manifest.webmanifest",
   "./icons/icon-192.png", "./icons/icon-512.png",

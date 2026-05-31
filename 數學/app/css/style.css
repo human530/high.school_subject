@@ -248,3 +248,20 @@ label { display: block; margin: .5rem 0; font-weight: 600; }
 .eppanel.na   { border-left: 8px dashed var(--line); }
 .epinsight { margin: .5rem 0; }
 .epchips { margin: .3rem 0; }
+
+/* ---- 科目切換器 ---- */
+.subjectbar {
+  position: sticky; top: 0; z-index: 40;
+  display: flex; gap: .4rem; flex-wrap: wrap; align-items: center;
+  padding: .5rem 1rem; background: var(--paper2);
+  border-bottom: 3px solid var(--line);
+}
+.sublabel { font-weight: 800; color: var(--ink-soft); font-size: .9rem; }
+.subbtn {
+  padding: .3rem .7rem; border-radius: 12px 14px 11px 15px;
+  border: 2.5px solid var(--line); background: var(--card); color: var(--ink);
+  font-weight: 700; font-size: .9rem; cursor: pointer;
+  box-shadow: 2px 2px 0 rgba(91,70,54,.3);
+}
+.subbtn:hover { background: #efe0bf; }
+.subbtn.on { background: var(--brand); color: #fff8ea; box-shadow: 3px 3px 0 var(--line); }

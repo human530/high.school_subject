@@ -1,10 +1,10 @@
 /* ============================================================
- * exampoints.js — 整合考點（學測高頻、跨章節串連）
+ * exampoints.js — 數A 整合考點（學測高頻、跨章節串連）
  * 每個考點把分散在不同章的觀念整合成「一個會考的主題」，
  * 並串接：相關章節、可練的 generators、學測題、整合解題心法、易錯陷阱。
  * 由 app/exam/analytics 共用。
  * ============================================================ */
-window.EXAMPOINTS = [
+var MATHA_EXAMPOINTS = [
   {
     id: "ep_polyineq",
     name: "多項式與不等式整合",
@@ -113,12 +113,19 @@ window.EXAMPOINTS = [
   }
 ];
 
-/* 工具：考點查找與聚合 */
+// 註冊到數A 科目；並設為當前全域 EXAMPOINTS（向後相容）
+if (window.CURRICULUM && CURRICULUM.beginSubject) {
+  CURRICULUM.beginSubject({ id: "matha", name: "數學A", icon: "📐" });
+  CURRICULUM.addExamPoints(MATHA_EXAMPOINTS);
+}
+window.EXAMPOINTS = MATHA_EXAMPOINTS;
+
+/* 工具：考點查找與聚合（一律操作目前的 window.EXAMPOINTS） */
 window.EXAMPOINTS_API = {
-  byId: function (id) { return window.EXAMPOINTS.filter(function (e) { return e.id === id; })[0] || null; },
+  byId: function (id) { return (window.EXAMPOINTS || []).filter(function (e) { return e.id === id; })[0] || null; },
   // 某章屬於哪些考點
   forChapter: function (chapterId) {
-    return window.EXAMPOINTS.filter(function (e) { return e.chapters.indexOf(chapterId) >= 0; });
+    return (window.EXAMPOINTS || []).filter(function (e) { return e.chapters.indexOf(chapterId) >= 0; });
   },
   // 考點下可用的 generators（存在於 GENERATORS 才算）
   gens: function (ep) {
