@@ -50,6 +50,7 @@
       '<div class="view">' +
       '<section class="hero">' +
       '<h1>🎯 個申就上</h1>' +
+      '<p class="muted">目前科目：<b>' + ((CURRICULUM.activeSubject() || {}).icon || "") + ' ' + ((CURRICULUM.activeSubject() || {}).name || "") + '</b>　（上方可切換科目）</p>' +
       '<p class="muted">目標：每章正確率 90%+、看到題目就秒殺。以下是你目前的進度。</p>' +
       '<div class="cards">' +
       '<div class="card stat"><div class="big">' + rate + '%</div><div>整體正確率</div></div>' +
@@ -594,7 +595,39 @@
     window.scrollTo(0, 0);
   }
 
+  /* ============================================================
+   * 科目切換器：注入頂列，切換時同步 EXAMPOINTS 並重繪
+   * ============================================================ */
+  function mountSubjectSwitcher() {
+    if (!window.CURRICULUM || !CURRICULUM.subjectList) return;
+    var bar = document.getElementById("subjectBar");
+    if (!bar) {
+      var header = document.querySelector(".topbar");
+      bar = el('<div id="subjectBar" class="subjectbar"></div>');
+      if (header && header.parentNode) header.parentNode.insertBefore(bar, header.nextSibling);
+    }
+    var list = CURRICULUM.subjectList();
+    bar.innerHTML = '<span class="sublabel">科目：</span>' + list.map(function (s) {
+      return '<button class="subbtn' + (s.id === CURRICULUM.active ? ' on' : '') + '" data-sid="' + s.id + '">' +
+        s.icon + ' ' + s.name + '</button>';
+    }).join("");
+    $all(".subbtn", bar).forEach(function (b) {
+      b.onclick = function () {
+        CURRICULUM.setActive(b.dataset.sid);
+        // 重設考點探測等，重繪當前頁
+        mountSubjectSwitcher();
+        router();
+      };
+    });
+  }
+
+  function boot() {
+    if (window.CURRICULUM && CURRICULUM.initActive) CURRICULUM.initActive();
+    mountSubjectSwitcher();
+    router();
+  }
+
   window.addEventListener("hashchange", router);
-  window.addEventListener("DOMContentLoaded", router);
-  if (document.readyState !== "loading") router();
+  window.addEventListener("DOMContentLoaded", boot);
+  if (document.readyState !== "loading") boot();
 })();

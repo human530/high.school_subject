@@ -72,30 +72,25 @@
     };
   }
 
-  // 整合考點卷：把一個考點橫跨的章節 generators 混合出題
+  // 整合考點卷：從考點橫跨的「章節」混合出題（章節自帶 generators 或靜態題皆可）
   // ep 可為單一考點物件，或傳 null = 全部考點綜合（高頻考點優先）
   function buildExamPoint(ep, count) {
     count = count || 12;
-    var pool = []; // [{key, chId, chTitle, weight}]
+    var pool = []; // [{ch, label, weight}]
     var eps = ep ? [ep] : (window.EXAMPOINTS || []);
     eps.forEach(function (e) {
-      var gens = window.EXAMPOINTS_API ? window.EXAMPOINTS_API.gens(e) : (e.generators || []);
-      // 用考點對應章節標題，盡量對上 generator 所屬章
-      gens.forEach(function (k) {
-        var chId = (e.chapters && e.chapters[0]) || "";
-        var ch = chId ? CURRICULUM.chapterById(chId) : null;
-        // 全考點綜合時，依 freq 加權（高頻多放幾次）
-        var w = ep ? 1 : (e.freq || 3);
-        for (var i = 0; i < w; i++) pool.push({ key: k, chId: chId, chTitle: (e.name) });
+      var w = ep ? 1 : (e.freq || 3);   // 綜合卷依高頻加權
+      (e.chapters || []).forEach(function (cid) {
+        var ch = CURRICULUM.chapterById(cid);
+        if (ch) for (var i = 0; i < w; i++) pool.push({ ch: ch, label: e.name });
       });
     });
     var items = [];
     for (var i = 0; i < count && pool.length; i++) {
       var pick = pool[Math.floor(Math.random() * pool.length)];
-      var it = drawFromGenerator(pick.key, pick.chId, pick.chTitle);
-      if (it) items.push(it);
+      var it = drawFromChapter(pick.ch);
+      if (it) { it.chapterTitle = pick.label; items.push(it); }  // 標籤顯示考點名
     }
-    // 後備：池子空就退回全範圍
     if (!items.length) return buildGSAT(count);
     return {
       kind: "整合考點", title: ep ? ("整合考點卷・" + ep.name) : "整合考點綜合卷（高頻優先）",
