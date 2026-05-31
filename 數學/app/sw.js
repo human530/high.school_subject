@@ -1,5 +1,5 @@
 /* service worker：離線快取 app 核心檔 + 內建 KaTeX（首次連線後即可完全離線使用） */
-var CACHE = "math-a-v6";
+var CACHE = "math-a-v7";
 var CORE = [
   "./", "./index.html",
   "./css/style.css",
@@ -10,7 +10,9 @@ var CORE = [
   // KaTeX 本機 vendor（核心檔；字型 woff2 由 fetch handler 動態快取）
   "./vendor/katex/katex.min.css",
   "./vendor/katex/katex.min.js",
-  "./vendor/katex/contrib/auto-render.min.js"
+  "./vendor/katex/contrib/auto-render.min.js",
+  "./vendor/iansui/iansui-latin.woff2",
+  "./vendor/iansui/iansui-tc.woff2"
 ];
 
 self.addEventListener("install", function (e) {
