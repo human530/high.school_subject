@@ -5,11 +5,11 @@
  * 在 app.js 章節頁以 DIAGRAMS.render(chapter.diagram) 插入。
  * ============================================================ */
 (function () {
-  // 共用樣式：深色背景上的亮色線條
+  // 共用樣式：淺色背景上的深色線條（淡藍白主題）
   var C = {
-    axis: "#8b93c9", grid: "#2c3160", ink: "#e8eaf6",
-    a: "#6366f1", b: "#22c55e", c: "#f59e0b", d: "#ef4444",
-    hl: "#a5b4fc", paper: "#0c0f24"
+    axis: "#5b7099", grid: "#cdd9ec", ink: "#1e3a5f",
+    a: "#2563eb", b: "#0e9f6e", c: "#d97706", d: "#dc2626",
+    hl: "#1d4ed8", paper: "#f3f8ff"
   };
 
   function svg(w, h, body) {
