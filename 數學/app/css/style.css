@@ -148,3 +148,23 @@ label { display: block; margin: .5rem 0; }
   .nav a { padding: .3rem .5rem; font-size: .85rem; }
   .brand { width: 100%; }
 }
+
+/* ---- 圖解分析 ---- */
+.diagrampanel { background: linear-gradient(135deg, #16234a, #1a2740); border-color: #2b4a6b; }
+.diagramwrap {
+  background: var(--paper, #0c0f24);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: .6rem;
+  overflow-x: auto;
+}
+.diagram { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+.diagcap { margin: .6rem 0 0; font-size: .9rem; }
+
+/* 進場淡入：讓圖與卡片更有「成品感」 */
+.view > section, .view > .hero { animation: fadein .35s ease both; }
+@keyframes fadein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* 卡片 hover 微浮起，提升質感 */
+.chapcard, .qbtn, .card.stat { transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }
+.chapcard:hover, .qbtn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.35); }

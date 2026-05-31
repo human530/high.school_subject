@@ -8,6 +8,7 @@ CURRICULUM.addBook({
       id: "b3c1",
       title: "1. 三角比與正餘弦定理",
       tags: ["三角比", "正弦定理", "餘弦定理", "面積"],
+      diagram: "righttri",
       fiveYO:
         "直角三角形裡，sin、cos、tan 就是『邊長的比例』。" +
         "口訣 SOH-CAH-TOA：sin=對/斜、cos=鄰/斜、tan=對/鄰。記住這個就會一半了。",
@@ -51,6 +52,7 @@ CURRICULUM.addBook({
       id: "b3c2",
       title: "2. 三角函數（弧度、圖形、和差角、疊合）",
       tags: ["弧度", "和差角", "倍角", "疊合", "週期"],
+      diagram: "unitcircle",
       fiveYO:
         "把角度想成『繞圈圈轉了多少』。弧度是用『繞的弧長』來量角，整圈 $360°=2\\pi$ 弧度。" +
         "sin、cos 的圖形就像海浪，上上下下不斷重複。",
@@ -93,6 +95,7 @@ CURRICULUM.addBook({
       id: "b3c3",
       title: "3. 直線與圓",
       tags: ["斜率", "直線方程式", "點到直線距離", "圓"],
+      diagram: "circleline",
       fiveYO:
         "直線的『斜率』就是『往右走一步，往上爬幾步』——越陡斜率越大。" +
         "圓就是『離某個中心點一樣遠的所有點』，那個固定的距離叫半徑。",
@@ -136,6 +139,7 @@ CURRICULUM.addBook({
       id: "b3c4",
       title: "4. 平面向量",
       tags: ["向量", "內積", "夾角", "分點"],
+      diagram: "vector",
       fiveYO:
         "向量就是『一個帶箭頭的箭』，它同時記住『方向』和『長度』。" +
         "兩個箭相加，就是把第二個箭接在第一個箭的尾巴後面，看最後到哪裡。",
