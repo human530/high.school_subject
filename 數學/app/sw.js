@@ -1,5 +1,5 @@
-/* service worker：離線快取 app 核心檔 + KaTeX（首次連線後即可離線使用） */
-var CACHE = "math-a-v1";
+/* service worker：離線快取 app 核心檔 + 內建 KaTeX（首次連線後即可完全離線使用） */
+var CACHE = "math-a-v2";
 var CORE = [
   "./", "./index.html",
   "./css/style.css",
@@ -7,9 +7,10 @@ var CORE = [
   "./js/generator.js", "./js/llm.js", "./js/scoring.js", "./js/analytics.js", "./js/exam.js", "./js/app.js",
   "./manifest.webmanifest",
   "./icons/icon-192.png", "./icons/icon-512.png",
-  "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css",
-  "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js",
-  "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  // KaTeX 本機 vendor（核心檔；字型 woff2 由 fetch handler 動態快取）
+  "./vendor/katex/katex.min.css",
+  "./vendor/katex/katex.min.js",
+  "./vendor/katex/contrib/auto-render.min.js"
 ];
 
 self.addEventListener("install", function (e) {
@@ -32,6 +33,7 @@ self.addEventListener("fetch", function (e) {
   e.respondWith(
     caches.match(e.request).then(function (hit) {
       return hit || fetch(e.request).then(function (res) {
+        // 動態快取同源資源（含 KaTeX woff2 字型），下次離線可用
         var copy = res.clone();
         caches.open(CACHE).then(function (c) { c.put(e.request, copy).catch(function () { }); });
         return res;

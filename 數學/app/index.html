@@ -10,11 +10,11 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
 
-  <!-- KaTeX：數學式渲染（線上載入，PWA 會被 service worker 快取） -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+  <!-- KaTeX：數學式渲染（本機內建 vendor，完全離線、不依賴 CDN） -->
+  <link rel="stylesheet" href="vendor/katex/katex.min.css"
     onerror="document.documentElement.classList.add('no-katex')" />
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <script defer src="vendor/katex/katex.min.js"></script>
+  <script defer src="vendor/katex/contrib/auto-render.min.js"></script>
 
   <link rel="stylesheet" href="css/style.css" />
 </head>
