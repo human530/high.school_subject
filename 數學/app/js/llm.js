@@ -126,9 +126,87 @@
     return proxyOK;
   }
 
+  /* ---------- 拍照解題（視覺 LLM） ---------- */
+  var PHOTO_PROMPT =
+    "你是台灣高中數學老師。圖片中是一道數學題。請：\n" +
+    "1. 先用一句話讀出題目在問什麼。\n" +
+    "2. 給『最快解法/秒殺步驟』，一步一步、5 歲也聽得懂。\n" +
+    "3. 數學式用 LaTeX 並以 $...$ 包住。\n" +
+    "4. 最後一行寫「✅ 答案：...」。\n" +
+    "若圖片不清楚或不是數學題，請說明並請使用者重拍。";
+
+  // 回傳純文字（Markdown/LaTeX），不是 JSON
+  async function solvePhoto(imageDataUrl) {
+    // imageDataUrl: "data:image/jpeg;base64,...."
+    var m = /^data:(image\/[a-z+]+);base64,(.+)$/i.exec(imageDataUrl || "");
+    if (!m) throw new Error("圖片格式無效");
+    var media_type = m[1], data = m[2];
+    var cfg = getCfg();
+
+    // ① 優先：自家伺服器代理（Opus 4.8 視覺，零設定）
+    if (proxyOK !== false) {
+      try {
+        var res = await fetch(PROXY, {
+          method: "POST", headers: { "content-type": "application/json" },
+          body: JSON.stringify({ prompt: PHOTO_PROMPT, model: DEFAULT_MODEL, image: { media_type: media_type, data: data } })
+        });
+        if (res.status === 503) { proxyOK = false; }
+        else if (!res.ok) throw new Error("伺服器代理錯誤 " + res.status);
+        else { proxyOK = true; var d = await res.json(); return (d.text || "").trim(); }
+      } catch (e) {
+        if (proxyOK === true) throw e; // 代理可用卻出錯→照實丟
+        // 否則往下試自帶金鑰
+      }
+    }
+
+    // ② 自帶 Anthropic 金鑰（視覺）
+    if (cfg.key && cfg.provider === "anthropic") {
+      var r = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json", "x-api-key": cfg.key,
+          "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true"
+        },
+        body: JSON.stringify({
+          model: cfg.model || DEFAULT_MODEL, max_tokens: 4000,
+          messages: [{ role: "user", content: [
+            { type: "image", source: { type: "base64", media_type: media_type, data: data } },
+            { type: "text", text: PHOTO_PROMPT }
+          ] }]
+        })
+      });
+      if (!r.ok) throw new Error("Anthropic 視覺 API 錯誤 " + r.status);
+      var jd = await r.json();
+      return (jd.content && jd.content[0] && jd.content[0].text || "").trim();
+    }
+
+    // ③ 自帶 OpenAI 相容（視覺，如 gpt-4o）
+    if (cfg.key && cfg.provider === "openai") {
+      var base = cfg.baseUrl || "https://api.openai.com/v1";
+      var or = await fetch(base.replace(/\/$/, "") + "/chat/completions", {
+        method: "POST",
+        headers: { "content-type": "application/json", "authorization": "Bearer " + cfg.key },
+        body: JSON.stringify({
+          model: cfg.model || "gpt-4o", max_tokens: 4000,
+          messages: [{ role: "user", content: [
+            { type: "text", text: PHOTO_PROMPT },
+            { type: "image_url", image_url: { url: imageDataUrl } }
+          ] }]
+        })
+      });
+      if (!or.ok) throw new Error("OpenAI 視覺 API 錯誤 " + or.status);
+      var od = await or.json();
+      return (od.choices && od.choices[0] && od.choices[0].message.content || "").trim();
+    }
+
+    throw new Error("拍照解題需要視覺 AI：請站長在 Vercel 設 ANTHROPIC_API_KEY，或到『設定』貼上 Anthropic / OpenAI(gpt-4o) 金鑰。（Ollama 多數模型不支援看圖）");
+  }
+
   window.LLM = {
-    getCfg: getCfg, setCfg: setCfg, generate: generate, probeProxy: probeProxy,
+    getCfg: getCfg, setCfg: setCfg, generate: generate, probeProxy: probeProxy, solvePhoto: solvePhoto,
     // 伺服器代理可用、本機有金鑰、或選了 Ollama（免金鑰）就算 ready
-    isReady: function () { var c = getCfg(); return proxyOK === true || !!c.key || c.provider === "ollama"; }
+    isReady: function () { var c = getCfg(); return proxyOK === true || !!c.key || c.provider === "ollama"; },
+    // 拍照解題是否可用（需視覺：代理 or Anthropic/OpenAI 金鑰）
+    photoReady: function () { var c = getCfg(); return proxyOK === true || (c.key && (c.provider === "anthropic" || c.provider === "openai")); }
   };
 })();

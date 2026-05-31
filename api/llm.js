@@ -24,9 +24,21 @@ module.exports = async function handler(req, res) {
     if (typeof body === "string") { try { body = JSON.parse(body); } catch (e) { body = {}; } }
     body = body || {};
     var prompt = (body.prompt || "").toString();
-    if (!prompt) { res.status(400).json({ error: "缺少 prompt" }); return; }
+    var image = body.image; // 選用：{ media_type, data(base64) } 用於拍照解題（視覺）
+    if (!prompt && !image) { res.status(400).json({ error: "缺少 prompt" }); return; }
     var model = body.model || "claude-opus-4-8";
     var maxTokens = Math.min(parseInt(body.max_tokens, 10) || 4000, 8000);
+
+    // 組訊息內容：純文字，或文字＋圖片（視覺）
+    var content;
+    if (image && image.data) {
+      content = [
+        { type: "image", source: { type: "base64", media_type: image.media_type || "image/jpeg", data: image.data } },
+        { type: "text", text: prompt || "請解這張圖片中的題目。" }
+      ];
+    } else {
+      content = prompt;
+    }
 
     var apiRes = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -38,7 +50,7 @@ module.exports = async function handler(req, res) {
       body: JSON.stringify({
         model: model,
         max_tokens: maxTokens,
-        messages: [{ role: "user", content: prompt }]
+        messages: [{ role: "user", content: content }]
       })
     });
 
