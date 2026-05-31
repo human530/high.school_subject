@@ -35,7 +35,7 @@ CURRICULUM.addBook({
           sol: "pay attention to 為固定搭配，空格需名詞，選 (A) attention。",
           answer: "(A) attention" }
       ],
-      generators: []
+      generators: ["enRoot"]
     },
     {
       id: "en_grammar",
@@ -70,7 +70,7 @@ CURRICULUM.addBook({
           sol: "與現在相反假設用過去式(be 動詞用 were)，選 (B) were。",
           answer: "(B) were" }
       ],
-      generators: []
+      generators: ["enTense"]
     },
     {
       id: "en_reading",
@@ -137,6 +137,122 @@ CURRICULUM.addBook({
           answer: "(B) 結構清楚且文法正確" }
       ],
       generators: []
+    },
+    {
+      id: "en_phrasal",
+      title: "5. 片語動詞與介系詞搭配",
+      tags: ["phrasal verb", "片語動詞", "介系詞", "搭配"],
+      fiveYO: "英文很多『動詞+小字(介系詞/副詞)』合起來意思就變了，像 give up=放棄。" +
+        "這些要整組記，考試常考用哪個小字。",
+      concepts: [
+        { h: "片語動詞", b: "look up(查詢)、give up(放棄)、put off(延後)、carry out(執行)；動詞+介副詞。" },
+        { h: "固定介系詞", b: "depend on、be interested in、be afraid of、result in/from——介系詞固定不能換。" },
+        { h: "可分/不可分", b: "look it up(代名詞要夾中間)；look after him(不可分，不能拆)。" },
+        { h: "近義辨析", b: "result in(導致結果) vs result from(起因於)；方向相反勿混。" }
+      ],
+      tricks: [
+        "空格只有介系詞選項時，回想動詞的固定搭配(depend ON、consist OF)。",
+        "代名詞當受詞時，可分片語動詞要『動詞+代名詞+介副詞』(turn it off)。",
+        "result in 後接『結果』、result from 後接『原因』，看語意定方向。",
+        "be 動詞/形容詞後的介系詞多為固定搭配(interested IN、good AT)，整組背。",
+        "看到片語動詞先想中文核心義，再用上下文確認。"
+      ],
+      formulas: [
+        "片語動詞 = 動詞 + 介系詞/副詞 (整組記語意)",
+        "判斷流程：先看動詞 → 回想固定搭配介系詞 → 用句意確認方向",
+        "可分片語：動詞 + 代名詞 + 介副詞 (turn it off)"
+      ],
+      problems: [
+        { type: "classic", q: "'give up' 與 'put off' 各是什麼意思？",
+          hint: "up=放棄方向，off=延後。",
+          sol: "give up = 放棄；put off = 延後、拖延。皆為動詞+介副詞的片語動詞。",
+          answer: "give up=放棄；put off=延後" },
+        { type: "gsat", q: "（學測風格）Success often ____ hard work. (A)results in (B)results from (C)depends",
+          hint: "成功『起因於』努力，看方向。",
+          sol: "成功是『結果』，努力是『原因』，結果起因於原因用 result from，選 (B) results from。",
+          answer: "(B) results from" },
+        { type: "gsat", q: "（學測風格）I don't know this word; let me ____ in the dictionary. (A)look up it (B)look it up (C)look up at it",
+          hint: "受詞是代名詞 it，可分片語要夾中間。",
+          sol: "look up 為可分片語動詞，受詞為代名詞時須放中間：look it up，選 (B)。",
+          answer: "(B) look it up" }
+      ],
+      generators: []
+    },
+    {
+      id: "en_transition",
+      title: "6. 連接詞與篇章銜接",
+      tags: ["conjunction", "transition", "連接詞", "篇章"],
+      fiveYO: "連接詞是『句子和句子之間的橋』。看清楚前後是『轉折、因果還是並列』，" +
+        "就能選對橋，文章也才連得順。",
+      concepts: [
+        { h: "邏輯分類", b: "轉折(however/although)、因果(therefore/because)、遞進(moreover)、對比(while/whereas)。" },
+        { h: "詞性差異", b: "although/because 接子句；however/therefore 是副詞要加分號或句點；despite 接名詞。" },
+        { h: "成對連接詞", b: "not only...but also、either...or、neither...nor、both...and——主動詞一致要小心。" },
+        { h: "篇章銜接", b: "段落間用 first/in addition/in conclusion 等指示語引導讀者。" }
+      ],
+      tricks: [
+        "先判前後句邏輯關係(轉折/因果/並列)，再選對應連接詞。",
+        "however/therefore 是副詞，前面要分號或句號，不能像 but 直接連兩句。",
+        "although 與 but 不能同句並用(中式英文陷阱)；二擇一。",
+        "despite/in spite of 後接名詞或動名詞；although 後接完整子句。",
+        "成對連接詞 not only...but also 注意倒裝與動詞單複數一致。"
+      ],
+      formulas: [
+        "判斷流程：前後句邏輯(轉折/因果/並列) → 選對應連接詞 → 檢查詞性接法",
+        "副詞性連接：句子; however, 句子 (分號 + 逗號)",
+        "讓步：Although + 子句 = Despite + 名詞 (語意同，接法不同)"
+      ],
+      problems: [
+        { type: "classic", q: "although 與 despite 在用法上最大的差別是？",
+          hint: "後面接什麼？",
+          sol: "although 後接完整子句(主詞+動詞)；despite/in spite of 後接名詞或動名詞。",
+          answer: "although接子句、despite接名詞" },
+        { type: "gsat", q: "（學測風格）____ it was raining, they decided to go hiking. (A)Despite (B)Although (C)However",
+          hint: "後面是完整子句 it was raining。",
+          sol: "後接完整子句且表讓步，用 Although；Despite 須接名詞，However 是副詞。選 (B) Although。",
+          answer: "(B) Although" },
+        { type: "gsat", q: "（學測風格）The plan was risky; ____, the team chose to proceed. (A)therefore (B)nevertheless (C)because",
+          hint: "計畫有風險『但仍』執行，是轉折。",
+          sol: "前後為轉折(雖有風險仍進行)，用副詞 nevertheless，前有分號相連，選 (B)。",
+          answer: "(B) nevertheless" }
+      ],
+      generators: []
+    },
+    {
+      id: "en_c2e",
+      title: "7. 中譯英技巧",
+      tags: ["translation", "中譯英", "句型", "寫作"],
+      fiveYO: "中譯英不是逐字翻，而是先找中文句的『主詞和動詞』，套對英文句型和時態，" +
+        "再把細節補上。對而通順比華麗重要。",
+      concepts: [
+        { h: "抓主幹", b: "先找中文的主詞、動詞、受詞，確立英文句的骨架再加修飾。" },
+        { h: "時態語態", b: "依時間副詞定時態；『被』字句或無明確主詞時考慮被動語態。" },
+        { h: "常見句型", b: "It is + adj. + to V、There is/are、so...that、not only...but also。" },
+        { h: "中式英文", b: "避免逐字直譯，如『很有興趣』是 be interested in 而非 have interest very。" }
+      ],
+      tricks: [
+        "先寫出英文主詞+動詞主幹，再掛上時間、地點、原因等修飾語。",
+        "中文無主詞句(如『據說…』)常用 It is said that 或被動處理。",
+        "看到『越來越…』用 more and more / 比較級+and+比較級。",
+        "寧用會的簡單句型寫對，也不硬翻複雜句而出文法錯。",
+        "翻完回頭檢查：主動詞一致、時態、單複數、冠詞。"
+      ],
+      formulas: [
+        "翻譯流程：抓主詞動詞 → 定時態語態 → 套句型 → 補修飾 → 檢查",
+        "It is + 形容詞 + to + 原形 (做某事是…的)",
+        "so + 形容詞/副詞 + that + 子句 (如此…以致於)"
+      ],
+      problems: [
+        { type: "classic", q: "中譯英第一步最該先做什麼？",
+          hint: "先別急著逐字翻。",
+          sol: "先抓出中文句的主詞與動詞(主幹)，確立英文句骨架，再補時態與修飾。",
+          answer: "先抓主詞與動詞(句子主幹)" },
+        { type: "gsat", q: "（學測風格）『學英文對學生來說很重要。』下列翻譯何者最佳？(A)Learn English is very important to student. (B)It is important for students to learn English. (C)English learn is important student.",
+          hint: "用 It is + adj. + for + 人 + to V 句型。",
+          sol: "用虛主詞 It is important for students to learn English，主詞動詞與句型皆正確，選 (B)。",
+          answer: "(B) It is important for students to learn English." }
+      ],
+      generators: []
     }
   ]
 });
@@ -154,5 +270,19 @@ CURRICULUM.addExamPoints([
     insight: "閱讀＝定位找依據；克漏字＝上下文邏輯＋搭配詞；字彙是底層燃料。",
     combo: "題目關鍵字→定位段落→看邏輯連接詞與搭配→選同義改寫且有依據者。",
     traps: ["超出原文的推論", "被原文照抄選項誤導", "忽略連接詞的邏輯"]
+  },
+  {
+    id: "en_ep_collocation", name: "片語動詞與介系詞搭配", freq: 4,
+    chapters: ["en_phrasal", "en_vocab"],
+    insight: "字彙題與克漏字常考固定搭配：動詞配哪個介系詞、片語動詞的語意與可分性。",
+    combo: "先看空格前的動詞或形容詞 → 回想其固定介系詞 → 代名詞受詞記得夾在可分片語中間。",
+    traps: ["介系詞固定搭配記錯(depend on)", "result in/from 方向相反混用", "可分片語代名詞位置擺錯"]
+  },
+  {
+    id: "en_ep_cohesion", name: "連接詞邏輯與篇章銜接", freq: 5,
+    chapters: ["en_transition", "en_reading"],
+    insight: "克漏字與閱讀大量考連接詞：判斷前後句的轉折/因果/並列，並注意連接詞詞性接法。",
+    combo: "判前後邏輯關係 → 選對應連接詞 → 檢查接法(although接子句、despite接名詞、however加分號)。",
+    traps: ["although 與 but 同句並用", "however 當對等連接詞誤用", "despite 後誤接子句"]
   }
 ]);
