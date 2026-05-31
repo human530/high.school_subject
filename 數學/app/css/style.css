@@ -3,6 +3,24 @@
  * 米色紙質背景、墨線輪廓、大地色系、塗鴉感圓角。
  * Animal Crossing × Don't Starve 風格。
  * ============================================================ */
+
+/* 手寫感中文字型：芫荽 Iansui（本機 vendor，離線可用） */
+@font-face {
+  font-family: "Iansui";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../vendor/iansui/iansui-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+2000-206F, U+2190-21FF, U+2200-22FF;
+}
+@font-face {
+  font-family: "Iansui";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../vendor/iansui/iansui-tc.woff2") format("woff2");
+}
+
 :root {
   --paper: #f4e9d2;          /* 主紙底 */
   --paper2: #efe2c6;         /* 深一階紙 */
@@ -25,15 +43,19 @@ html, body {
   margin: 0;
   color: var(--ink);
   line-height: 1.75;
-  font-family: "Noto Sans TC", "Comic Sans MS", -apple-system, "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
-  /* 紙質紋理：細點 + 暖漸層 */
+  font-family: "Iansui", "Noto Sans TC", "Comic Sans MS", -apple-system, "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  /* 紙質紋理：細點 + 暖漸層 + 角落塗鴉裝飾（葉子/星星/鉛筆） */
   background-color: var(--paper);
   background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='70' height='70' viewBox='0 0 70 70'><g fill='none' stroke='%235b4636' stroke-width='2' stroke-linecap='round' opacity='0.10'><path d='M14 40 q8 -16 22 -18 q-2 14 -22 18 z'/><path d='M22 33 q6 -3 12 -7'/></g></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='90' height='90' viewBox='0 0 90 90'><g fill='none' stroke='%235b4636' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' opacity='0.09'><path d='M64 20 l3 7 l7 1 l-5 5 l1 7 l-6 -3 l-6 3 l1 -7 l-5 -5 l7 -1 z'/></g></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><g fill='none' stroke='%235b4636' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' opacity='0.08'><path d='M18 56 l28 -28 l6 6 l-28 28 l-8 2 z'/><path d='M44 30 l6 6'/></g></svg>"),
     radial-gradient(rgba(120, 90, 50, .05) 1px, transparent 1px),
     radial-gradient(rgba(120, 90, 50, .04) 1px, transparent 1px),
     linear-gradient(180deg, #f7eed9, #efe1c2 80%);
-  background-size: 22px 22px, 22px 22px, 100% 100%;
-  background-position: 0 0, 11px 11px, 0 0;
+  background-size: 70px 70px, 90px 90px, 80px 80px, 22px 22px, 22px 22px, 100% 100%;
+  background-position: 8px 120px, right 16px top 90px, left 24px bottom 60px, 0 0, 11px 11px, 0 0;
+  background-repeat: repeat-y, repeat-y, repeat-y, repeat, repeat, no-repeat;
 }
 
 a { color: var(--berry); text-decoration: none; }
@@ -46,13 +68,13 @@ a:hover { text-decoration: underline wavy; }
   padding: .6rem 1rem;
   background: rgba(244, 233, 210, .92);
   backdrop-filter: blur(4px);
-  border-bottom: 3px solid var(--line);
+  border-bottom: 4px solid var(--line);
 }
 .brand {
   font-weight: 800; font-size: 1.15rem; color: var(--ink);
   background: var(--card); padding: .25rem .8rem;
-  border: 2.5px solid var(--line); border-radius: 14px 16px 13px 17px;
-  box-shadow: 2px 2px 0 var(--line);
+  border: 3px solid var(--line); border-radius: 14px 16px 13px 17px;
+  box-shadow: 3px 3px 0 var(--line);
 }
 .nav { display: flex; gap: .35rem; flex-wrap: wrap; }
 .nav a {
@@ -62,7 +84,7 @@ a:hover { text-decoration: underline wavy; }
 }
 .nav a.active, .nav a:hover {
   background: var(--brand); color: #fff8ea; text-decoration: none;
-  border-color: var(--line); box-shadow: 1.5px 1.5px 0 var(--line);
+  border-color: var(--line); box-shadow: 4px 4px 0 var(--line);
 }
 
 .container { max-width: 920px; margin: 0 auto; padding: 1rem; min-height: 70vh; }
@@ -73,30 +95,30 @@ a:hover { text-decoration: underline wavy; }
 
 /* ---- 卡片 / 面板：羊皮紙塊，手繪不規則圓角 + 雙重描邊感 ---- */
 .panel {
-  background: var(--card); border: 2.5px solid var(--line);
+  background: var(--card); border: 3px solid var(--line);
   border-radius: 20px 16px 22px 15px; padding: 1rem 1.1rem; margin: 1rem 0;
-  box-shadow: 3px 3px 0 rgba(91, 70, 54, .35);
+  box-shadow: 5px 5px 0 rgba(91, 70, 54, .5);
 }
 .panel h2 { margin: .1rem 0 .6rem; font-size: 1.18rem; }
 .hero {
   background: linear-gradient(135deg, #f3e3bf, #f8efd6);
-  border: 3px solid var(--line); border-radius: 24px 18px 26px 16px;
-  padding: 1.3rem; margin: 1rem 0; box-shadow: 4px 4px 0 rgba(91, 70, 54, .35);
+  border: 4px solid var(--line); border-radius: 24px 18px 26px 16px;
+  padding: 1.3rem; margin: 1rem 0; box-shadow: 6px 6px 0 rgba(91, 70, 54, .5);
 }
 .hero h1 { margin: 0 0 .2rem; }
 
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: .8rem; margin: .8rem 0; }
 /* 卡片像木製格子 */
 .card {
-  background: var(--paper2); border: 2.5px solid var(--line);
+  background: var(--paper2); border: 3px solid var(--line);
   border-radius: 16px 13px 17px 12px; padding: .9rem;
-  box-shadow: 2px 2px 0 rgba(91, 70, 54, .3);
+  box-shadow: 4px 4px 0 rgba(91, 70, 54, .45);
 }
 .card.stat { text-align: center; }
 .card.stat .big { font-size: 1.9rem; font-weight: 800; color: var(--brand); }
 
 /* 進度條：木槽 + 葉綠填充 */
-.progress { height: 16px; background: #e3d2ac; border-radius: 999px; overflow: hidden; border: 2.5px solid var(--line); }
+.progress { height: 16px; background: #e3d2ac; border-radius: 999px; overflow: hidden; border: 3px solid var(--line); }
 .progress .bar { height: 100%; background: repeating-linear-gradient(45deg, var(--leaf), var(--leaf) 8px, #79a05a 8px, #79a05a 16px); }
 
 /* ---- 快速鍵：木牌按鈕 ---- */
@@ -104,14 +126,14 @@ a:hover { text-decoration: underline wavy; }
 .qbtn {
   display: inline-block; background: var(--brand); color: #fff8ea !important;
   padding: .6rem .9rem; border-radius: 14px 16px 13px 17px;
-  border: 2.5px solid var(--line); cursor: pointer;
+  border: 3px solid var(--line); cursor: pointer;
   font-size: .98rem; text-align: center; font-weight: 700;
-  box-shadow: 2.5px 2.5px 0 var(--line);
+  box-shadow: 4px 4px 0 var(--line);
 }
-.qbtn:hover { background: var(--brand2); text-decoration: none; transform: translate(-1px, -1px); box-shadow: 3.5px 3.5px 0 var(--line); }
+.qbtn:hover { background: var(--brand2); text-decoration: none; transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--line); }
 .qbtn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--line); }
 .qbtn.big { display: block; width: 100%; margin-top: 1rem; padding: .8rem; font-size: 1.05rem; }
-.ghost { background: transparent; border: 2.5px dashed var(--line); color: var(--ink-soft); padding: .5rem .8rem; border-radius: 12px; cursor: pointer; font-weight: 700; }
+.ghost { background: transparent; border: 3px dashed var(--line); color: var(--ink-soft); padding: .5rem .8rem; border-radius: 12px; cursor: pointer; font-weight: 700; }
 
 /* ---- 計畫清單 ---- */
 .planlist { margin: 0; padding-left: 1.1rem; }
@@ -122,11 +144,11 @@ a:hover { text-decoration: underline wavy; }
 /* ---- 章節列表：羊皮任務卡 ---- */
 .chaplist { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: .8rem; }
 .chapcard {
-  background: var(--paper2); border: 2.5px solid var(--line);
+  background: var(--paper2); border: 3px solid var(--line);
   border-radius: 16px 13px 18px 12px; padding: .9rem; color: var(--ink) !important;
-  box-shadow: 2px 2px 0 rgba(91, 70, 54, .3);
+  box-shadow: 4px 4px 0 rgba(91, 70, 54, .45);
 }
-.chapcard:hover { transform: translate(-1px, -1px); box-shadow: 3.5px 3.5px 0 var(--line); text-decoration: none; }
+.chapcard:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--line); text-decoration: none; }
 .chapcard .ct { font-weight: 800; margin-bottom: .4rem; }
 .tags span { display: inline-block; font-size: .75rem; background: #e9d6ad; color: var(--ink); padding: .12rem .55rem; border-radius: 999px; margin: .12rem; border: 1.5px solid var(--line); }
 
@@ -136,14 +158,14 @@ a:hover { text-decoration: underline wavy; }
 .trick { background: linear-gradient(135deg, #f6e2c0, #fdf0d6); border-color: #b5853f; }
 .concepts li, .formulas li { margin: .45rem 0; }
 .formulas { list-style: none; padding-left: 0; }
-.formulas li { background: var(--paper2); border: 2px solid var(--line); border-radius: 12px 10px 13px 9px; padding: .4rem .65rem; }
+.formulas li { background: var(--paper2); border: 2.5px solid var(--line); border-radius: 12px 10px 13px 9px; padding: .4rem .65rem; }
 
 /* ---- 題目：便條紙 ---- */
 .problems { display: grid; gap: .85rem; }
 .prob {
-  background: var(--paper2); border: 2.5px solid var(--line);
+  background: var(--paper2); border: 3px solid var(--line);
   border-radius: 14px 12px 16px 11px; padding: .9rem;
-  box-shadow: 2px 2px 0 rgba(91, 70, 54, .28);
+  box-shadow: 4px 4px 0 rgba(91, 70, 54, .42);
 }
 .prob .q { font-weight: 700; margin: .3rem 0 .5rem; }
 .badge { display: inline-block; font-size: .75rem; background: #e3d2ac; color: var(--ink); padding: .12rem .55rem; border-radius: 999px; border: 1.5px solid var(--line); font-weight: 700; }
@@ -154,14 +176,14 @@ summary { cursor: pointer; color: var(--berry); font-weight: 700; }
 .sol { background: #e6f0d4; border-left: 5px solid var(--leaf); padding: .5rem .7rem; margin: .4rem 0; border-radius: 10px; }
 .ans { margin-top: .4rem; font-weight: 800; color: #4e7233; }
 .selfcheck { margin-top: .5rem; font-size: .92rem; color: var(--ink-soft); }
-.selfcheck button { margin-left: .4rem; padding: .28rem .65rem; border-radius: 10px; border: 2px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; font-weight: 700; }
+.selfcheck button { margin-left: .4rem; padding: .28rem .65rem; border-radius: 10px; border: 2.5px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; font-weight: 700; }
 .selfcheck button:hover { background: #efe0bf; }
 .flashmsg { color: #4e7233; font-weight: 700; }
 
 /* ---- 控制列 ---- */
 .ctrl { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; margin: .6rem 0; }
 select, input[type=text], input[type=password], input[type=number] {
-  background: #fdf6e6; color: var(--ink); border: 2px solid var(--line); border-radius: 10px; padding: .4rem .6rem; font-size: .95rem;
+  background: #fdf6e6; color: var(--ink); border: 2.5px solid var(--line); border-radius: 10px; padding: .4rem .6rem; font-size: .95rem;
 }
 label { display: block; margin: .5rem 0; font-weight: 600; }
 
@@ -170,21 +192,21 @@ label { display: block; margin: .5rem 0; font-weight: 600; }
 .timer { font-size: 1.25rem; font-weight: 800; color: var(--berry); margin: .4rem 0; }
 .examq.done { border-color: var(--leaf); box-shadow: 2px 2px 0 #6f8a4d; }
 .examq.wrong { border-color: var(--berry); box-shadow: 2px 2px 0 var(--berry); }
-.bandnote { background: var(--paper2); padding: .6rem; border-radius: 12px; border: 2px solid var(--line); }
+.bandnote { background: var(--paper2); padding: .6rem; border-radius: 12px; border: 2.5px solid var(--line); }
 .bookchecks { display: grid; gap: .2rem; }
 .chk { font-size: .9rem; }
 
 /* ---- 分析表 ---- */
 .statstable { width: 100%; border-collapse: collapse; font-size: .92rem; }
-.statstable th, .statstable td { text-align: left; padding: .45rem .5rem; border-bottom: 2px dashed var(--line); }
+.statstable th, .statstable td { text-align: left; padding: .45rem .5rem; border-bottom: 2.5px dashed var(--line); }
 .statstable tr.good td:first-child { color: #4e7233; font-weight: 700; }
 .statstable tr.mid td:first-child { color: #b5853f; font-weight: 700; }
 .statstable tr.bad td:first-child { color: var(--berry); font-weight: 700; }
 .statstable tr.na td:first-child { color: var(--ink-soft); }
-.minibar { background: #e3d2ac; height: 10px; border-radius: 999px; overflow: hidden; border: 2px solid var(--line); }
+.minibar { background: #e3d2ac; height: 10px; border-radius: 999px; overflow: hidden; border: 2.5px solid var(--line); }
 .minibar div { height: 100%; background: var(--leaf); }
 
-.foot { text-align: center; padding: 1.5rem 1rem; border-top: 3px solid var(--line); margin-top: 2rem; color: var(--ink-soft); }
+.foot { text-align: center; padding: 1.5rem 1rem; border-top: 4px solid var(--line); margin-top: 2rem; color: var(--ink-soft); }
 
 /* KaTeX 載入失敗時，至少把原始式子顯示出來 */
 .no-katex .katex { font-family: inherit; }
@@ -198,7 +220,7 @@ label { display: block; margin: .5rem 0; font-weight: 600; }
 .diagrampanel { background: linear-gradient(135deg, #efdcb4, #f8edcf); border-color: var(--line); }
 .diagramwrap {
   background: #fbf4e2;
-  border: 2.5px solid var(--line);
+  border: 3px solid var(--line);
   border-radius: 14px 12px 16px 11px;
   padding: .6rem;
   overflow-x: auto;
