@@ -232,3 +232,19 @@ label { display: block; margin: .5rem 0; font-weight: 600; }
 /* 進場淡入 */
 .view > section, .view > .hero { animation: fadein .35s ease both; }
 @keyframes fadein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* ---- 整合考點 ---- */
+.eptags { margin: .4rem 0; font-size: .9rem; color: var(--ink-soft); }
+.eptag {
+  display: inline-block; margin: .15rem .2rem; padding: .12rem .55rem;
+  background: #efe0bf; color: var(--ink); border: 2px solid var(--line);
+  border-radius: 999px; font-size: .82rem; font-weight: 700;
+}
+.eptag:hover { background: var(--sun); text-decoration: none; }
+.freq { color: var(--sun); font-size: .9rem; letter-spacing: 1px; }
+.eppanel.good { border-left: 8px solid var(--leaf); }
+.eppanel.mid  { border-left: 8px solid var(--sun); }
+.eppanel.bad  { border-left: 8px solid var(--berry); }
+.eppanel.na   { border-left: 8px dashed var(--line); }
+.epinsight { margin: .5rem 0; }
+.epchips { margin: .3rem 0; }

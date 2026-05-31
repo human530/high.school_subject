@@ -1,9 +1,10 @@
 /* service worker：離線快取 app 核心檔 + 內建 KaTeX（首次連線後即可完全離線使用） */
-var CACHE = "math-a-v7";
+var CACHE = "math-a-v8";
 var CORE = [
   "./", "./index.html",
   "./css/style.css",
   "./data/curriculum.js", "./data/book1.js", "./data/book2.js", "./data/book3.js", "./data/book4.js",
+  "./data/exampoints.js",
   "./js/generator.js", "./js/diagrams.js", "./js/llm.js", "./js/scoring.js", "./js/analytics.js", "./js/exam.js", "./js/app.js",
   "./manifest.webmanifest",
   "./icons/icon-192.png", "./icons/icon-512.png",

@@ -71,6 +71,7 @@
       '<a class="qbtn" href="#learn">📖 看教學（白話＋秒殺解法）</a>' +
       '<a class="qbtn" href="#practice">✏️ 無限練習（參數化題庫）</a>' +
       '<a class="qbtn" href="#gsat">🧠 學測風格題</a>' +
+      '<a class="qbtn" href="#points">🎯 整合考點（跨章高頻）</a>' +
       '<a class="qbtn" href="#exam">📝 模擬考（學測/段考）</a>' +
       '<a class="qbtn" href="#analysis">📊 個人弱點分析</a>' +
       '</div>' +
@@ -107,6 +108,13 @@
       '<a class="back" href="#learn">← 回章節列表</a>' +
       '<h1>' + c.title + '</h1>' +
       '<div class="muted">本章正確率：' + rateTxt + '　|　冊別：' + c.bookTitle + '</div>' +
+
+      (window.EXAMPOINTS_API && EXAMPOINTS_API.forChapter(c.id).length
+        ? '<div class="eptags">🎯 本章對應整合考點：' +
+        EXAMPOINTS_API.forChapter(c.id).map(function (e) {
+          return '<a class="eptag" href="#points/' + e.id + '">' + e.name + '（' + "★".repeat(e.freq) + '）</a>';
+        }).join("") + '</div>'
+        : '') +
 
       (window.DIAGRAMS && DIAGRAMS.has(c.diagram)
         ? '<section class="panel diagrampanel"><h2>🖼️ 圖解分析</h2>' +
@@ -254,10 +262,21 @@
       '<div class="bookchecks">' + bookOpts + '</div>' +
       '<label>題數：<input id="midCount" type="number" value="12" min="5" max="30"></label>' +
       '<button id="startMid" class="qbtn">開始段考模擬卷</button></div>' +
+      '<div class="card examcard"><h2>整合考點版</h2><p class="muted">跨章高頻考點混合・專練「整合題」</p>' +
+      '<label>考點：<select id="epSel"><option value="">全部考點綜合（高頻優先）</option>' +
+      (window.EXAMPOINTS || []).map(function (e) { return '<option value="' + e.id + '">' + e.name + '（' + "★".repeat(e.freq) + '）</option>'; }).join("") +
+      '</select></label>' +
+      '<label>題數：<input id="epCount" type="number" value="12" min="5" max="30"></label>' +
+      '<button id="startEp" class="qbtn">開始整合考點卷</button></div>' +
       '</div>' +
       '<div id="examArea"></div>' +
       '</div>'
     ));
+    $("#startEp").onclick = function () {
+      var ep = $("#epSel").value ? EXAMPOINTS_API.byId($("#epSel").value) : null;
+      var n = parseInt($("#epCount").value, 10) || 12;
+      startPaper(EXAM.buildExamPoint(ep, n));
+    };
     $("#startGsat").onclick = function () {
       var n = parseInt($("#gsatCount").value, 10) || 20;
       startPaper(EXAM.buildGSAT(n));
@@ -329,6 +348,95 @@
   }
 
   /* ============================================================
+   * 整合考點：列表 + 單一考點詳情（含整合解題心法、陷阱、開練）
+   * ============================================================ */
+  function viewExamPoints(id) {
+    if (id) { viewExamPointDetail(id); return; }
+    var stats = ANALYTICS.examPointStats();
+    var statMap = {}; stats.forEach(function (s) { statMap[s.id] = s; });
+
+    var cards = (window.EXAMPOINTS || []).map(function (e) {
+      var s = statMap[e.id] || { rate: null, attempts: 0 };
+      var rate = s.rate === null ? "尚未練習" : Math.round(s.rate * 100) + "%（" + s.attempts + " 題）";
+      var cls = s.rate === null ? "na" : (s.rate >= 0.9 ? "good" : (s.rate >= 0.6 ? "mid" : "bad"));
+      var chips = e.chapters.map(function (cid) {
+        var ch = CURRICULUM.chapterById(cid);
+        return ch ? '<a class="eptag" href="#learn/' + cid + '">' + ch.title + '</a>' : '';
+      }).join("");
+      return '<section class="panel eppanel ' + cls + '">' +
+        '<h2>' + e.name + ' <span class="freq">' + "★".repeat(e.freq) + '</span></h2>' +
+        '<div class="muted">學測高頻 ' + e.freq + '★　|　你的精熟度：' + rate + '</div>' +
+        '<p class="epinsight"><b>💡 整合觀念：</b>' + e.insight + '</p>' +
+        '<div class="epchips">涵蓋章節：' + chips + '</div>' +
+        '<a class="qbtn" href="#points/' + e.id + '">看整合心法 & 開始練 →</a>' +
+        '</section>';
+    }).join("");
+
+    app.innerHTML = "";
+    app.appendChild(el(
+      '<div class="view"><h1>🎯 整合考點</h1>' +
+      '<p class="muted">把分散各章的觀念整合成「一個會考的主題」，跨章串連、附整合解題心法與易錯陷阱。★ 越多代表學測越常考。</p>' +
+      cards + '</div>'
+    ));
+    renderMath();
+  }
+
+  function viewExamPointDetail(id) {
+    var e = window.EXAMPOINTS_API && EXAMPOINTS_API.byId(id);
+    if (!e) { viewExamPoints(); return; }
+    var s = ANALYTICS.examPointStats().filter(function (x) { return x.id === id; })[0] || { rate: null, attempts: 0 };
+    var rate = s.rate === null ? "尚未練習" : Math.round(s.rate * 100) + "%（" + s.attempts + " 題）";
+
+    var chips = e.chapters.map(function (cid) {
+      var ch = CURRICULUM.chapterById(cid);
+      return ch ? '<a class="eptag" href="#learn/' + cid + '">' + ch.title + '</a>' : '';
+    }).join("");
+    var traps = (e.traps || []).map(function (t) { return '<li>' + t + '</li>'; }).join("");
+
+    app.innerHTML = "";
+    app.appendChild(el(
+      '<div class="view"><a class="back" href="#points">← 回考點列表</a>' +
+      '<h1>🎯 ' + e.name + ' <span class="freq">' + "★".repeat(e.freq) + '</span></h1>' +
+      '<div class="muted">學測高頻 ' + e.freq + '★　|　你的精熟度：' + rate + '</div>' +
+      '<section class="panel five"><h2>💡 整合觀念</h2><p>' + e.insight + '</p></section>' +
+      '<section class="panel trick"><h2>⚡ 整合解題心法（連招）</h2><p>' + e.combo + '</p></section>' +
+      '<section class="panel"><h2>⚠️ 易錯陷阱</h2><ul class="concepts">' + traps + '</ul></section>' +
+      '<section class="panel"><h2>📚 涵蓋章節</h2><div class="epchips">' + chips + '</div></section>' +
+      '<section class="panel"><h2>✏️ 開始練（混合本考點題型）</h2>' +
+      '<div id="eparea"></div>' +
+      '<button id="epNew" class="qbtn">出新題 ↻</button>　' +
+      '<a class="qbtn" href="#exam">用整合考點卷計時測 →</a></section>' +
+      '</div>'
+    ));
+
+    function nextEpProblem() {
+      var gens = EXAMPOINTS_API.gens(e);
+      var area = $("#eparea");
+      if (!gens.length) { area.innerHTML = '<div class="panel">此考點暫無參數化題庫。</div>'; return; }
+      var key = gens[Math.floor(Math.random() * gens.length)];
+      var item = window.GENERATORS[key]();
+      // 記錄到「本考點第一章」以反映在精熟度
+      var chId = e.chapters[0], ch = CURRICULUM.chapterById(chId);
+      area.innerHTML = "";
+      area.appendChild(el(
+        '<div class="panel prob"><span class="badge gsat">' + e.name + '</span>' +
+        '<div class="q">' + item.q + '</div>' +
+        '<details><summary>看提示</summary><div class="hint">' + item.hint + '</div></details>' +
+        '<details><summary>看完整詳解</summary><div class="sol">' + item.sol + '<div class="ans">✅ 答案：' + item.answer + '</div></div></details>' +
+        '<div class="selfcheck">作答結果：<button class="ok">✅ 我答對</button><button class="ng">❌ 我答錯</button></div>' +
+        '</div>'
+      ));
+      var sc = area.querySelector(".selfcheck");
+      sc.querySelector(".ok").onclick = function () { ANALYTICS.record(chId, ch ? ch.title : e.name, true); flash(sc, "已記錄，下一題！"); setTimeout(nextEpProblem, 600); };
+      sc.querySelector(".ng").onclick = function () { ANALYTICS.record(chId, ch ? ch.title : e.name, false); flash(sc, "回看上面的整合心法再來一次。"); };
+      renderMath(area);
+    }
+    $("#epNew").onclick = nextEpProblem;
+    nextEpProblem();
+    renderMath();
+  }
+
+  /* ============================================================
    * 個人分析
    * ============================================================ */
   function viewAnalysis() {
@@ -349,6 +457,21 @@
       ? plan.steps.map(function (s) { return '<li><b>#' + s.priority + ' ' + s.title + '</b><div class="muted">' + s.reason + '</div><a class="mini" href="#practice/' + s.chapterId + '">立即練此章 →</a></li>'; }).join("")
       : '<li class="muted">尚無資料，先去練習！</li>';
 
+    // 整合考點精熟度
+    var epStats = ANALYTICS.examPointStats();
+    var epRows = epStats.map(function (s) {
+      var rate = s.rate === null ? "—" : Math.round(s.rate * 100) + "%";
+      var cls = s.rate === null ? "na" : (s.rate >= 0.9 ? "good" : (s.rate >= 0.6 ? "mid" : "bad"));
+      var w = s.rate === null ? 0 : Math.round(s.rate * 100);
+      return '<tr class="' + cls + '"><td><a href="#points/' + s.id + '">' + s.name + '</a> <span class="freq">' + "★".repeat(s.freq) + '</span></td>' +
+        '<td>' + s.attempts + '</td><td>' + rate + '</td>' +
+        '<td><div class="minibar"><div style="width:' + w + '%"></div></div></td></tr>';
+    }).join("");
+    var epPlan = ANALYTICS.examPointPlan();
+    var epPlanHtml = epPlan.length
+      ? epPlan.map(function (s) { return '<li><b>#' + s.priority + ' ' + s.name + '</b> <span class="freq">' + "★".repeat(s.freq) + '</span><div class="muted">' + s.reason + '</div><a class="mini" href="#points/' + s.id + '">看整合心法 →</a></li>'; }).join("")
+      : '<li class="muted">尚無資料。</li>';
+
     app.innerHTML = "";
     app.appendChild(el(
       '<div class="view"><h1>📊 個人弱點分析</h1>' +
@@ -358,6 +481,9 @@
       '<div class="card stat"><div class="big">' + o.practicedChapters + '/' + o.totalChapters + '</div><div>已練章節</div></div>' +
       '</div>' +
       '<section class="panel"><h2>🎯 補強優先序（往滿級分）</h2><ol class="planlist">' + stepsHtml + '</ol></section>' +
+      '<section class="panel"><h2>🎯 整合考點補強（高頻優先）</h2><ol class="planlist">' + epPlanHtml + '</ol></section>' +
+      '<section class="panel"><h2>整合考點精熟度</h2>' +
+      '<table class="statstable"><thead><tr><th>考點（★=高頻）</th><th>練習數</th><th>正確率</th><th>精熟度</th></tr></thead><tbody>' + epRows + '</tbody></table></section>' +
       '<section class="panel"><h2>各章精熟度</h2>' +
       '<table class="statstable"><thead><tr><th>章節</th><th>練習數</th><th>正確率</th><th>精熟度</th></tr></thead><tbody>' + rows + '</tbody></table>' +
       '<p class="muted">綠=秒殺級(≥90%)・黃=尚可(60-89%)・紅=需補強(<60%)・灰=未練</p>' +
@@ -436,6 +562,7 @@
       case "learn": parts[1] ? viewChapter(parts[1]) : viewLearnList(); break;
       case "practice": viewPractice(parts[1]); break;
       case "gsat": viewGSAT(); break;
+      case "points": viewExamPoints(parts[1]); break;
       case "exam": viewExam(); break;
       case "analysis": viewAnalysis(); break;
       case "settings": viewSettings(); break;
