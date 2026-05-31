@@ -49,7 +49,7 @@
     app.appendChild(el(
       '<div class="view">' +
       '<section class="hero">' +
-      '<h1>🎯 數A 滿級分作戰中心</h1>' +
+      '<h1>🎯 闖入IBO大作戰</h1>' +
       '<p class="muted">目標：每章正確率 90%+、看到題目就秒殺。以下是你目前的進度。</p>' +
       '<div class="cards">' +
       '<div class="card stat"><div class="big">' + rate + '%</div><div>整體正確率</div></div>' +
