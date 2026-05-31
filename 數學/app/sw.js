@@ -1,5 +1,5 @@
 /* service worker：離線快取 app 核心檔 + 內建 KaTeX（首次連線後即可完全離線使用） */
-var CACHE = "math-a-v3";
+var CACHE = "math-a-v4";
 var CORE = [
   "./", "./index.html",
   "./css/style.css",
