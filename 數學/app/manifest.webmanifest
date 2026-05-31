@@ -1,13 +1,13 @@
 {
-  "name": "數A 滿級分複習 App",
-  "short_name": "數A滿級分",
-  "description": "高中數學A 1~4冊：白話教學、秒殺解法、無限練習、學測/段考模擬考、大考中心級分、個人化弱點分析。",
+  "name": "闖入IBO大作戰",
+  "short_name": "闖入IBO大作戰",
+  "description": "高中數學A 1~4冊：白話教學、圖解分析、秒殺解法、無限練習、學測/段考模擬考、大考中心級分、個人化弱點分析。目標滿級分。",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0f1226",
-  "theme_color": "#4f46e5",
+  "background_color": "#eaf2fd",
+  "theme_color": "#dbeafe",
   "lang": "zh-Hant",
   "icons": [
     { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
