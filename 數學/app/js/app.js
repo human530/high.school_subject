@@ -508,16 +508,27 @@
       '<p id="proxyStatus" class="muted">偵測伺服器 AI 連線中…</p>' +
       '<p class="muted">本站可由伺服器直接連 Anthropic Claude（Opus 4.8），學生端免設定即可用。若站長尚未設定，可改用下方自帶金鑰。</p>' +
       '</section>' +
-      '<section class="panel"><h2>引擎② 自帶金鑰（備援，選用）</h2>' +
-      '<p class="muted">若伺服器 AI 未開啟，可貼自己的 API 金鑰直連。金鑰只存在本機瀏覽器，不會上傳到任何伺服器。</p>' +
+      '<section class="panel"><h2>引擎② 自帶來源（選用）</h2>' +
+      '<p class="muted">可選 <b>Ollama</b>（本機免費、免金鑰）或貼自己的 API 金鑰。設定只存在本機瀏覽器，不會上傳。</p>' +
       '<label>供應商：<select id="prov">' +
+      '<option value="ollama"' + (cfg.provider === "ollama" ? " selected" : "") + '>Ollama（本機免費・免金鑰）</option>' +
       '<option value="openai"' + (cfg.provider === "openai" ? " selected" : "") + '>OpenAI 相容</option>' +
       '<option value="anthropic"' + (cfg.provider === "anthropic" ? " selected" : "") + '>Anthropic</option>' +
       '</select></label>' +
-      '<label>API 金鑰：<input id="key" type="password" value="' + (cfg.key || "") + '" placeholder="sk-..."></label>' +
-      '<label>模型：<input id="model" type="text" value="' + (cfg.model || "") + '" placeholder="gpt-4o-mini / claude-haiku-4-5-20251001"></label>' +
-      '<label>Base URL（OpenAI 相容可改）：<input id="base" type="text" value="' + (cfg.baseUrl || "") + '" placeholder="https://api.openai.com/v1"></label>' +
+      '<label>API 金鑰（Ollama 免填）：<input id="key" type="password" value="' + (cfg.key || "") + '" placeholder="Ollama 不需要；其他填 sk-..."></label>' +
+      '<label>模型：<input id="model" type="text" value="' + (cfg.model || "") + '" placeholder="llama3.1 / qwen2.5 / gpt-4o-mini"></label>' +
+      '<label>Base URL：<input id="base" type="text" value="' + (cfg.baseUrl || "") + '" placeholder="Ollama 預設 http://localhost:11434/v1"></label>' +
       '<button id="saveCfg" class="qbtn">儲存設定</button> <span id="cfgmsg" class="muted"></span>' +
+      '<details style="margin-top:.6rem"><summary>📘 用 Ollama 的步驟（免費、免金鑰）</summary>' +
+      '<div class="hint">' +
+      '1. 到 <b>ollama.com</b> 下載安裝（Windows/Mac/Linux）。<br>' +
+      '2. 開終端機下載模型：<code>ollama pull llama3.1</code>（或 <code>qwen2.5</code>，中文數學建議 qwen2.5）。<br>' +
+      '3. 讓網站連得到本機 Ollama：啟動時設環境變數 <code>OLLAMA_ORIGINS=*</code>（開啟跨來源）。<br>' +
+      '&nbsp;&nbsp;・Mac/Linux：<code>OLLAMA_ORIGINS=* ollama serve</code><br>' +
+      '&nbsp;&nbsp;・Windows：系統環境變數加 <code>OLLAMA_ORIGINS=*</code> 後重啟 Ollama。<br>' +
+      '4. 上面供應商選 <b>Ollama</b>、模型填你下載的（如 <code>llama3.1</code>）→ 儲存 → 下方產生題目。<br>' +
+      '⚠️ 只有「你這台有跑 Ollama 的電腦」連得到；手機需另接內網穿透。' +
+      '</div></details>' +
       '</section>' +
 
       '<section class="panel"><h2>用 LLM 產生模擬題</h2>' +
