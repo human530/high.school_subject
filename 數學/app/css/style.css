@@ -275,3 +275,20 @@ label { display: block; margin: .5rem 0; font-weight: 600; }
 .photosol p { margin: .4rem 0; }
 .photosol h3 { margin: .5rem 0 .2rem; font-size: 1.05rem; color: var(--berry); }
 .photosol ul { margin: .3rem 0 .3rem 1.1rem; }
+
+/* ---- 背單字 ---- */
+.vocabcard { text-align: center; }
+.vzh { font-size: 1.6rem; font-weight: 800; color: var(--ink); margin: .4rem 0; }
+.vpos { color: var(--ink-soft); margin-bottom: .8rem; }
+.vinput { width: 100%; font-size: 1.3rem; text-align: center; letter-spacing: 1px; padding: .6rem; border: 3px solid var(--line); border-radius: 12px; }
+.vbtns { display: flex; gap: .5rem; justify-content: center; flex-wrap: wrap; margin: .8rem 0; }
+.vok { font-size: 1.2rem; font-weight: 800; color: var(--leaf); margin: .5rem 0; }
+.vng { font-size: 1.1rem; font-weight: 800; color: var(--berry); margin: .5rem 0; }
+.vex { margin: .4rem 0; }
+.boxbars { display: grid; gap: .4rem; }
+.boxrow { display: grid; grid-template-columns: 90px 1fr 36px; align-items: center; gap: .5rem; font-size: .85rem; }
+.boxlab { color: var(--ink-soft); }
+.boxnum { text-align: right; font-weight: 700; }
+.wrongwords { list-style: none; padding-left: 0; margin: .4rem 0; }
+.wrongwords li { padding: .35rem .2rem; border-bottom: 2px dashed var(--line); }
+.wcount { color: var(--berry); font-size: .82rem; float: right; }

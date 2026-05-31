@@ -499,6 +499,153 @@
   }
 
   /* ============================================================
+   * 背單字：7000 高頻字庫 + SRS 間隔重複（主動回憶，背到記住）
+   * ============================================================ */
+  function vocabReady() { return window.VOCAB && window.VOCAB_SRS; }
+
+  function viewVocab(mode) {
+    if (!vocabReady()) { app.innerHTML = '<div class="view"><h1>📕 背單字</h1><p class="muted">單字庫載入中…請重新整理。</p></div>'; return; }
+    if (mode === "study") { vocabStudy(); return; }
+    if (mode === "wrong") { vocabStudy(true); return; }
+    // 首頁：今日任務 + 統計 + 入口
+    var s = VOCAB_SRS.stats(window.VOCAB);
+    var q = VOCAB_SRS.todayQueue(window.VOCAB, vocabOpts());
+    var pct = Math.round(s.learned / s.total * 100);
+    var masterPct = Math.round(s.mastered / s.total * 100);
+    app.innerHTML = "";
+    app.appendChild(el(
+      '<div class="view"><h1>📕 背單字（學測高頻 7000）</h1>' +
+      '<p class="muted">用「間隔重複」逼進長期記憶：答對拉長複習間隔、答錯隔天再轟炸，背到記住為止。</p>' +
+
+      '<section class="hero"><h2>📌 今日任務</h2>' +
+      '<p class="muted">到期複習 <b>' + Math.min(q.dueCount, (vocabOpts().reviewCap)) + '</b> 字　＋　新學 <b>' +
+      Math.min(q.newCount, vocabOpts().newPerDay) + '</b> 字　|　今日已背 ' + s.todayDone + ' 字　🔥 連續 ' + s.streak + ' 天</p>' +
+      '<a class="qbtn big" href="#vocab/study">▶ 開始今日背誦（' + q.queue.length + ' 字）</a></section>' +
+
+      '<div class="cards">' +
+      '<div class="card stat"><div class="big">' + s.learned + '</div><div>已學單字</div></div>' +
+      '<div class="card stat"><div class="big">' + s.mastered + '</div><div>已精熟(≥7天)</div></div>' +
+      '<div class="card stat"><div class="big">' + s.total + '</div><div>字庫總量</div></div>' +
+      '</div>' +
+      '<div class="progress"><div class="bar" style="width:' + pct + '%"></div></div>' +
+      '<p class="muted">學習進度 ' + pct + '%　|　精熟率 ' + masterPct + '%</p>' +
+
+      '<section class="panel"><h2>📊 熟練度分布（萊特納 5 盒）</h2>' +
+      vocabBoxBars(s.boxes) +
+      '<p class="muted">盒子越右＝記得越牢、複習間隔越長（box4 = 30 天才再考一次）</p></section>' +
+
+      '<section class="panel"><h2>🔧 設定每日量</h2>' +
+      '<label>每天新學：<select id="vNew">' + [10, 15, 20, 30, 50].map(function (n) { return '<option' + (vocabOpts().newPerDay === n ? ' selected' : '') + '>' + n + '</option>'; }).join("") + '</select> 字</label>' +
+      '<label>每天複習上限：<select id="vRev">' + [40, 60, 80, 120].map(function (n) { return '<option' + (vocabOpts().reviewCap === n ? ' selected' : '') + '>' + n + '</option>'; }).join("") + '</select> 字</label>' +
+      '<button id="vSave" class="qbtn">儲存</button> <span id="vMsg" class="muted"></span></section>' +
+
+      '<section class="panel"><h2>📕 錯詞本</h2>' +
+      (s.wrongList.length
+        ? '<p class="muted">最常錯的 ' + Math.min(s.wrongList.length, 20) + ' 字，集中加強：</p>' +
+        '<a class="qbtn" href="#vocab/wrong">▶ 只練錯詞（' + s.wrongList.length + ' 字）</a>' +
+        '<ul class="wrongwords">' + s.wrongList.slice(0, 20).map(function (w) { return '<li><b>' + w.w + '</b> <span class="muted">' + w.pos + ' ' + w.zh + '</span> <span class="wcount">錯 ' + w.wrong + ' 次</span></li>'; }).join("") + '</ul>'
+        : '<p class="muted">還沒有錯詞，繼續保持！</p>') +
+      '</section>' +
+
+      '<section class="panel"><button id="vReset" class="ghost">清除背單字進度</button></section>' +
+      '</div>'
+    ));
+    $("#vSave").onclick = function () {
+      var o = vocabOpts(); o.newPerDay = parseInt($("#vNew").value, 10); o.reviewCap = parseInt($("#vRev").value, 10);
+      localStorage.setItem("vocab_opts", JSON.stringify(o)); $("#vMsg").textContent = "已儲存 ✅"; setTimeout(function () { viewVocab(); }, 500);
+    };
+    $("#vReset").onclick = function () { if (confirm("確定清除所有背單字進度？")) { VOCAB_SRS.reset(); viewVocab(); } };
+    renderMath();
+  }
+
+  function vocabOpts() {
+    try { var o = JSON.parse(localStorage.getItem("vocab_opts")); if (o) return o; } catch (e) { }
+    return { newPerDay: 15, reviewCap: 60 };
+  }
+  function vocabBoxBars(boxes) {
+    var labels = ["新(box0)", "剛學(1天)", "熟悉(3天)", "熟練(7天)", "精熟(30天)"];
+    var max = Math.max.apply(null, boxes.concat([1]));
+    return '<div class="boxbars">' + boxes.map(function (n, i) {
+      return '<div class="boxrow"><span class="boxlab">' + labels[i] + '</span>' +
+        '<div class="minibar"><div style="width:' + Math.round(n / max * 100) + '%"></div></div><span class="boxnum">' + n + '</span></div>';
+    }).join("") + '</div>';
+  }
+
+  /* 背誦模式：主動回憶（看中文＋詞性，輸入英文） */
+  var vocabState = null;
+  function vocabStudy(wrongOnly) {
+    var pool;
+    if (wrongOnly) {
+      var s = VOCAB_SRS.stats(window.VOCAB);
+      pool = s.wrongList.slice();
+      if (!pool.length) { location.hash = "#vocab"; return; }
+    } else {
+      pool = VOCAB_SRS.todayQueue(window.VOCAB, vocabOpts()).queue;
+      if (!pool.length) {
+        app.innerHTML = '<div class="view"><h1>📕 背單字</h1><section class="panel"><h2>🎉 今日任務完成！</h2><p>到期的字都複習完了，明天再來保持手感。</p><a class="qbtn" href="#vocab">← 回背單字首頁</a></section></div>';
+        return;
+      }
+    }
+    vocabState = { pool: pool, i: 0, correct: 0, wrong: 0, wrongOnly: !!wrongOnly };
+    nextVocab();
+  }
+
+  function nextVocab() {
+    var st = vocabState;
+    if (st.i >= st.pool.length) {
+      app.innerHTML = "";
+      app.appendChild(el('<div class="view"><h1>📕 背單字</h1>' +
+        '<section class="panel result"><h2>✅ 完成這輪 ' + st.pool.length + ' 字</h2>' +
+        '<div class="cards"><div class="card stat"><div class="big">' + st.correct + '</div><div>答對</div></div>' +
+        '<div class="card stat"><div class="big">' + st.wrong + '</div><div>答錯(已排入加強)</div></div></div>' +
+        '<p class="muted">答錯的字今天會再出現，直到記住為止。</p>' +
+        '<a class="qbtn" href="#vocab/study">再背一輪 ↻</a> <a class="qbtn" href="#vocab">回首頁</a></section></div>'));
+      return;
+    }
+    var item = st.pool[st.i];
+    app.innerHTML = "";
+    app.appendChild(el(
+      '<div class="view"><a class="back" href="#vocab">← 結束</a>' +
+      '<div class="muted">第 ' + (st.i + 1) + ' / ' + st.pool.length + ' 字　|　✅ ' + st.correct + '　❌ ' + st.wrong + '</div>' +
+      '<section class="panel vocabcard">' +
+      '<div class="vzh">' + item.zh + '</div>' +
+      '<div class="vpos">' + item.pos + (item.lv ? '　Lv.' + item.lv : '') + '</div>' +
+      '<input id="vIn" class="vinput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="輸入英文拼字…">' +
+      '<div class="vbtns"><button id="vCheck" class="qbtn">送出</button>' +
+      '<button id="vHint" class="ghost">💡 提示</button>' +
+      '<button id="vSkip" class="ghost">略過(算錯)</button></div>' +
+      '<div id="vFeedback"></div>' +
+      '</section></div>'
+    ));
+    var input = $("#vIn"); input.focus();
+    var done = false;
+    function grade(forceWrong) {
+      if (done) return; done = true;
+      var ans = (input.value || "").trim().toLowerCase();
+      var correct = !forceWrong && ans === item.w.toLowerCase();
+      VOCAB_SRS.answer(item.w, correct);
+      if (correct) st.correct++; else st.wrong++;
+      var fb = $("#vFeedback");
+      fb.innerHTML =
+        (correct ? '<div class="vok">✅ 答對！</div>' : '<div class="vng">❌ 正解：<b>' + item.w + '</b></div>') +
+        '<div class="vex"><b>' + item.w + '</b> ' + item.pos + ' ' + item.zh + '</div>' +
+        '<div class="vex muted">📝 ' + item.ex + '<br>' + item.exZh + '</div>' +
+        '<button id="vNext" class="qbtn big">下一個 →</button>';
+      input.disabled = true;
+      $("#vCheck").disabled = true;
+      var nb = $("#vNext"); nb.focus();
+      nb.onclick = function () { st.i++; nextVocab(); };
+    }
+    $("#vCheck").onclick = function () { grade(false); };
+    $("#vSkip").onclick = function () { grade(true); };
+    $("#vHint").onclick = function () {
+      input.value = item.w.slice(0, Math.max(2, Math.ceil(item.w.length / 3)));
+      input.focus();
+    };
+    input.onkeydown = function (e) { if (e.key === "Enter") { if (done) { st.i++; nextVocab(); } else grade(false); } };
+  }
+
+  /* ============================================================
    * 拍照解題：拍/上傳題目照片 → 視覺 AI 給秒殺解法
    * ============================================================ */
   function viewPhoto() {
@@ -681,6 +828,7 @@
       case "exam": viewExam(); break;
       case "analysis": viewAnalysis(); break;
       case "photo": viewPhoto(); break;
+      case "vocab": viewVocab(parts[1]); break;
       case "settings": viewSettings(); break;
       default: viewDashboard();
     }
