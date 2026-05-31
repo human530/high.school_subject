@@ -6,6 +6,7 @@ CURRICULUM.addBook({
   chapters: [
     {
       id: "en_vocab",
+      diagram: "enRoot",
       title: "1. 字彙與字根字首",
       tags: ["vocabulary", "字根", "字首", "搭配詞"],
       fiveYO: "背單字不要硬背。用『字根字首』拆字＝猜意思；用『搭配詞』記一整組，" +
@@ -39,6 +40,7 @@ CURRICULUM.addBook({
     },
     {
       id: "en_grammar",
+      diagram: "enTense",
       title: "2. 文法（時態・子句・語態）",
       tags: ["時態", "關係子句", "被動", "假設語氣"],
       fiveYO: "文法是『句子的規則』。先看主詞動詞對不對、時間對不對(時態)、" +

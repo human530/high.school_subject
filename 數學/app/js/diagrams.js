@@ -34,6 +34,23 @@
     return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + (col || C.axis) +
       '" stroke-width="' + (w || 1.5) + '"' + (marker ? ' marker-end="url(#' + marker + ')"' : '') + '/>';
   }
+  /* ---- SVG SMIL 動畫小工具（純前端、離線可用、無 JS 依賴） ---- */
+  // 反覆移動屬性：anim("cx","60;200;60","3s")
+  function anim(attr, values, dur, extra) {
+    return '<animate attributeName="' + attr + '" values="' + values + '" dur="' + dur +
+      '" repeatCount="indefinite"' + (extra || '') + '/>';
+  }
+  function animT(values, dur, extra) {  // transform 動畫（translate/rotate/scale）
+    return '<animateTransform attributeName="transform" type="' + (extra && extra.type || 'translate') +
+      '" values="' + values + '" dur="' + dur + '" repeatCount="indefinite"' +
+      (extra && extra.add ? ' additive="sum"' : '') + '/>';
+  }
+  // 沿路徑移動：給一個 <path id> 讓物件跑
+  function moveAlong(pathId, dur) {
+    return '<animateMotion dur="' + dur + '" repeatCount="indefinite"><mpath href="#' + pathId + '"/></animateMotion>';
+  }
+  // 脈動（半徑/不透明度）
+  function pulse(attr, a, b, dur) { return anim(attr, a + ';' + b + ';' + a, dur); }
 
   var D = {};
 
@@ -257,6 +274,203 @@
     ['{A,B}', '{A,C}'].forEach(function (p, i) { var y = 95 + i * 45; s += '<rect x="330" y="' + y + '" width="100" height="30" rx="6" fill="' + C.b + '"/>' + t(380, y + 20, p, { weight: 700, fill: C.paper }); });
     s += t(245, 110, "→", { size: 24, fill: C.c }); s += t(245, 155, "→", { size: 24, fill: C.c });
     return svg(500, 210, s);
+  };
+
+  /* ============================================================
+   * 各科動畫圖解（SVG SMIL，會動）
+   * ============================================================ */
+
+  /* 國文・文體流變：唐詩→宋詞→元曲（高亮輪播） */
+  D.zhFlow = function () {
+    var s = t(250, 26, "文體流變：唐詩 → 宋詞 → 元曲", { size: 14, weight: 700 });
+    var labs = ["唐詩", "宋詞", "元曲"], xs = [110, 250, 390];
+    labs.forEach(function (lab, i) {
+      var begin = (i * 1) + "s";
+      s += '<g>' +
+        '<rect x="' + (xs[i] - 55) + '" y="80" width="110" height="60" rx="12" fill="' + C.paper + '" stroke="' + C.a + '" stroke-width="3">' +
+        '<animate attributeName="fill" values="' + C.paper + ';' + C.a + ';' + C.paper + '" dur="3s" begin="' + begin + '" repeatCount="indefinite"/>' +
+        '</rect>' +
+        '<text x="' + xs[i] + '" y="118" fill="' + C.ink + '" font-size="20" font-weight="700" text-anchor="middle">' + lab +
+        '<animate attributeName="fill" values="' + C.ink + ';' + C.paper + ';' + C.ink + '" dur="3s" begin="' + begin + '" repeatCount="indefinite"/>' +
+        '</text></g>';
+      if (i < 2) s += '<text x="' + ((xs[i] + xs[i + 1]) / 2) + '" y="118" font-size="22" fill="' + C.d + '" text-anchor="middle">→</text>';
+    });
+    s += t(250, 175, "字數整齊→詩；長短句配詞牌→詞；有曲牌+襯字→曲", { size: 12, fill: C.axis });
+    return svg(500, 200, s);
+  };
+
+  /* 國文・閱讀流程：看題→定位→找證據（箭頭流動） */
+  D.zhRead = function () {
+    var s = t(250, 26, "閱讀解題流程（跟著箭頭走）", { size: 14, weight: 700 });
+    var steps = ["看題目", "回文定位", "圈關鍵", "選有依據"], x0 = 60, dx = 130;
+    steps.forEach(function (st, i) {
+      var x = x0 + i * dx;
+      s += '<circle cx="' + x + '" cy="95" r="34" fill="' + (i === 3 ? C.d : C.a) + '"/>' +
+        t(x, 100, st, { fill: C.paper, size: 12, weight: 700 });
+      if (i < 3) {
+        s += '<circle cx="' + (x + 34) + '" cy="95" r="5" fill="' + C.d + '"><animate attributeName="cx" values="' +
+          (x + 34) + ';' + (x + dx - 34) + ';' + (x + 34) + '" dur="2s" begin="' + (i * 0.5) + 's" repeatCount="indefinite"/></circle>';
+      }
+    });
+    s += t(250, 165, "答案一定在文章裡，選最有根據的", { size: 12, fill: C.axis });
+    return svg(500, 185, s);
+  };
+
+  /* 英文・時態時間軸：過去/現在/未來（移動標記） */
+  D.enTense = function () {
+    var s = t(250, 26, "時態時間軸：看時間副詞選時態", { size: 14, weight: 700 });
+    s += line(40, 100, 460, 100, C.axis, 3, "arr");
+    [["過去", 110, "yesterday → 過去式"], ["現在", 250, "now → 現在式"], ["未來", 390, "tomorrow → will"]].forEach(function (p) {
+      s += line(p[1], 92, p[1], 108, C.axis, 2);
+      s += t(p[1], 82, p[0], { weight: 700, size: 14 });
+      s += t(p[1], 130, p[2], { size: 10, fill: C.axis });
+    });
+    // 跑動的「現在」光點
+    s += '<circle cy="100" r="8" fill="' + C.d + '"><animate attributeName="cx" values="110;390;110" dur="5s" repeatCount="indefinite"/>' +
+      pulse("r", 8, 12, "1s") + '</circle>';
+    s += t(250, 165, "since/for→完成式；明確過去時間→過去式", { size: 11, fill: C.axis });
+    return svg(500, 185, s);
+  };
+
+  /* 英文・字根組字：pre + dict → predict（拼接動畫） */
+  D.enRoot = function () {
+    var s = t(250, 26, "拆字猜意思：字首 + 字根", { size: 14, weight: 700 });
+    // 兩塊滑入合體
+    s += '<g><rect x="120" y="80" width="100" height="50" rx="10" fill="' + C.a + '"><animateTransform attributeName="transform" type="translate" values="-120,0;0,0;0,0" dur="3s" repeatCount="indefinite"/></rect>' +
+      '<text x="170" y="110" fill="' + C.paper + '" font-size="16" font-weight="700" text-anchor="middle">pre 前<animateTransform attributeName="transform" type="translate" values="-120,0;0,0;0,0" dur="3s" repeatCount="indefinite"/></text></g>';
+    s += '<g><rect x="230" y="80" width="100" height="50" rx="10" fill="' + C.d + '"><animateTransform attributeName="transform" type="translate" values="120,0;0,0;0,0" dur="3s" repeatCount="indefinite"/></rect>' +
+      '<text x="280" y="110" fill="' + C.paper + '" font-size="16" font-weight="700" text-anchor="middle">dict 說<animateTransform attributeName="transform" type="translate" values="120,0;0,0;0,0" dur="3s" repeatCount="indefinite"/></text></g>';
+    s += '<text x="250" y="170" font-size="18" font-weight="700" fill="' + C.ink + '" text-anchor="middle" opacity="0">= predict 預測<animate attributeName="opacity" values="0;0;1;1;0" dur="3s" repeatCount="indefinite"/></text>';
+    return svg(500, 190, s);
+  };
+
+  /* 物理・等加速：小球加速移動 + v-t 圖 */
+  D.phMotion = function () {
+    var s = t(250, 24, "等加速運動：速度越來越快", { size: 14, weight: 700 });
+    // 軌道
+    s += line(40, 80, 460, 80, C.grid, 3);
+    s += '<circle cy="80" r="12" fill="' + C.d + '"><animate attributeName="cx" values="50;450;50" keyTimes="0;0.5;1" calcMode="spline" keySplines="0.4 0 1 1;0 0 0.6 1" dur="3s" repeatCount="indefinite"/></circle>';
+    // v-t 圖（斜直線 + 掃描點）
+    var ox = 70, oy = 230;
+    s += line(ox, oy, ox + 360, oy, C.axis, 2, "arr") + line(ox, oy, ox, 120, C.axis, 2, "arr");
+    s += t(ox + 360, oy + 16, "t", { fill: C.axis }) + t(ox - 14, 130, "v", { fill: C.axis });
+    s += '<line x1="' + ox + '" y1="' + oy + '" x2="' + (ox + 340) + '" y2="140" stroke="' + C.a + '" stroke-width="3"/>';
+    s += t(ox + 250, 170, "斜率 = 加速度", { fill: C.a, size: 12, weight: 700 });
+    s += '<circle r="6" fill="' + C.d + '"><animateMotion dur="3s" repeatCount="indefinite" path="M' + ox + ',' + oy + ' L' + (ox + 340) + ',140"/></circle>';
+    return svg(500, 250, s);
+  };
+
+  /* 物理・波動：正弦波橫向傳遞（相位移動） */
+  D.phWave = function () {
+    var s = t(250, 24, "波動：波形向右傳遞 v = fλ", { size: 14, weight: 700 });
+    var mid = 130, amp = 50, pts = [];
+    // 用 path + 動畫平移做出「波在跑」
+    function wavePath(ph) {
+      var d = '';
+      for (var x = 0; x <= 500; x += 5) {
+        var yy = mid - amp * Math.sin((x / 60) + ph);
+        d += (d ? ' L' : 'M') + x + ',' + yy.toFixed(1);
+      }
+      return d;
+    }
+    s += '<path fill="none" stroke="' + C.a + '" stroke-width="3" d="' + wavePath(0) + '">' +
+      '<animate attributeName="d" dur="2s" repeatCount="indefinite" values="' + wavePath(0) + ';' + wavePath(-Math.PI) + ';' + wavePath(-2 * Math.PI) + '"/></path>';
+    // 一個浮標只上下振動（示意介質不前進）
+    s += '<circle cx="250" r="8" fill="' + C.d + '"><animate attributeName="cy" values="' + (mid - amp) + ';' + (mid + amp) + ';' + (mid - amp) + '" dur="2s" repeatCount="indefinite"/></circle>';
+    s += t(250, 215, "波傳能量，介質只原地振動（紅點）", { size: 12, fill: C.axis });
+    return svg(500, 235, s);
+  };
+
+  /* 化學・莫耳橋：質量↔莫耳↔粒子（流動） */
+  D.chMole = function () {
+    var s = t(250, 24, "莫耳是橋樑：質量 ↔ 莫耳 ↔ 粒子", { size: 14, weight: 700 });
+    var boxes = [["質量 m", 90, C.a], ["莫耳 n", 250, C.d], ["粒子數", 410, C.a]];
+    boxes.forEach(function (bx) {
+      s += '<rect x="' + (bx[1] - 60) + '" y="80" width="120" height="56" rx="12" fill="' + bx[2] + '"/>' +
+        t(bx[1], 113, bx[0], { fill: C.paper, weight: 700 });
+    });
+    // 來回流動的小球
+    s += '<circle cy="108" r="6" fill="' + C.d + '"><animate attributeName="cx" values="150;190;150" dur="1.5s" repeatCount="indefinite"/></circle>';
+    s += '<circle cy="108" r="6" fill="' + C.a + '"><animate attributeName="cx" values="310;350;310" dur="1.5s" begin="0.5s" repeatCount="indefinite"/></circle>';
+    s += t(170, 70, "÷M", { size: 12, fill: C.axis }) + t(330, 70, "×Nₐ", { size: 12, fill: C.axis });
+    return svg(500, 160, s);
+  };
+
+  /* 化學・酸鹼 pH：指示計指針擺動 */
+  D.chPH = function () {
+    var s = t(250, 24, "pH 值：酸 ← 中性 → 鹼", { size: 14, weight: 700 });
+    // 色帶
+    for (var i = 0; i <= 14; i++) {
+      var x = 50 + i * 28;
+      var col = i < 7 ? C.d : (i === 7 ? C.b : C.a);
+      s += '<rect x="' + x + '" y="80" width="28" height="36" fill="' + col + '" opacity="' + (0.4 + Math.abs(i - 7) / 20) + '"/>';
+      if (i % 2 === 0) s += t(x + 14, 132, i, { size: 10, fill: C.axis });
+    }
+    // 指針擺動
+    s += '<polygon points="0,70 -8,55 8,55" fill="' + C.ink + '"><animateTransform attributeName="transform" type="translate" values="120,0;380,0;120,0" dur="4s" repeatCount="indefinite"/></polygon>';
+    s += t(120, 160, "pH<7 酸", { size: 11, fill: C.d }) + t(250, 160, "=7 中", { size: 11, fill: C.b }) + t(380, 160, ">7 鹼", { size: 11, fill: C.a });
+    return svg(500, 180, s);
+  };
+
+  /* 生物・遺傳旁氏表：Aa×Aa 格子逐一亮起 */
+  D.bioPunnett = function () {
+    var s = t(250, 24, "旁氏表：Aa × Aa → 3 顯 : 1 隱", { size: 14, weight: 700 });
+    var cells = [["AA", C.a], ["Aa", C.a], ["Aa", C.a], ["aa", C.d]];
+    var gx = 180, gy = 60, cw = 70;
+    s += t(gx + cw, gy - 8, "A", { weight: 700 }) + t(gx + 2 * cw, gy - 8, "a", { weight: 700 });
+    s += t(gx - 12, gy + cw - 20, "A", { weight: 700 }) + t(gx - 12, gy + 2 * cw - 20, "a", { weight: 700 });
+    cells.forEach(function (c, i) {
+      var cx = gx + (i % 2) * cw, cy = gy + Math.floor(i / 2) * cw;
+      s += '<rect x="' + cx + '" y="' + cy + '" width="' + cw + '" height="' + cw + '" fill="' + C.paper + '" stroke="' + C.a + '" stroke-width="2">' +
+        '<animate attributeName="fill" values="' + C.paper + ';' + c[1] + ';' + C.paper + '" dur="4s" begin="' + (i * 1) + 's" repeatCount="indefinite"/></rect>' +
+        t(cx + cw / 2, cy + cw / 2 + 6, c[0], { weight: 700, size: 18 });
+    });
+    s += t(250, 215, "顯性(紫):隱性(紅) = 3:1", { size: 12, fill: C.axis });
+    return svg(500, 235, s);
+  };
+
+  /* 生物・光合呼吸循環：CO₂/O₂ 在葉綠體與粒線體間流動 */
+  D.bioCycle = function () {
+    var s = t(250, 24, "光合 ↔ 呼吸：互為逆反應", { size: 14, weight: 700 });
+    s += '<ellipse cx="120" cy="130" rx="70" ry="50" fill="' + C.b + '" opacity="0.5" stroke="' + C.b + '" stroke-width="3"/>' + t(120, 135, "葉綠體", { weight: 700 });
+    s += '<ellipse cx="380" cy="130" rx="70" ry="50" fill="' + C.d + '" opacity="0.4" stroke="' + C.d + '" stroke-width="3"/>' + t(380, 135, "粒線體", { weight: 700 });
+    // O2 上路往右、CO2 下路往左（循環）
+    s += '<text font-size="14" font-weight="700" fill="' + C.a + '">O₂<animateMotion dur="3s" repeatCount="indefinite" path="M150,90 L350,90"/></text>';
+    s += '<text font-size="14" font-weight="700" fill="' + C.d + '">CO₂<animateMotion dur="3s" repeatCount="indefinite" path="M350,180 L150,180"/></text>';
+    s += line(150, 90, 350, 90, C.grid, 1.5, "arr") + line(350, 180, 150, 180, C.grid, 1.5, "arr");
+    s += t(250, 225, "光合放 O₂、呼吸放 CO₂，物質循環", { size: 12, fill: C.axis });
+    return svg(500, 245, s);
+  };
+
+  /* 地科・地球自轉公轉：地球繞太陽轉 + 自轉 */
+  D.esEarth = function () {
+    var s = t(250, 24, "自轉(晝夜) + 公轉(四季)", { size: 14, weight: 700 });
+    s += '<circle cx="250" cy="140" r="26" fill="' + C.c + '"/>' + t(250, 145, "☀", { size: 22 });
+    // 公轉軌道
+    s += '<ellipse cx="250" cy="140" rx="160" ry="80" fill="none" stroke="' + C.grid + '" stroke-dasharray="5 5"/>';
+    // 地球沿軌道公轉，本體自轉
+    s += '<g><animateMotion dur="8s" repeatCount="indefinite" path="M410,140 A160,80 0 1,1 90,140 A160,80 0 1,1 410,140"/>' +
+      '<circle r="16" fill="' + C.a + '"/>' +
+      '<g><line x1="0" y1="-16" x2="0" y2="16" stroke="' + C.paper + '" stroke-width="2"/>' +
+      '<animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="1s" repeatCount="indefinite"/></g>' +
+      '</g>';
+    s += t(250, 235, "地球邊自轉邊繞太陽公轉；地軸傾斜→四季", { size: 12, fill: C.axis });
+    return svg(500, 255, s);
+  };
+
+  /* 地科・板塊隱沒：兩板塊相互推擠（聚合邊界） */
+  D.esPlate = function () {
+    var s = t(250, 24, "板塊聚合：碰撞推擠造山與地震", { size: 14, weight: 700 });
+    // 左板塊往右、右板塊往左
+    s += '<g><rect x="20" y="120" width="200" height="60" fill="' + C.a + '" opacity="0.7"/>' +
+      '<animateTransform attributeName="transform" type="translate" values="0,0;30,0;0,0" dur="3s" repeatCount="indefinite"/></g>';
+    s += '<g><rect x="280" y="120" width="200" height="60" fill="' + C.d + '" opacity="0.6"/>' +
+      '<animateTransform attributeName="transform" type="translate" values="0,0;-30,0;0,0" dur="3s" repeatCount="indefinite"/></g>';
+    // 中間擠出的山
+    s += '<polygon points="230,120 250,70 270,120" fill="' + C.b + '"><animate attributeName="points" values="235,120 250,95 265,120;230,120 250,70 270,120;235,120 250,95 265,120" dur="3s" repeatCount="indefinite"/></polygon>';
+    s += line(40, 180, 460, 180, C.grid, 2);
+    s += t(120, 210, "←板塊", { size: 12, fill: C.a }) + t(250, 60, "造山", { size: 12, fill: C.b, weight: 700 }) + t(380, 210, "板塊→", { size: 12, fill: C.d });
+    return svg(500, 230, s);
   };
 
   D.render = function (key) {

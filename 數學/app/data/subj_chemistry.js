@@ -6,6 +6,7 @@ CURRICULUM.addBook({
   chapters: [
     {
       id: "ch_mole",
+      diagram: "chMole",
       title: "1. 莫耳與化學計量",
       tags: ["莫耳", "亞佛加厥", "莫耳質量", "化學計量"],
       fiveYO: "莫耳就是『化學的一打』——一莫耳= $6.02\\times10^{23}$ 個粒子。" +
@@ -109,6 +110,7 @@ CURRICULUM.addBook({
     },
     {
       id: "ch_acid",
+      diagram: "chPH",
       title: "4. 酸鹼、氧化還原與有機概論",
       tags: ["pH", "中和", "氧化還原", "官能基"],
       fiveYO: "酸給出 H⁺、鹼給出 OH⁻；中和就是它們相遇變水。" +
