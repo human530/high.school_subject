@@ -402,6 +402,160 @@
       hint: "$pH=-\\log[H^+]$。", sol: "$pH=-\\log10^{-" + p + "}=" + p + "$（" + (p < 7 ? "酸性" : "中/鹼") + "）。", answer: "$pH=" + p + "$" };
   };
 
+  /* ---------- 國文 ---------- */
+  G.zhIdiom = function () {
+    var pool = [
+      { w: "罄竹難書", m: "罪狀極多（貶義）", good: false },
+      { w: "汗牛充棟", m: "書籍極多", good: true },
+      { w: "炙手可熱", m: "權勢極盛、氣焰高張（多貶）", good: false },
+      { w: "鳳毛麟角", m: "稀少而珍貴", good: true },
+      { w: "差強人意", m: "大致還能令人滿意", good: true },
+      { w: "首當其衝", m: "最先受到攻擊或災難", good: false },
+      { w: "目無全牛", m: "技藝純熟到極點", good: true },
+      { w: "曾幾何時", m: "時間過去沒多久", good: true }
+    ];
+    var it = pick(pool);
+    var others = pool.filter(function (p) { return p.w !== it.w; });
+    var d1 = pick(others), d2 = pick(others.filter(function (p) { return p.w !== d1.w; }));
+    var opts = pick([[it.m, d1.m, d2.m], [d1.m, it.m, d2.m], [d1.m, d2.m, it.m]]);
+    var labels = ["(A)", "(B)", "(C)"];
+    var ans = labels[opts.indexOf(it.m)];
+    return {
+      topic: "成語辨義",
+      q: "「" + it.w + "」的意思最接近？ " + opts.map(function (o, i) { return labels[i] + o; }).join("　"),
+      hint: "先想字面，再判褒貶與適用對象。",
+      sol: "「" + it.w + "」意為：" + it.m + "，故選 " + ans + "。",
+      answer: ans + " " + it.m
+    };
+  };
+  G.zhPair = function () {
+    var pool = [
+      { a: "美輪美奐", note: "形容建築高大華美", wrong: "美侖美奐" },
+      { a: "張惶失措", wrong: "張皇失措", note: "正確應為『張皇失措』" }
+    ];
+    // 簡化為字音題
+    var words = [
+      { w: "強", a: "ㄑㄧㄤˊ", ex: "強壯" }, { w: "強", a: "ㄑㄧㄤˇ", ex: "勉強" },
+      { w: "強", a: "ㄐㄧㄤˋ", ex: "倔強" }
+    ];
+    var it = pick(words);
+    return {
+      topic: "字音",
+      q: "「" + it.ex + "」的「" + it.w + "」讀音為？(A)" + it.a + " (B)其他音",
+      hint: "用造詞代入唸唸看。",
+      sol: "「" + it.ex + "」的「" + it.w + "」讀作 " + it.a + "，選 (A)。",
+      answer: "(A) " + it.a
+    };
+  };
+
+  /* ---------- 英文 ---------- */
+  G.enRoot = function () {
+    var pool = [
+      { w: "predict", pre: "pre-(前)", root: "dict(說)", m: "預測" },
+      { w: "export", pre: "ex-(出)", root: "port(帶)", m: "出口" },
+      { w: "inspect", pre: "in-(內)", root: "spect(看)", m: "檢視" },
+      { w: "reject", pre: "re-(回)", root: "ject(丟)", m: "拒絕" },
+      { w: "describe", pre: "de-(下)", root: "scrib(寫)", m: "描述" },
+      { w: "transport", pre: "trans-(跨)", root: "port(帶)", m: "運輸" }
+    ];
+    var it = pick(pool);
+    return {
+      topic: "字根字首",
+      q: "'" + it.w + "' 由 " + it.pre + " + " + it.root + " 組成，意思最可能是？",
+      hint: "把字首與字根的意思合起來。",
+      sol: it.pre + " + " + it.root + " → " + it.m + " (" + it.w + ")。",
+      answer: it.m + " (" + it.w + ")"
+    };
+  };
+  G.enTense = function () {
+    var pool = [
+      { adv: "since 2020", t: "have lived", why: "since 表持續到現在 → 現在完成式" },
+      { adv: "yesterday", t: "lived", why: "明確過去時間 → 過去式" },
+      { adv: "every day", t: "live", why: "習慣 → 現在簡單式" },
+      { adv: "right now", t: "am living", why: "此刻進行 → 現在進行式" },
+      { adv: "tomorrow", t: "will live", why: "未來 → will + 原形" }
+    ];
+    var it = pick(pool);
+    return {
+      topic: "時態判斷",
+      q: "I ____ here " + it.adv + ". 動詞 live 該用哪種時態形式？",
+      hint: "看時間副詞決定時態。",
+      sol: it.why + "，故用 '" + it.t + "'。",
+      answer: it.t
+    };
+  };
+
+  /* ---------- 生物 ---------- */
+  G.bioPunnett = function () {
+    // Aa × Aa 型或單基因；輸出表現型比例
+    var cases = [
+      { cross: "Aa × Aa", ratio: "顯性:隱性 = 3:1", geno: "1AA:2Aa:1aa" },
+      { cross: "Aa × aa", ratio: "顯性:隱性 = 1:1", geno: "1Aa:1aa" },
+      { cross: "AA × aa", ratio: "全為顯性", geno: "全 Aa" }
+    ];
+    var it = pick(cases);
+    return {
+      topic: "遺傳比例",
+      q: it.cross + " 雜交，後代表現型比例為？",
+      hint: "畫旁氏表(Punnett square)數格子。",
+      sol: "基因型 " + it.geno + " → 表現型 " + it.ratio + "。",
+      answer: it.ratio
+    };
+  };
+  G.bioDNA = function () {
+    var a = pick([15, 20, 25, 30, 35, 40]);
+    var gc = (100 - 2 * a) / 2;
+    return {
+      topic: "DNA 配對",
+      q: "某 DNA 中腺嘌呤(A)占 " + a + "%，則鳥糞嘌呤(G)占多少%？",
+      hint: "A=T、G=C，四者相加 100%。",
+      sol: "A=T=" + a + "%，所以 G+C=" + (100 - 2 * a) + "%，G=C=" + gc + "%。",
+      answer: gc + "%"
+    };
+  };
+  G.bioEnergy = function () {
+    var start = pick([1000, 2000, 5000, 8000]);
+    var lv = pick([1, 2]);
+    var end = start * Math.pow(0.1, lv);
+    return {
+      topic: "能量金字塔",
+      q: "生產者有 " + start + " 單位能量，依十分之一法則，第 " + (lv + 1) + " 營養階可得約多少能量？",
+      hint: "每升一層約剩 10%。",
+      sol: start + " × 0.1" + (lv === 2 ? " × 0.1" : "") + " = " + end + " 單位。",
+      answer: end + " 單位"
+    };
+  };
+
+  /* ---------- 地球科學 ---------- */
+  G.esLapse = function () {
+    var h = pick([1, 2, 3, 4]); var drop = 6.5 * h;
+    var ground = pick([20, 25, 30]);
+    var top = (ground - drop).toFixed(1);
+    return {
+      topic: "氣溫遞減率",
+      q: "地面氣溫 " + ground + "°C，對流層每升高 1 km 約降 6.5°C，則 " + h + " km 高空氣溫約為？",
+      hint: "降溫 = 6.5 × 高度。",
+      sol: "降溫 6.5×" + h + "=" + drop + "°C；" + ground + "−" + drop + "=" + top + "°C。",
+      answer: top + "°C"
+    };
+  };
+  G.esMoon = function () {
+    var pool = [
+      { d: "新月(朔)", pos: "月在太陽與地球之間，看不到亮面" },
+      { d: "滿月(望)", pos: "地球在太陽與月之間，整面被照亮" },
+      { d: "上弦月", pos: "傍晚見於西方天空，右半亮" },
+      { d: "下弦月", pos: "清晨見於東方天空，左半亮" }
+    ];
+    var it = pick(pool);
+    return {
+      topic: "月相",
+      q: "「" + it.d + "」時，月球相對太陽與地球的位置/特徵為？",
+      hint: "想三者連線的位置。",
+      sol: it.d + "：" + it.pos + "。",
+      answer: it.pos
+    };
+  };
+
   /* ---------- 工具 ---------- */
   function comb(n, r) { var p = 1, f = 1; for (var i = 0; i < r; i++) { p *= (n - i); f *= (i + 1); } return p / f; }
   function fmt(x) {
