@@ -74,6 +74,7 @@ CURRICULUM.addBook({
     },
     {
       id: "es_geo",
+      diagram: "esPlate",
       title: "3. 地質與板塊",
       tags: ["板塊", "地震", "岩石循環", "火山"],
       fiveYO: "地球表面是一塊塊會移動的板塊。板塊推擠、分開或錯動，" +
@@ -108,6 +109,7 @@ CURRICULUM.addBook({
     },
     {
       id: "es_astro",
+      diagram: "esEarth",
       title: "4. 天文與宇宙",
       tags: ["地球運動", "月相", "季節", "太陽系"],
       fiveYO: "地球自轉產生白天黑夜、公轉加上地軸傾斜產生四季。" +

@@ -40,6 +40,7 @@ CURRICULUM.addBook({
     },
     {
       id: "bio_metabolism",
+      diagram: "bioCycle",
       title: "2. 光合作用與呼吸作用",
       tags: ["光合", "呼吸", "ATP", "能量流"],
       fiveYO: "光合作用把光能存進食物(葡萄糖)；呼吸作用把食物裡的能量釋放出來變 ATP。" +
@@ -73,6 +74,7 @@ CURRICULUM.addBook({
     },
     {
       id: "bio_genetics",
+      diagram: "bioPunnett",
       title: "3. 遺傳（孟德爾、DNA、表現）",
       tags: ["孟德爾", "顯隱性", "DNA", "遺傳比例"],
       fiveYO: "遺傳是『把特徵傳給下一代』。基因有顯性(強勢)和隱性(弱勢)；" +

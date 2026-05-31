@@ -6,6 +6,7 @@ CURRICULUM.addBook({
   chapters: [
     {
       id: "ph_kinematics",
+      diagram: "phMotion",
       title: "1. 運動學與牛頓運動定律",
       tags: ["等加速", "v-t圖", "牛頓三定律", "自由落體"],
       fiveYO: "運動學就是描述『東西怎麼動』：多快(速度)、加速多少(加速度)、跑多遠(位移)。" +
@@ -112,6 +113,7 @@ CURRICULUM.addBook({
     },
     {
       id: "ph_wave",
+      diagram: "phWave",
       title: "4. 波動、光與近代物理",
       tags: ["波速", "折射", "都卜勒", "光電效應", "能階"],
       fiveYO: "波會傳遞能量(聲、光)。波速=頻率×波長。光會折射、會干涉；" +

@@ -39,6 +39,7 @@ CURRICULUM.addBook({
     },
     {
       id: "zh_reading",
+      diagram: "zhRead",
       title: "2. 文意理解與閱讀測驗",
       tags: ["閱讀", "主旨", "推論", "語境"],
       fiveYO: "閱讀題不是考你懂多少，是考你『有沒有在文章裡找到證據』。" +
@@ -176,6 +177,7 @@ CURRICULUM.addBook({
     },
     {
       id: "zh_poetry",
+      diagram: "zhFlow",
       title: "6. 古典詩詞曲鑑賞",
       tags: ["詩", "詞", "曲", "格律", "意象"],
       fiveYO: "古詩詞曲就像古人的『歌詞』。詩比較工整、詞長短句配著唱、曲更白話活潑。" +
