@@ -108,6 +108,11 @@
       '<h1>' + c.title + '</h1>' +
       '<div class="muted">本章正確率：' + rateTxt + '　|　冊別：' + c.bookTitle + '</div>' +
 
+      (window.DIAGRAMS && DIAGRAMS.has(c.diagram)
+        ? '<section class="panel diagrampanel"><h2>🖼️ 圖解分析</h2>' +
+        '<div class="diagramwrap">' + DIAGRAMS.render(c.diagram) + '</div>' +
+        '<p class="muted diagcap">一張圖看懂本章核心：對照下面的觀念與秒殺解法一起看，最快建立直覺。</p></section>'
+        : '') +
       '<section class="panel five"><h2>🧒 5 歲也懂版</h2><p>' + c.fiveYO + '</p></section>' +
 
       '<section class="panel"><h2>💡 核心觀念</h2><ul class="concepts">' +
