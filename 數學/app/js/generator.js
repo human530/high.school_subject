@@ -37,11 +37,12 @@
     };
   };
   G.remainderTheorem = function () {
-    var a = ri(1, 4), c2 = ri(-3, 3), c1 = ri(-4, 4), c0 = ri(-5, 5);
+    var a = ri(1, 4), c2 = pick([1, 2, 3]), c1 = ri(-4, 4), c0 = ri(-5, 5); // c2 為非零正整數，確保確實是三次式
     var val = c2 * a * a * a + c1 * a + c0; // f(x)=c2 x^3 + c1 x + c0
+    var lead = (c2 === 1 ? "" : c2) + "x^3";  // 首項係數 1 不顯示
     return {
       topic: "餘式定理",
-      q: "求 $f(x)=" + c2 + "x^3" + termPM(c1, "x") + termPM(c0, "") + "$ 除以 $(x-" + a + ")$ 的餘數。",
+      q: "求 $f(x)=" + lead + termPM(c1, "x") + termPM(c0, "") + "$ 除以 $(x-" + a + ")$ 的餘數。",
       hint: "餘數 = $f(" + a + ")$，直接代入。",
       sol: "$f(" + a + ")=" + c2 + "\\cdot" + a + "^3" + termPM(c1 * a, "") + termPM(c0, "") + "=" + val + "$。",
       answer: "$" + val + "$"
@@ -209,12 +210,15 @@
   G.radDeg = function () {
     var deg = pick([30, 45, 60, 120, 135, 150, 180, 270]);
     var g = gcd(deg, 180);
+    var num = deg / g, den = 180 / g;       // 約分後 (num/den)·π
+    var coef = num === 1 ? "\\pi" : num + "\\pi";
+    var rad = den === 1 ? coef : "\\frac{" + coef + "}{" + den + "}"; // 分母為 1 不顯示分數
     return {
       topic: "弧度換算",
       q: "將 $" + deg + "°$ 換成弧度。",
       hint: "$\\times\\frac{\\pi}{180}$。",
-      sol: "$" + deg + "\\cdot\\frac{\\pi}{180}=\\frac{" + (deg / g) + "\\pi}{" + (180 / g) + "}$。",
-      answer: "$\\frac{" + (deg / g) + "\\pi}{" + (180 / g) + "}$"
+      sol: "$" + deg + "\\cdot\\frac{\\pi}{180}=" + rad + "$。",
+      answer: "$" + rad + "$"
     };
   };
   G.amplitude = function () {
