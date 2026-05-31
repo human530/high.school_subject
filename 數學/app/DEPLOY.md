@@ -36,3 +36,11 @@
 - `outputDirectory`：`public`
 - `sw.js` 設 `no-cache`（確保 service worker 更新即時生效）
 - KaTeX 字型設一年期 immutable 快取。
+
+## 開啟伺服器端 AI 出題（Opus 4.8，學生端免設定）
+
+1. Vercel 專案 → **Settings → Environment Variables**
+2. 新增：`ANTHROPIC_API_KEY` = 你的 Anthropic 金鑰（`sk-ant-...`），套用到 Production
+3. Redeploy（或下次 push 自動套用）
+
+完成後，`/api/llm` 代理會用伺服器金鑰呼叫 Claude Opus 4.8，使用者打開「設定 → 用 LLM 產生模擬題」即可出題，**完全不需要自己貼金鑰**。金鑰只存在伺服器環境變數，不會外流到瀏覽器或版控。

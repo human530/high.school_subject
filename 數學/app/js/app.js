@@ -504,8 +504,12 @@
     app.innerHTML = "";
     app.appendChild(el(
       '<div class="view"><h1>⚙️ 設定</h1>' +
-      '<section class="panel"><h2>引擎② 真 LLM 出題（選用）</h2>' +
-      '<p class="muted">貼上你自己的 API 金鑰即可呼叫真 LLM 出全新題目。金鑰只存在本機瀏覽器，不會上傳到任何伺服器。不設定也能用引擎①（離線參數化題庫）。</p>' +
+      '<section class="panel five"><h2>🤖 AI 出題狀態</h2>' +
+      '<p id="proxyStatus" class="muted">偵測伺服器 AI 連線中…</p>' +
+      '<p class="muted">本站可由伺服器直接連 Anthropic Claude（Opus 4.8），學生端免設定即可用。若站長尚未設定，可改用下方自帶金鑰。</p>' +
+      '</section>' +
+      '<section class="panel"><h2>引擎② 自帶金鑰（備援，選用）</h2>' +
+      '<p class="muted">若伺服器 AI 未開啟，可貼自己的 API 金鑰直連。金鑰只存在本機瀏覽器，不會上傳到任何伺服器。</p>' +
       '<label>供應商：<select id="prov">' +
       '<option value="openai"' + (cfg.provider === "openai" ? " selected" : "") + '>OpenAI 相容</option>' +
       '<option value="anthropic"' + (cfg.provider === "anthropic" ? " selected" : "") + '>Anthropic</option>' +
@@ -528,9 +532,17 @@
       LLM.setCfg({ provider: $("#prov").value, key: $("#key").value.trim(), model: $("#model").value.trim(), baseUrl: $("#base").value.trim() });
       $("#cfgmsg").textContent = "已儲存 ✅";
     };
+    // 偵測伺服器 AI 代理是否可用
+    LLM.probeProxy().then(function (ok) {
+      var s = $("#proxyStatus"); if (!s) return;
+      s.innerHTML = ok
+        ? '✅ <b>伺服器 AI 已連線</b>：可直接用 Claude Opus 4.8 出題，免任何設定。'
+        : '⚠️ 伺服器 AI 未開啟（站長需在 Vercel 設定 <code>ANTHROPIC_API_KEY</code>）。可改用下方自帶金鑰，或用引擎①離線題庫。';
+    });
     $("#llmGen").onclick = async function () {
       var area = $("#llmArea");
-      if (!LLM.isReady()) { area.innerHTML = '<p class="bad">請先儲存 API 金鑰。</p>'; return; }
+      var ready = LLM.isReady() || await LLM.probeProxy();
+      if (!ready) { area.innerHTML = '<p class="bad">目前無 AI 出題來源：請站長在 Vercel 設定 ANTHROPIC_API_KEY，或在上方貼自己的金鑰。仍可用引擎①離線題庫練習。</p>'; return; }
       area.innerHTML = '<p class="muted">出題中…（呼叫 LLM）</p>';
       try {
         var topics = $("#llmTopics").value.split(/[,，]/).map(function (s) { return s.trim(); }).filter(Boolean);
