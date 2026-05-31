@@ -73,17 +73,24 @@
       var data = await res.json();
       return parseJSON(data.content[0].text);
     }
-    var base = cfg.baseUrl || "https://api.openai.com/v1";
-    var r = await fetch(base + "/chat/completions", {
+
+    // Ollama（本機免費）或 OpenAI 相容：都走 /v1/chat/completions
+    // Ollama 預設 baseUrl http://localhost:11434/v1，不需要金鑰。
+    var base = cfg.baseUrl || (cfg.provider === "ollama" ? "http://localhost:11434/v1" : "https://api.openai.com/v1");
+    var headers = { "content-type": "application/json" };
+    if (cfg.key) headers["authorization"] = "Bearer " + cfg.key;
+    var r = await fetch(base.replace(/\/$/, "") + "/chat/completions", {
       method: "POST",
-      headers: { "content-type": "application/json", "authorization": "Bearer " + cfg.key },
+      headers: headers,
       body: JSON.stringify({
-        model: cfg.model || "gpt-4o-mini",
+        model: cfg.model || (cfg.provider === "ollama" ? "llama3.1" : "gpt-4o-mini"),
         messages: [{ role: "user", content: prompt }],
-        temperature: 0.7
+        temperature: 0.7,
+        stream: false
       })
     });
-    if (!r.ok) throw new Error("OpenAI 相容 API 錯誤 " + r.status);
+    if (!r.ok) throw new Error((cfg.provider === "ollama" ? "Ollama" : "OpenAI 相容") + " 連線錯誤 " + r.status +
+      (cfg.provider === "ollama" ? "（請確認 Ollama 已啟動，且用 OLLAMA_ORIGINS=* 開啟跨來源）" : ""));
     var d = await r.json();
     return parseJSON(d.choices[0].message.content);
   }
@@ -99,8 +106,9 @@
         // 代理未設定 → 往下試自帶金鑰
       }
     }
-    if (cfg.key) return await viaOwnKey(prompt, cfg);
-    throw new Error("尚未設定出題來源：請站長在 Vercel 設定 ANTHROPIC_API_KEY，或到『設定』貼上你自己的金鑰。");
+    // Ollama 不需要金鑰；其他供應商需要金鑰
+    if (cfg.provider === "ollama" || cfg.key) return await viaOwnKey(prompt, cfg);
+    throw new Error("尚未設定出題來源：可選 ① 本機 Ollama（免費免金鑰）② 貼自己的 API 金鑰 ③ 站長在 Vercel 設 ANTHROPIC_API_KEY。");
   }
 
   // 探測伺服器代理是否可用（給 UI 顯示用）
@@ -120,7 +128,7 @@
 
   window.LLM = {
     getCfg: getCfg, setCfg: setCfg, generate: generate, probeProxy: probeProxy,
-    // 只要伺服器代理可用，或本機有金鑰，就算 ready
-    isReady: function () { return proxyOK === true || !!getCfg().key; }
+    // 伺服器代理可用、本機有金鑰、或選了 Ollama（免金鑰）就算 ready
+    isReady: function () { var c = getCfg(); return proxyOK === true || !!c.key || c.provider === "ollama"; }
   };
 })();
