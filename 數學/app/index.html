@@ -59,9 +59,37 @@
 
   <!-- PWA service worker（用 file:// 開啟時會自動略過） -->
   <script>
+    // PWA service worker：偵測到新版自動啟用並重載一次（免手動清快取）
     if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+      var refreshing = false;
+      // 首次安裝時沒有 controller，clients.claim() 也會觸發 controllerchange，
+      // 那次不該重載；只有「本來就有 controller（＝更新換版）」才自動重載一次。
+      var hadController = !!navigator.serviceWorker.controller;
+      navigator.serviceWorker.addEventListener('controllerchange', function () {
+        if (refreshing || !hadController) return;
+        refreshing = true;
+        location.reload();
+      });
       window.addEventListener('load', function () {
-        navigator.serviceWorker.register('sw.js').catch(function () { });
+        navigator.serviceWorker.register('sw.js').then(function (reg) {
+          // 立刻檢查更新
+          reg.update();
+          // 有新版安裝好 → 叫它立即接管（接管後觸發 controllerchange 自動重載）
+          function promote(w) {
+            if (!w) return;
+            w.addEventListener('statechange', function () {
+              if (w.state === 'installed' && navigator.serviceWorker.controller) {
+                w.postMessage('SKIP_WAITING');
+              }
+            });
+          }
+          if (reg.waiting && navigator.serviceWorker.controller) reg.waiting.postMessage('SKIP_WAITING');
+          reg.addEventListener('updatefound', function () { promote(reg.installing); });
+          // 回到前景時再檢查一次更新
+          document.addEventListener('visibilitychange', function () {
+            if (document.visibilityState === 'visible') reg.update();
+          });
+        }).catch(function () { });
       });
     }
   </script>

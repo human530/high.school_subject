@@ -1,5 +1,10 @@
-/* service worker：離線快取 app 核心檔 + 內建 KaTeX（首次連線後即可完全離線使用） */
-var CACHE = "math-a-v8";
+/* service worker：離線快取 app 核心檔 + 內建 KaTeX（首次連線後即可完全離線使用）
+ * 更新策略：
+ *  - app 殼（html/css/js/json）走 network-first → 有網路一定拿到最新版，離線才用快取。
+ *  - 字型/KaTeX/圖示等靜態資產走 cache-first（很少變，省流量）。
+ *  - 換版時自動 skipWaiting + claim，配合頁面的 controllerchange 自動重載。
+ */
+var CACHE = "math-a-v9";
 var CORE = [
   "./", "./index.html",
   "./css/style.css",
@@ -16,9 +21,13 @@ var CORE = [
   "./vendor/iansui/iansui-tc.woff2"
 ];
 
+// app 殼：要永遠拿最新版的副檔名 / 路徑
+function isAppShell(url) {
+  return /\.(html|css|js|webmanifest|json)(\?|$)/.test(url) || url.endsWith("/");
+}
+
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) {
-    // 個別加入，避免單一資源失敗導致整體失敗
     return Promise.all(CORE.map(function (u) { return c.add(u).catch(function () { }); }));
   }).then(function () { return self.skipWaiting(); }));
 });
@@ -29,14 +38,37 @@ self.addEventListener("activate", function (e) {
   }).then(function () { return self.clients.claim(); }));
 });
 
+// 讓頁面能主動叫 SW 立即接管
+self.addEventListener("message", function (e) {
+  if (e.data === "SKIP_WAITING") self.skipWaiting();
+});
+
 self.addEventListener("fetch", function (e) {
   if (e.request.method !== "GET") return;
+  var url = e.request.url;
   // 不快取 LLM API 呼叫
-  if (e.request.url.indexOf("api.openai.com") >= 0 || e.request.url.indexOf("api.anthropic.com") >= 0) return;
+  if (url.indexOf("api.openai.com") >= 0 || url.indexOf("api.anthropic.com") >= 0) return;
+
+  if (isAppShell(url)) {
+    // network-first：有網路拿最新並更新快取，離線才退回快取
+    e.respondWith(
+      fetch(e.request).then(function (res) {
+        var copy = res.clone();
+        caches.open(CACHE).then(function (c) { c.put(e.request, copy).catch(function () { }); });
+        return res;
+      }).catch(function () {
+        return caches.match(e.request).then(function (hit) {
+          return hit || caches.match("./index.html");
+        });
+      })
+    );
+    return;
+  }
+
+  // 其餘（字型/圖示等）cache-first
   e.respondWith(
     caches.match(e.request).then(function (hit) {
       return hit || fetch(e.request).then(function (res) {
-        // 動態快取同源資源（含 KaTeX woff2 字型），下次離線可用
         var copy = res.clone();
         caches.open(CACHE).then(function (c) { c.put(e.request, copy).catch(function () { }); });
         return res;
