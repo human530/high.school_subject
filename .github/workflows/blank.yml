@@ -1,36 +1,33 @@
-# This is a basic workflow to help you get started with Actions
-
+# CI：每次 push / PR 自動做全域檢查，避免錯誤上線
 name: CI
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
+    branches: ["main"]
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  check:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: 全部 JS 語法檢查（syntax check）
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          set -e
+          for f in 數學/app/js/*.js 數學/app/data/*.js 數學/app/sw.js api/llm.js; do
+            echo "checking $f"
+            node --check "$f"
+          done
+
+      - name: 全域資料完整性檢查
+        run: node tests/check-data.js
+
+      - name: 驗證 manifest 為合法 JSON
+        run: node -e "JSON.parse(require('fs').readFileSync('數學/app/manifest.webmanifest','utf8')); console.log('manifest OK')"
