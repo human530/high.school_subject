@@ -46,37 +46,42 @@
       : '<li class="muted">還沒有練習紀錄。先去「教學」看一章，再到「練習」做幾題，我就能幫你抓弱點了！</li>';
 
     app.innerHTML = "";
+    var sub = CURRICULUM.activeSubject() || {};
+    // 啟動器磁磚（不把功能全列在頂部，改成首頁卡片網格）
+    var tiles = [
+      { href: "#learn", icon: "📖", t: "教學", d: "白話＋秒殺解法", c: "t-blue" },
+      { href: "#practice", icon: "✏️", t: "無限練習", d: "參數化題庫", c: "t-red" },
+      { href: "#gsat", icon: "🧠", t: "學測題", d: "歷屆風格題", c: "t-blue" },
+      { href: "#points", icon: "🎯", t: "整合考點", d: "跨章高頻", c: "t-red" },
+      { href: "#exam", icon: "📝", t: "模擬考", d: "學測／段考", c: "t-blue" },
+      { href: "#vocab", icon: "📕", t: "背單字", d: "7000 高頻", c: "t-red" },
+      { href: "#photo", icon: "📷", t: "拍照解題", d: "AI 看圖解", c: "t-blue" },
+      { href: "#analysis", icon: "📊", t: "弱點分析", d: "個人化補強", c: "t-red" }
+    ];
+    var tileHtml = tiles.map(function (x) {
+      return '<a class="tile ' + x.c + '" href="' + x.href + '">' +
+        '<span class="tic">' + x.icon + '</span><span class="tit">' + x.t + '</span>' +
+        '<span class="tid">' + x.d + '</span></a>';
+    }).join("");
+
     app.appendChild(el(
-      '<div class="view">' +
-      '<section class="hero">' +
-      '<h1>🎯 個申就上</h1>' +
-      '<p class="muted">目前科目：<b>' + ((CURRICULUM.activeSubject() || {}).icon || "") + ' ' + ((CURRICULUM.activeSubject() || {}).name || "") + '</b>　（上方可切換科目）</p>' +
-      '<p class="muted">目標：每章正確率 90%+、看到題目就秒殺。以下是你目前的進度。</p>' +
-      '<div class="cards">' +
-      '<div class="card stat"><div class="big">' + rate + '%</div><div>整體正確率</div></div>' +
-      '<div class="card stat"><div class="big">' + o.masteredChapters + '/' + o.totalChapters + '</div><div>已達秒殺級章節</div></div>' +
-      '<div class="card stat"><div class="big">' + o.totalAttempts + '</div><div>累計練習題數</div></div>' +
+      '<div class="view home">' +
+      '<section class="hero homehero">' +
+      '<div class="herorow">' +
+      '<div><h1>個申就上</h1>' +
+      '<p class="muted">目前科目 <b>' + (sub.icon || "") + ' ' + (sub.name || "") + '</b>　·　目標：看到題目就秒殺</p></div>' +
+      '<div class="herostat"><div class="hsbig">' + rate + '%</div><div class="muted">整體正確率</div></div>' +
       '</div>' +
       '<div class="progress"><div class="bar" style="width:' + pct + '%"></div></div>' +
-      '<p class="muted">距離「全章秒殺」完成度 ' + pct + '%</p>' +
+      '<div class="herometa"><span>已達秒殺 ' + o.masteredChapters + '/' + o.totalChapters + ' 章</span>' +
+      '<span>累計練習 ' + o.totalAttempts + ' 題</span></div>' +
       '</section>' +
 
-      '<section class="panel">' +
-      '<h2>📌 今日補強優先序（邁向滿級分）</h2>' +
+      '<section class="tilegrid">' + tileHtml + '</section>' +
+
+      '<section class="panel todaycard">' +
+      '<h2>📌 今日補強優先序</h2>' +
       '<ol class="planlist">' + stepsHtml + '</ol>' +
-      '</section>' +
-
-      '<section class="panel">' +
-      '<h2>🚀 快速開始</h2>' +
-      '<div class="quick">' +
-      '<a class="qbtn" href="#learn">📖 看教學（白話＋秒殺解法）</a>' +
-      '<a class="qbtn" href="#practice">✏️ 無限練習（參數化題庫）</a>' +
-      '<a class="qbtn" href="#gsat">🧠 學測風格題</a>' +
-      '<a class="qbtn" href="#points">🎯 整合考點（跨章高頻）</a>' +
-      '<a class="qbtn" href="#exam">📝 模擬考（學測/段考）</a>' +
-      '<a class="qbtn" href="#photo">📷 拍照解題</a>' +
-      '<a class="qbtn" href="#analysis">📊 個人弱點分析</a>' +
-      '</div>' +
       '</section>' +
       '</div>'
     ));
@@ -861,13 +866,44 @@
     });
   }
 
+  /* ============================================================
+   * 底部分頁列（5 主要入口）：避免把所有功能列在頂部
+   * ============================================================ */
+  var TABS = [
+    { href: "#dashboard", icon: "🏠", t: "首頁", match: ["", "dashboard"] },
+    { href: "#learn", icon: "📖", t: "教學", match: ["learn"] },
+    { href: "#practice", icon: "✏️", t: "練習", match: ["practice", "gsat", "points", "exam", "photo"] },
+    { href: "#vocab", icon: "📕", t: "單字", match: ["vocab"] },
+    { href: "#analysis", icon: "📊", t: "我的", match: ["analysis", "settings"] }
+  ];
+  function mountTabBar() {
+    var bar = document.getElementById("tabbar");
+    if (!bar) {
+      bar = el('<nav id="tabbar" class="tabbar"></nav>');
+      document.body.appendChild(bar);
+    }
+    bar.innerHTML = TABS.map(function (x, i) {
+      return '<a class="tab" data-i="' + i + '" href="' + x.href + '">' +
+        '<span class="tabic">' + x.icon + '</span><span class="tabt">' + x.t + '</span></a>';
+    }).join("");
+    highlightTab();
+  }
+  function highlightTab() {
+    var route = (location.hash.replace(/^#/, "").split("/")[0]) || "dashboard";
+    $all("#tabbar .tab").forEach(function (a) {
+      var i = parseInt(a.dataset.i, 10);
+      a.classList.toggle("on", TABS[i].match.indexOf(route) >= 0);
+    });
+  }
+
   function boot() {
     if (window.CURRICULUM && CURRICULUM.initActive) CURRICULUM.initActive();
     mountSubjectSwitcher();
+    mountTabBar();
     router();
   }
 
-  window.addEventListener("hashchange", router);
+  window.addEventListener("hashchange", function () { highlightTab(); });
   window.addEventListener("DOMContentLoaded", boot);
   if (document.readyState !== "loading") boot();
 })();
