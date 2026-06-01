@@ -479,5 +479,39 @@
   };
   D.has = function (key) { return !!(key && D[key]); };
 
+  /* ============================================================
+   * 科目彩色手繪小徽章（取代單色 emoji）
+   * 24x24 viewBox，回傳 inline SVG 字串。
+   * ============================================================ */
+  function badge(body, bg) {
+    return '<svg class="subicon" viewBox="0 0 24 24" width="22" height="22" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+      '<rect x="1" y="1" width="22" height="22" rx="7" fill="' + (bg || '#fff') + '" stroke="#4a4036" stroke-width="1.5"/>' +
+      body + '</svg>';
+  }
+  var SUBJECT_ICONS = {
+    // 數學A：圓規＋加號（藍底）
+    matha: badge('<path d="M12 5 L8 18 M12 5 L16 18" stroke="#2f6f9e" stroke-width="1.8" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="12" cy="5" r="1.6" fill="#c94f3d"/><text x="17.5" y="9" font-size="6" fill="#c94f3d" font-weight="bold">+</text>', '#dbeaf2'),
+    // 國文：毛筆／書（紅底）
+    chinese: badge('<rect x="6" y="5" width="12" height="14" rx="1.5" fill="#fff" stroke="#b13c2b" stroke-width="1.3"/>' +
+      '<line x1="9" y1="8.5" x2="15" y2="8.5" stroke="#b13c2b" stroke-width="1.1"/><line x1="9" y1="11.5" x2="15" y2="11.5" stroke="#c98" stroke-width="1"/><line x1="9" y1="14.5" x2="13" y2="14.5" stroke="#c98" stroke-width="1"/>', '#fbe6e1'),
+    // 英文：ABC（藍底）
+    english: badge('<text x="12" y="16" font-size="9" fill="#2f6f9e" font-weight="bold" text-anchor="middle" font-family="system-ui">Aa</text>', '#dbeaf2'),
+    // 物理：原子（黃底）
+    physics: badge('<circle cx="12" cy="12" r="2" fill="#c94f3d"/>' +
+      '<g fill="none" stroke="#7a5da0" stroke-width="1.3"><ellipse cx="12" cy="12" rx="8" ry="3.2"/><ellipse cx="12" cy="12" rx="8" ry="3.2" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="8" ry="3.2" transform="rotate(120 12 12)"/></g>', '#f3ead7'),
+    // 化學：燒瓶（綠底）
+    chemistry: badge('<path d="M10 4 v5 L6 17 a1.5 1.5 0 0 0 1.4 2 h9.2 a1.5 1.5 0 0 0 1.4 -2 L14 9 V4" fill="#bfe3c8" stroke="#3f7a52" stroke-width="1.4" stroke-linejoin="round"/>' +
+      '<line x1="9.5" y1="4" x2="14.5" y2="4" stroke="#3f7a52" stroke-width="1.6" stroke-linecap="round"/><circle cx="11" cy="15" r="1" fill="#c94f3d"/><circle cx="14" cy="16.5" r="0.8" fill="#d99a3a"/>', '#e6f4ea'),
+    // 生物：DNA（粉綠底）
+    biology: badge('<g stroke="#3f7a52" stroke-width="1.4" fill="none" stroke-linecap="round"><path d="M9 4 C16 8 8 12 15 16 C8 18 16 20 9 20"/><path d="M15 4 C8 8 16 12 9 16 C16 18 8 20 15 20"/></g>' +
+      '<line x1="10" y1="7" x2="14" y2="7.6" stroke="#c94f3d" stroke-width="1.1"/><line x1="10.5" y1="12" x2="13.5" y2="12" stroke="#c94f3d" stroke-width="1.1"/><line x1="10" y1="17" x2="14" y2="16.4" stroke="#c94f3d" stroke-width="1.1"/>', '#e6f4ea'),
+    // 地球科學：地球（藍底）
+    earth: badge('<circle cx="12" cy="12" r="7.5" fill="#8fb4c9" stroke="#2f6f9e" stroke-width="1.4"/>' +
+      '<path d="M6 10 q3 -2 6 0 t6 0" fill="none" stroke="#3f7a52" stroke-width="1.3"/><path d="M7 14 q4 2 9 0" fill="none" stroke="#3f7a52" stroke-width="1.3"/><circle cx="10" cy="9" r="1.4" fill="#5c8a6a"/>', '#dbeaf2')
+  };
+  D.subjectIcon = function (id) { return SUBJECT_ICONS[id] || ""; };
+  D.hasSubjectIcon = function (id) { return !!SUBJECT_ICONS[id]; };
+
   window.DIAGRAMS = D;
 })();

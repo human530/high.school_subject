@@ -262,13 +262,18 @@ label { display: block; margin: .5rem 0; font-weight: 600; }
 }
 .sublabel { font-weight: 800; color: var(--ink-soft); font-size: .9rem; }
 .subbtn {
-  padding: .3rem .7rem; border-radius: 12px 14px 11px 15px;
+  display: inline-flex; align-items: center; gap: .3rem;
+  padding: .25rem .6rem; border-radius: 12px 14px 11px 15px;
   border: 2.5px solid var(--line); background: var(--card); color: var(--ink);
   font-weight: 700; font-size: .9rem; cursor: pointer;
-  box-shadow: 2px 2px 0 rgba(111,77,56,.3);
+  box-shadow: 2px 2px 0 rgba(201,79,61,.3);
 }
 .subbtn:hover { background: #e7dabf; }
 .subbtn.on { background: var(--berry); color: #fff3ea; border-color: var(--berry); box-shadow: 3px 3px 0 var(--berry); }
+.subicon { vertical-align: middle; flex: 0 0 auto; }
+.subname { line-height: 1; }
+/* 內文裡的科目徽章（hero） */
+.muted .subicon { vertical-align: -5px; margin: 0 1px; }
 
 /* ---- 拍照解題 ---- */
 .photobtns { display: flex; gap: .6rem; flex-wrap: wrap; margin-bottom: .6rem; }
