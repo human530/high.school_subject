@@ -69,7 +69,7 @@
       '<section class="hero homehero">' +
       '<div class="herorow">' +
       '<div><h1>個申就上</h1>' +
-      '<p class="muted">目前科目 <b>' + (sub.icon || "") + ' ' + (sub.name || "") + '</b>　·　目標：看到題目就秒殺</p></div>' +
+      '<p class="muted">目前科目 ' + ((window.DIAGRAMS && DIAGRAMS.hasSubjectIcon(sub.id)) ? DIAGRAMS.subjectIcon(sub.id) : (sub.icon || "")) + ' <b>' + (sub.name || "") + '</b>　·　目標：看到題目就秒殺</p></div>' +
       '<div class="herostat"><div class="hsbig">' + rate + '%</div><div class="muted">整體正確率</div></div>' +
       '</div>' +
       '<div class="progress"><div class="bar" style="width:' + pct + '%"></div></div>' +
@@ -854,8 +854,9 @@
     }
     var list = CURRICULUM.subjectList();
     bar.innerHTML = '<span class="sublabel">科目：</span>' + list.map(function (s) {
+      var ic = (window.DIAGRAMS && DIAGRAMS.hasSubjectIcon(s.id)) ? DIAGRAMS.subjectIcon(s.id) : s.icon;
       return '<button class="subbtn' + (s.id === CURRICULUM.active ? ' on' : '') + '" data-sid="' + s.id + '">' +
-        s.icon + ' ' + s.name + '</button>';
+        ic + '<span class="subname">' + s.name + '</span></button>';
     }).join("");
     $all(".subbtn", bar).forEach(function (b) {
       b.onclick = function () {
