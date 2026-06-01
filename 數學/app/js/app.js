@@ -871,12 +871,17 @@
   /* ============================================================
    * 底部分頁列（5 主要入口）：避免把所有功能列在頂部
    * ============================================================ */
+  // 底部分頁線稿圖示：用 currentColor，隨分頁狀態變色（未選藍灰、選中正紅）
+  function tabSvg(paths) {
+    return '<svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + paths + '</svg>';
+  }
   var TABS = [
-    { href: "#dashboard", icon: "🏠", t: "首頁", match: ["", "dashboard"] },
-    { href: "#learn", icon: "📖", t: "教學", match: ["learn"] },
-    { href: "#practice", icon: "✏️", t: "練習", match: ["practice", "gsat", "points", "exam", "photo"] },
-    { href: "#vocab", icon: "📕", t: "單字", match: ["vocab"] },
-    { href: "#analysis", icon: "📊", t: "我的", match: ["analysis", "settings"] }
+    { href: "#dashboard", icon: tabSvg('<path d="M4 11 L12 4 L20 11"/><path d="M6 10 V20 H18 V10"/>'), t: "首頁", match: ["", "dashboard"] },
+    { href: "#learn", icon: tabSvg('<path d="M12 6 C9.5 4.3 6 4.2 4 5 V18 C6 17.2 9.5 17.3 12 19 C14.5 17.3 18 17.2 20 18 V5 C18 4.2 14.5 4.3 12 6 Z"/><path d="M12 6 V19"/>'), t: "教學", match: ["learn"] },
+    { href: "#practice", icon: tabSvg('<path d="M5.5 18.5 L5 15 L15 5 L19 9 L9 19 L5.5 18.5 Z"/><path d="M13 7 L17 11"/>'), t: "練習", match: ["practice", "gsat", "points", "exam", "photo"] },
+    { href: "#vocab", icon: tabSvg('<rect x="4" y="4.5" width="16" height="15" rx="2.2"/><path d="M9 15.5 L12 8.5 L15 15.5"/><path d="M10 13 H14"/>'), t: "單字", match: ["vocab"] },
+    { href: "#analysis", icon: tabSvg('<path d="M4 20 H20"/><path d="M7 18 V12"/><path d="M12 18 V7"/><path d="M17 18 V14"/>'), t: "我的", match: ["analysis", "settings"] }
   ];
   function mountTabBar() {
     var bar = document.getElementById("tabbar");
