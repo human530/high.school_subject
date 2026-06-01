@@ -22,15 +22,16 @@
 
 :root {
   /* 配色：低彩度藍白色卡（Silver White / Praise Giving / Puffy Cloud / Wild Clary / Hēi Sè Black） */
-  --paper: #e7ebe4;          /* Silver White 淺白主底 */
-  --paper2: #dfe4ec;         /* 淺藍灰次底 */
+  --paper: #f3f5f1;          /* 更淺的淺白主底（Silver White 提亮） */
+  --paper2: #e8edf2;         /* 淺藍灰次底（提亮） */
   --card: #ffffff;           /* 卡片：純白 */
   --ink: #18202b;            /* Hēi Sè Black 深墨字 */
   --ink-soft: #6a7486;       /* 次要文字：灰藍 */
   --line: #93a4c1;           /* 主描邊：Wild Clary 霧藍 */
   --brand: #2f3c52;          /* 主色＝深墨藍（按鈕） */
   --brand2: #18202b;         /* 深一階：Hēi Sè Black */
-  --leaf: #7f9c87;           /* 正解：柔霧綠（低彩度，語意保留） */
+  --leaf: #7f9c87;           /* 正解：柔霧綠（用於邊框/填色） */
+  --leaf-ink: #45684f;       /* 正解文字：較深綠（確保對比 ≥4.5:1） */
   --berry: #4a5b7d;          /* 強調：深 Wild Clary 靛藍 */
   --berry2: #93a4c1;         /* 亮一階霧藍 */
   --sun: #b1b2ae;            /* 中性暖灰（Praise Giving，原強調黃改中性） */
@@ -55,7 +56,7 @@ html, body {
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><g fill='none' stroke='%23b1b2ae' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' opacity='0.10'><path d='M18 56 l28 -28 l6 6 l-28 28 l-8 2 z'/><path d='M44 30 l6 6'/></g></svg>"),
     radial-gradient(rgba(147, 164, 193, .06) 1px, transparent 1px),
     radial-gradient(rgba(177, 178, 174, .05) 1px, transparent 1px),
-    linear-gradient(180deg, #eef1ed, #e3e8ef 80%);
+    linear-gradient(180deg, #f7f8f5, #edf1f6 80%);
   background-size: 70px 70px, 90px 90px, 80px 80px, 22px 22px, 22px 22px, 100% 100%;
   background-position: 8px 120px, right 16px top 90px, left 24px bottom 60px, 0 0, 11px 11px, 0 0;
   background-repeat: repeat-y, repeat-y, repeat-y, repeat, repeat, no-repeat;
@@ -69,7 +70,7 @@ a:hover { text-decoration: underline wavy; }
   position: sticky; top: 0; z-index: 50;
   display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
   padding: .6rem 1rem;
-  background: rgba(231, 235, 228, .9);
+  background: rgba(243, 245, 241, .9);
   backdrop-filter: blur(4px);
   border-bottom: 4px solid var(--line);
 }
@@ -121,7 +122,7 @@ a:hover { text-decoration: underline wavy; }
 .card.stat .big { font-size: 1.9rem; font-weight: 800; color: var(--berry); }
 
 /* 進度條：木槽 + 葉綠填充 */
-.progress { height: 16px; background: #dfe4ec; border-radius: 999px; overflow: hidden; border: 3px solid var(--line); }
+.progress { height: 16px; background: #e8edf2; border-radius: 999px; overflow: hidden; border: 3px solid var(--line); }
 .progress .bar { height: 100%; background: linear-gradient(90deg, var(--brand), var(--berry)); }
 
 /* ---- 快速鍵：木牌按鈕 ---- */
@@ -171,17 +172,17 @@ a:hover { text-decoration: underline wavy; }
   box-shadow: 4px 4px 0 rgba(147, 164, 193, .42);
 }
 .prob .q { font-weight: 700; margin: .3rem 0 .5rem; }
-.badge { display: inline-block; font-size: .75rem; background: #dfe4ec; color: var(--ink); padding: .12rem .55rem; border-radius: 999px; border: 1.5px solid var(--line); font-weight: 700; }
+.badge { display: inline-block; font-size: .75rem; background: #e8edf2; color: var(--ink); padding: .12rem .55rem; border-radius: 999px; border: 1.5px solid var(--line); font-weight: 700; }
 .badge.gsat { background: var(--berry); color: #ffffff; }
 details { margin: .3rem 0; }
 summary { cursor: pointer; color: var(--berry); font-weight: 700; }
 .hint { background: #e6ebf6; border-left: 5px solid var(--sun); padding: .5rem .7rem; margin: .4rem 0; border-radius: 10px; }
 .sol { background: #e8ede9; border-left: 5px solid var(--leaf); padding: .5rem .7rem; margin: .4rem 0; border-radius: 10px; }
-.ans { margin-top: .4rem; font-weight: 800; color: #7f9c87; }
+.ans { margin-top: .4rem; font-weight: 800; color: var(--leaf-ink); }
 .selfcheck { margin-top: .5rem; font-size: .92rem; color: var(--ink-soft); }
 .selfcheck button { margin-left: .4rem; padding: .28rem .65rem; border-radius: 10px; border: 2.5px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; font-weight: 700; }
-.selfcheck button:hover { background: #dfe4ec; }
-.flashmsg { color: #7f9c87; font-weight: 700; }
+.selfcheck button:hover { background: #e8edf2; }
+.flashmsg { color: var(--leaf-ink); font-weight: 700; }
 
 /* ---- 控制列 ---- */
 .ctrl { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; margin: .6rem 0; }
@@ -202,11 +203,11 @@ label { display: block; margin: .5rem 0; font-weight: 600; }
 /* ---- 分析表 ---- */
 .statstable { width: 100%; border-collapse: collapse; font-size: .92rem; }
 .statstable th, .statstable td { text-align: left; padding: .45rem .5rem; border-bottom: 2.5px dashed var(--line); }
-.statstable tr.good td:first-child { color: #7f9c87; font-weight: 700; }
+.statstable tr.good td:first-child { color: var(--leaf-ink); font-weight: 700; }
 .statstable tr.mid td:first-child { color: #6a7486; font-weight: 700; }
 .statstable tr.bad td:first-child { color: var(--berry); font-weight: 700; }
 .statstable tr.na td:first-child { color: var(--ink-soft); }
-.minibar { background: #dfe4ec; height: 10px; border-radius: 999px; overflow: hidden; border: 2.5px solid var(--line); }
+.minibar { background: #e8edf2; height: 10px; border-radius: 999px; overflow: hidden; border: 2.5px solid var(--line); }
 .minibar div { height: 100%; background: var(--leaf); }
 
 .foot { text-align: center; padding: 1.5rem 1rem; border-top: 4px solid var(--line); margin-top: 2rem; color: var(--ink-soft); }
@@ -227,7 +228,7 @@ label { display: block; margin: .5rem 0; font-weight: 600; }
   border-radius: 14px 12px 16px 11px;
   padding: .6rem;
   overflow-x: auto;
-  box-shadow: inset 0 0 0 2px #dfe4ec;
+  box-shadow: inset 0 0 0 2px #e8edf2;
 }
 .diagram { display: block; max-width: 100%; height: auto; margin: 0 auto; }
 .diagcap { margin: .6rem 0 0; font-size: .9rem; }
@@ -240,7 +241,7 @@ label { display: block; margin: .5rem 0; font-weight: 600; }
 .eptags { margin: .4rem 0; font-size: .9rem; color: var(--ink-soft); }
 .eptag {
   display: inline-block; margin: .15rem .2rem; padding: .12rem .55rem;
-  background: #dfe4ec; color: var(--ink); border: 2px solid var(--line);
+  background: #e8edf2; color: var(--ink); border: 2px solid var(--line);
   border-radius: 999px; font-size: .82rem; font-weight: 700;
 }
 .eptag:hover { background: var(--sun); text-decoration: none; }
@@ -267,7 +268,7 @@ label { display: block; margin: .5rem 0; font-weight: 600; }
   font-weight: 700; font-size: .9rem; cursor: pointer;
   box-shadow: 2px 2px 0 rgba(147, 164, 193, .3);
 }
-.subbtn:hover { background: #dfe4ec; }
+.subbtn:hover { background: #e8edf2; }
 .subbtn.on { background: var(--berry); color: #ffffff; border-color: var(--berry); box-shadow: 3px 3px 0 var(--berry); }
 .subicon { vertical-align: middle; flex: 0 0 auto; }
 .subname { line-height: 1; }
@@ -287,7 +288,7 @@ label { display: block; margin: .5rem 0; font-weight: 600; }
 .vpos { color: var(--ink-soft); margin-bottom: .8rem; }
 .vinput { width: 100%; font-size: 1.3rem; text-align: center; letter-spacing: 1px; padding: .6rem; border: 3px solid var(--line); border-radius: 12px; }
 .vbtns { display: flex; gap: .5rem; justify-content: center; flex-wrap: wrap; margin: .8rem 0; }
-.vok { font-size: 1.2rem; font-weight: 800; color: var(--leaf); margin: .5rem 0; }
+.vok { font-size: 1.2rem; font-weight: 800; color: var(--leaf-ink); margin: .5rem 0; }
 .vng { font-size: 1.1rem; font-weight: 800; color: var(--berry); margin: .5rem 0; }
 .vex { margin: .4rem 0; }
 .boxbars { display: grid; gap: .4rem; }
