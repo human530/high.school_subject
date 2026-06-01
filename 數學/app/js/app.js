@@ -837,6 +837,7 @@
       case "settings": viewSettings(); break;
       default: viewDashboard();
     }
+    if (typeof highlightTab === "function") highlightTab();
     window.scrollTo(0, 0);
   }
 
@@ -903,7 +904,7 @@
     router();
   }
 
-  window.addEventListener("hashchange", function () { highlightTab(); });
+  window.addEventListener("hashchange", router);
   window.addEventListener("DOMContentLoaded", boot);
   if (document.readyState !== "loading") boot();
 })();
