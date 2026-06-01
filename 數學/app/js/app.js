@@ -379,10 +379,16 @@
         '</section>';
     }).join("");
 
+    var subj = CURRICULUM.activeSubject && CURRICULUM.activeSubject();
+    var guideLine = subj && subj.guide
+      ? '<p class="muted">📘 考點範圍依據複習講義：<b>' + subj.guide + '</b>　整理學測高頻主題與易錯陷阱。</p>'
+      : '';
+
     app.innerHTML = "";
     app.appendChild(el(
       '<div class="view"><h1>🎯 整合考點</h1>' +
       '<p class="muted">把分散各章的觀念整合成「一個會考的主題」，跨章串連、附整合解題心法與易錯陷阱。★ 越多代表學測越常考。</p>' +
+      guideLine +
       cards + '</div>'
     ));
     renderMath();

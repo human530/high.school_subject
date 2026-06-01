@@ -1,5 +1,5 @@
 /* 物理（學測自然）— 力學、能量、電磁、波動光學、近代物理 */
-CURRICULUM.beginSubject({ id: "physics", name: "物理", icon: "⚛️" });
+CURRICULUM.beginSubject({ id: "physics", name: "物理", icon: "⚛️", guide: "翰林《新大滿貫》" });
 CURRICULUM.addBook({
   id: "ph1",
   title: "物理・學測核心",
@@ -248,5 +248,23 @@ CURRICULUM.addExamPoints([
     insight: "熱量題用 Q=mc∆T 與熱平衡守恆；氣體題分定溫/定壓套對定律；週期運動抓『與什麼有關、與什麼無關』。",
     combo: "混合熱平衡：放熱=吸熱列方程求終溫→氣體變化判斷定溫(波以耳)或定壓(查理)，溫度一律換 K→單擺/彈簧週期套公式並注意無關變數。",
     traps: ["氣體代 PV=nRT 時溫度忘記換成 K", "相變時誤用 mc∆T(應用潛熱 mL)", "誤以為單擺週期與質量或大振幅有關"]
+  }
+]);
+
+/* 依《翰林 新大滿貫》複習講義範圍補充之整合考點 */
+CURRICULUM.addExamPoints([
+  {
+    id: "ph_ep_wave", name: "波動、聲與光整合", freq: 4,
+    chapters: ["ph_wave"],
+    insight: "波的萬用關係是 v=fλ：介質決定波速、波源決定頻率；反射/折射/干涉/繞射都是同一套波行為在不同情境的展現。",
+    combo: "先分清『波速由介質定、頻率由波源定』→ 用 v=fλ 連結三量(換介質時 f 不變、λ 隨 v 變) → 折射看快慢偏向、干涉看路徑差(亮紋差整數波長)。",
+    traps: ["換介質以為頻率改變", "把 v=fλ 中『f 不變』記反", "反射角折射角與法線搞混", "聲波(縱波)與光波(橫波)性質混用"]
+  },
+  {
+    id: "ph_ep_graph", name: "運動圖形與向量判讀整合", freq: 4,
+    chapters: ["ph_kinematics", "ph_energy"],
+    insight: "學測愛考『看圖說運動』：x–t 圖斜率＝速度、v–t 圖斜率＝加速度、v–t 圖面積＝位移；向量題要先拆分量再合成。",
+    combo: "判斷圖種類 → x–t 取斜率得 v、v–t 取斜率得 a、v–t 算面積得位移 → 向量先拆 x、y 分量各自計算再合成(畢氏定理求大小)。",
+    traps: ["x–t 圖斜率誤當位移", "v–t 圖 x 軸下方面積沒取負", "等速與靜止圖形判錯", "向量直接相加沒分量"]
   }
 ]);
