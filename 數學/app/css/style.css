@@ -337,7 +337,8 @@ body { padding-bottom: 74px; }   /* 留給底部分頁列 */
 }
 .tile:hover { transform: translate(-1px, -1px); text-decoration: none; box-shadow: 5px 5px 0 rgba(147, 164, 193, .5); }
 .tile:active { transform: translate(1px, 1px); box-shadow: 2px 2px 0 rgba(147, 164, 193, .5); }
-.tic { font-size: 2rem; line-height: 1; }
+.tic { font-size: 2rem; line-height: 1; display: flex; align-items: center; justify-content: center; }
+.tic svg.tileico { width: 2.5rem; height: 2.5rem; display: block; }
 .tit { font-weight: 800; font-size: 1rem; }
 .tid { font-size: .75rem; color: var(--ink-soft); }
 .tile.t-blue { background: linear-gradient(160deg, #e6ebf6, #ffffff); }

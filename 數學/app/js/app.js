@@ -49,22 +49,24 @@
     var sub = CURRICULUM.activeSubject() || {};
     // 啟動器磁磚（不把功能全列在頂部，改成首頁卡片網格）
     var tiles = [
-      { href: "#learn", icon: "📖", t: "教學", d: "白話＋秒殺解法", c: "t-blue" },
-      { href: "#practice", icon: "✏️", t: "無限練習", d: "參數化題庫", c: "t-red" },
-      { href: "#gsat", icon: "🧠", t: "學測題", d: "歷屆風格題", c: "t-blue" },
-      { href: "#points", icon: "🎯", t: "整合考點", d: "跨章高頻", c: "t-red" },
-      { href: "#exam", icon: "📝", t: "模擬考", d: "學測／段考", c: "t-blue" },
-      { href: "#vocab", icon: "📕", t: "背單字", d: "7000 高頻", c: "t-red" },
-      { href: "#photo", icon: "📷", t: "拍照解題", d: "AI 看圖解", c: "t-blue" },
-      { href: "#analysis", icon: "📊", t: "弱點分析", d: "個人化補強", c: "t-red" }
+      { href: "#learn", k: "learn", icon: "📖", t: "教學", d: "白話＋秒殺解法", c: "t-blue" },
+      { href: "#practice", k: "practice", icon: "✏️", t: "無限練習", d: "參數化題庫", c: "t-red" },
+      { href: "#gsat", k: "gsat", icon: "🧠", t: "學測題", d: "歷屆風格題", c: "t-blue" },
+      { href: "#points", k: "points", icon: "🎯", t: "整合考點", d: "跨章高頻", c: "t-red" },
+      { href: "#exam", k: "exam", icon: "📝", t: "模擬考", d: "學測／段考", c: "t-blue" },
+      { href: "#vocab", k: "vocab", icon: "📕", t: "背單字", d: "7000 高頻", c: "t-red" },
+      { href: "#photo", k: "photo", icon: "📷", t: "拍照解題", d: "AI 看圖解", c: "t-blue" },
+      { href: "#analysis", k: "analysis", icon: "📊", t: "弱點分析", d: "個人化補強", c: "t-red" }
     ];
     // 口語練習為英文專屬功能，僅在英文科目顯示
     if (sub.id === "english") {
-      tiles.splice(7, 0, { href: "#speak", icon: "🎤", t: "口語練習", d: "範讀＋語音評分", c: "t-blue" });
+      tiles.splice(7, 0, { href: "#speak", k: "speak", icon: "🎤", t: "口語練習", d: "範讀＋語音評分", c: "t-blue" });
     }
     var tileHtml = tiles.map(function (x) {
+      // 日系可愛插圖圖標（tileicons.js）；若未載入則退回 emoji
+      var ic = (window.TILEICONS && TILEICONS[x.k]) ? TILEICONS[x.k] : x.icon;
       return '<a class="tile ' + x.c + '" href="' + x.href + '">' +
-        '<span class="tic">' + x.icon + '</span><span class="tit">' + x.t + '</span>' +
+        '<span class="tic">' + ic + '</span><span class="tit">' + x.t + '</span>' +
         '<span class="tid">' + x.d + '</span></a>';
     }).join("");
 
