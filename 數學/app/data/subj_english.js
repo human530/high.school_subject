@@ -1,5 +1,5 @@
 /* 英文（學測）— 起始內容：字彙、文法、閱讀測驗、寫作 */
-CURRICULUM.beginSubject({ id: "english", name: "英文", icon: "🔤" });
+CURRICULUM.beginSubject({ id: "english", name: "英文", icon: "🔤", guide: "南一《週攻略》" });
 CURRICULUM.addBook({
   id: "en1",
   title: "English・學測核心",
@@ -286,5 +286,23 @@ CURRICULUM.addExamPoints([
     insight: "克漏字與閱讀大量考連接詞：判斷前後句的轉折/因果/並列，並注意連接詞詞性接法。",
     combo: "判前後邏輯關係 → 選對應連接詞 → 檢查接法(although接子句、despite接名詞、however加分號)。",
     traps: ["although 與 but 同句並用", "however 當對等連接詞誤用", "despite 後誤接子句"]
+  }
+]);
+
+/* 依《南一 週攻略》複習講義範圍補充之整合考點 */
+CURRICULUM.addExamPoints([
+  {
+    id: "en_ep_vocab", name: "高頻字彙與構詞整合", freq: 5,
+    chapters: ["en_vocab", "en_reading"],
+    insight: "學測字彙落在 4500～6000 字，愛考『同義改寫、字根字首推義、固定搭配』；會拆字就能猜出沒背過的字。",
+    combo: "遇生字先拆字根字首字尾(re-/-tion/bio-)推大意 → 用上下文正負語氣縮小範圍 → 選同義且搭配正確的字 → 回填確認語意通順。",
+    traps: ["只記中文對應、忽略詞性", "形近字混淆(adapt/adopt/adept)", "搭配詞背錯(make/do/take)", "字根亂套不看語境"]
+  },
+  {
+    id: "en_ep_writing", name: "翻譯與英文寫作整合", freq: 5,
+    chapters: ["en_writing", "en_grammar"],
+    insight: "非選的中譯英與作文，分數在『句構正確＋連貫達意』：先用簡單但對的句型保底，再用連接詞與例證把段落撐起來。",
+    combo: "中譯英→先抓主詞動詞定句型、套常用句構(It is…that／not only…but also)；作文→破題表態→分段舉例(時間/對比連接詞)→結論呼應，寧簡勿錯。",
+    traps: ["逐字直譯成中式英文", "時態與主動詞一致性出錯", "句子寫太長導致結構崩壞", "段落缺連接詞、論點無例證"]
   }
 ]);

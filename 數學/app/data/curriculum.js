@@ -15,12 +15,13 @@ window.CURRICULUM = {
   beginSubject: function (meta) {
     var s = this._byId[meta.id];
     if (!s) {
-      s = { id: meta.id, name: meta.name, icon: meta.icon || "📘", books: [], exampoints: [] };
+      s = { id: meta.id, name: meta.name, icon: meta.icon || "📘", guide: meta.guide || "", books: [], exampoints: [] };
       this._byId[meta.id] = s;
       this.subjects.push(s);
     } else {
       if (meta.name) s.name = meta.name;
       if (meta.icon) s.icon = meta.icon;
+      if (meta.guide) s.guide = meta.guide;
     }
     this._building = s.id;
     if (!this.active) this.active = s.id;

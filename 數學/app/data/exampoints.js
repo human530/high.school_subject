@@ -115,7 +115,7 @@ var MATHA_EXAMPOINTS = [
 
 // 註冊到數A 科目；並設為當前全域 EXAMPOINTS（向後相容）
 if (window.CURRICULUM && CURRICULUM.beginSubject) {
-  CURRICULUM.beginSubject({ id: "matha", name: "數學A", icon: "📐" });
+  CURRICULUM.beginSubject({ id: "matha", name: "數學A", icon: "📐", guide: "晟景《對話式數學學測複習講義》" });
   CURRICULUM.addExamPoints(MATHA_EXAMPOINTS);
 }
 window.EXAMPOINTS = MATHA_EXAMPOINTS;
