@@ -299,6 +299,18 @@ label { display: block; margin: .5rem 0; font-weight: 600; }
 .wrongwords li { padding: .35rem .2rem; border-bottom: 2px dashed var(--line); }
 .wcount { color: var(--berry); font-size: .82rem; float: right; }
 
+/* ---- 口語練習 ---- */
+.speakcard { text-align: center; }
+.speaken { font-size: 1.5rem; font-weight: 800; color: var(--ink); margin: .5rem 0 .2rem; line-height: 1.4; }
+.speaktip { font-size: .9rem; margin: .3rem 0 .2rem; }
+.speakscore { margin-top: .6rem; text-align: left; }
+.speakcompare { font-size: 1.3rem; font-weight: 700; line-height: 1.7; margin: .3rem 0; }
+.speakcompare .wmatch { color: var(--leaf-ink); }
+.speakcompare .wmiss { color: var(--berry); text-decoration: underline wavy var(--berry); }
+.speakmsg { margin-top: .4rem; font-weight: 700; }
+.qbtn.rec-on, button.rec-on { background: var(--berry) !important; border-color: var(--berry); color: #fff; animation: recpulse 1s ease-in-out infinite; }
+@keyframes recpulse { 0%, 100% { box-shadow: 4px 4px 0 var(--line); } 50% { box-shadow: 4px 4px 0 var(--berry); transform: translateY(-1px); } }
+
 /* ============================================================
  * 首頁布局：磁磚啟動器 + 底部分頁列（不把功能全列頂部）
  * ============================================================ */

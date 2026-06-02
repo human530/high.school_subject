@@ -58,6 +58,10 @@
       { href: "#photo", icon: "📷", t: "拍照解題", d: "AI 看圖解", c: "t-blue" },
       { href: "#analysis", icon: "📊", t: "弱點分析", d: "個人化補強", c: "t-red" }
     ];
+    // 口語練習為英文專屬功能，僅在英文科目顯示
+    if (sub.id === "english") {
+      tiles.splice(7, 0, { href: "#speak", icon: "🎤", t: "口語練習", d: "範讀＋語音評分", c: "t-blue" });
+    }
     var tileHtml = tiles.map(function (x) {
       return '<a class="tile ' + x.c + '" href="' + x.href + '">' +
         '<span class="tic">' + x.icon + '</span><span class="tit">' + x.t + '</span>' +
@@ -533,6 +537,10 @@
       Math.min(q.newCount, vocabOpts().newPerDay) + '</b> 字　|　今日已背 ' + s.todayDone + ' 字　🔥 連續 ' + s.streak + ' 天</p>' +
       '<a class="qbtn big" href="#vocab/study">▶ 開始今日背誦（' + q.queue.length + ' 字）</a></section>' +
 
+      '<section class="panel"><h2>🎤 口語練習</h2>' +
+      '<p class="muted">用真人語音範讀＋手機語音辨識評分，跟著念出日常會話與學測句型，練發音與口說流利度。</p>' +
+      '<a class="qbtn" href="#speak">▶ 開始口語練習</a></section>' +
+
       '<div class="cards">' +
       '<div class="card stat"><div class="big">' + s.learned + '</div><div>已學單字</div></div>' +
       '<div class="card stat"><div class="big">' + s.mastered + '</div><div>已精熟(≥7天)</div></div>' +
@@ -654,6 +662,151 @@
       input.focus();
     };
     input.onkeydown = function (e) { if (e.key === "Enter") { if (done) { st.i++; nextVocab(); } else grade(false); } };
+  }
+
+  /* ============================================================
+   * 口語練習（英文）：TTS 範讀 + 瀏覽器語音辨識評分（離線可用）
+   * ============================================================ */
+  var SpeakState = { list: [], i: 0, cat: "全部", recog: null, listening: false };
+
+  function speakStats() {
+    try { return JSON.parse(localStorage.getItem("speak_stats") || "{}"); } catch (e) { return {}; }
+  }
+  function saveSpeakStats(s) { try { localStorage.setItem("speak_stats", JSON.stringify(s)); } catch (e) { } }
+  function speakNorm(s) { return (s || "").toLowerCase().replace(/[^a-z0-9'\s]/g, " ").replace(/\s+/g, " ").trim(); }
+  function speakEsc(s) { return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  function speakTTS(text, rate) {
+    if (!("speechSynthesis" in window)) return false;
+    try {
+      window.speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(text);
+      u.lang = "en-US"; u.rate = rate || 0.95; u.pitch = 1;
+      var vs = window.speechSynthesis.getVoices() || [];
+      var v = vs.filter(function (x) { return /en[-_]US/i.test(x.lang); })[0] || vs.filter(function (x) { return /^en/i.test(x.lang); })[0];
+      if (v) u.voice = v;
+      window.speechSynthesis.speak(u);
+      return true;
+    } catch (e) { return false; }
+  }
+  // 把使用者說的句子和目標句逐字比對，回傳分數與上色 HTML
+  function speakScore(targetEn, said) {
+    var targTokens = targetEn.split(/\s+/);
+    var pool = speakNorm(said).split(" ").filter(Boolean);
+    var matched = 0, denom = 0;
+    var html = targTokens.map(function (tok) {
+      var n = speakNorm(tok);
+      if (!n) return speakEsc(tok);
+      denom++;
+      var idx = pool.indexOf(n);
+      var ok = idx >= 0;
+      if (ok) { pool.splice(idx, 1); matched++; }
+      return '<span class="' + (ok ? "wmatch" : "wmiss") + '">' + speakEsc(tok) + "</span>";
+    }).join(" ");
+    return { score: denom ? Math.round(matched / denom * 100) : 0, html: html };
+  }
+
+  function viewSpeak() {
+    var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    var hasSTT = !!SR, hasTTS = ("speechSynthesis" in window);
+    var all = window.SPEAKING || [];
+    var cats = ["全部"].concat(all.map(function (x) { return x.cat; }).filter(function (c, i, a) { return a.indexOf(c) === i; }));
+    if (SpeakState.cat !== "全部" && cats.indexOf(SpeakState.cat) < 0) SpeakState.cat = "全部";
+    SpeakState.list = SpeakState.cat === "全部" ? all.slice() : all.filter(function (x) { return x.cat === SpeakState.cat; });
+    if (SpeakState.i >= SpeakState.list.length) SpeakState.i = 0;
+
+    var st = speakStats();
+    var avg = st.count ? Math.round(st.sum / st.count) : null;
+    var catOpts = cats.map(function (c) { return '<option value="' + c + '"' + (c === SpeakState.cat ? " selected" : "") + '>' + c + "</option>"; }).join("");
+    var support = hasSTT
+      ? '<p class="muted">🎤 跟著範讀念出句子，按「開始說」由語音辨識評分。建議在安靜環境、允許麥克風權限。</p>'
+      : '<p class="bad">⚠️ 這個瀏覽器或環境不支援語音辨識（建議用手機／電腦版 Chrome，且需在 https 網站）。仍可使用 🔊 範讀＋自我跟讀，並用下方「我念對了／要再練」記錄進度。</p>';
+
+    app.innerHTML = "";
+    app.appendChild(el(
+      '<div class="view"><a class="back" href="#vocab">← 回背單字</a>' +
+      '<h1>🎤 英文口語練習</h1>' + support +
+      '<div class="ctrl"><label style="margin:0">主題：</label><select id="spkCat">' + catOpts + "</select>" +
+      '<span class="muted mini">' + (avg === null ? "尚未練習" : "平均分 " + avg + "　·　已練 " + st.count + " 句") + "</span></div>" +
+      '<section class="panel vocabcard speakcard">' +
+      '<div class="vpos" id="spkCatTag"></div>' +
+      '<div class="speaken" id="spkEn"></div>' +
+      '<div class="vzh" id="spkZh"></div>' +
+      '<div class="speaktip muted" id="spkTip"></div>' +
+      '<div class="vbtns">' +
+      (hasTTS ? '<button class="qbtn" id="spkPlay">🔊 範讀</button><button class="ghost" id="spkSlow">🐢 慢速</button>' : "") +
+      (hasSTT ? '<button class="qbtn" id="spkRec">🎤 開始說</button>' : "") +
+      '</div>' +
+      '<div id="spkResult"></div>' +
+      (hasSTT ? "" : '<div class="selfcheck">自我評估：<button id="spkSelfOk">✅ 我念對了</button><button id="spkSelfNg">🔁 要再練</button></div>') +
+      '<div class="vbtns"><button class="ghost" id="spkPrev">← 上一句</button><button class="qbtn" id="spkNext">下一句 →</button></div>' +
+      '</section></div>'
+    ));
+
+    function render() {
+      var it = SpeakState.list[SpeakState.i];
+      if (!it) { $("#spkEn").textContent = "（此主題暫無句子）"; return; }
+      $("#spkCatTag").innerHTML = '<span class="badge">' + it.cat + "</span>　第 " + (SpeakState.i + 1) + " / " + SpeakState.list.length + " 句";
+      $("#spkEn").textContent = it.en;
+      $("#spkZh").textContent = it.zh;
+      $("#spkTip").textContent = it.tip ? "💡 " + it.tip : "";
+      $("#spkResult").innerHTML = "";
+    }
+    function recordScore(score) {
+      var s = speakStats(); s.count = (s.count || 0) + 1; s.sum = (s.sum || 0) + score;
+      if (score > (s.best || 0)) s.best = score; saveSpeakStats(s);
+    }
+    function stopRec() {
+      SpeakState.listening = false;
+      if (SpeakState.recog) { try { SpeakState.recog.stop(); } catch (e) { } }
+      var b = $("#spkRec"); if (b) { b.textContent = "🎤 開始說"; b.classList.remove("rec-on"); }
+    }
+
+    $("#spkCat").onchange = function () { SpeakState.cat = this.value; SpeakState.i = 0; stopRec(); viewSpeak(); };
+    $("#spkNext").onclick = function () { stopRec(); SpeakState.i = (SpeakState.i + 1) % SpeakState.list.length; render(); };
+    $("#spkPrev").onclick = function () { stopRec(); SpeakState.i = (SpeakState.i - 1 + SpeakState.list.length) % SpeakState.list.length; render(); };
+    if ($("#spkPlay")) $("#spkPlay").onclick = function () { speakTTS(SpeakState.list[SpeakState.i].en, 0.95); };
+    if ($("#spkSlow")) $("#spkSlow").onclick = function () { speakTTS(SpeakState.list[SpeakState.i].en, 0.6); };
+    if ($("#spkSelfOk")) $("#spkSelfOk").onclick = function () { recordScore(100); $("#spkResult").innerHTML = '<div class="sol">已記錄一次成功跟讀 👍</div>'; };
+    if ($("#spkSelfNg")) $("#spkSelfNg").onclick = function () { recordScore(50); $("#spkResult").innerHTML = '<div class="hint">已記錄，多聽幾次範讀再念一次！</div>'; };
+
+    if (hasSTT && $("#spkRec")) {
+      $("#spkRec").onclick = function () {
+        if (SpeakState.listening) { stopRec(); return; }
+        var it = SpeakState.list[SpeakState.i];
+        var rec = new SR(); SpeakState.recog = rec;
+        rec.lang = "en-US"; rec.interimResults = false; rec.maxAlternatives = 3;
+        SpeakState.listening = true;
+        this.textContent = "● 聆聽中…（再按停止）"; this.classList.add("rec-on");
+        $("#spkResult").innerHTML = '<div class="muted mini">請開始說…</div>';
+        rec.onresult = function (ev) {
+          var best = null, bestScore = -1, heard = "";
+          for (var i = 0; i < ev.results[0].length; i++) {
+            var alt = ev.results[0][i].transcript;
+            var r = speakScore(it.en, alt);
+            if (r.score > bestScore) { bestScore = r.score; best = r; heard = alt; }
+          }
+          recordScore(bestScore);
+          var msg = bestScore >= 85 ? "🌟 很棒！幾乎完全正確" : (bestScore >= 60 ? "👍 不錯，再把紅字的地方加強" : "💪 再聽一次範讀，放慢念清楚");
+          $("#spkResult").innerHTML =
+            '<div class="panel speakscore"><div class="vok">得分 ' + bestScore + ' 分</div>' +
+            '<div class="speakcompare">' + best.html + "</div>" +
+            '<div class="muted mini">你說的：' + speakEsc(heard) + "</div>" +
+            '<div class="speakmsg">' + msg + "</div></div>";
+        };
+        rec.onerror = function (ev) {
+          $("#spkResult").innerHTML = '<div class="hint">語音辨識失敗（' + (ev.error || "未知") + "）。請確認已允許麥克風權限，並在安靜環境再試一次。</div>";
+          stopRec();
+        };
+        rec.onend = function () { stopRec(); };
+        try { rec.start(); } catch (e) { stopRec(); }
+      };
+    }
+
+    // 預載語音清單（部分瀏覽器需先觸發）
+    if (hasTTS && window.speechSynthesis.getVoices().length === 0) {
+      window.speechSynthesis.onvoiceschanged = function () { };
+    }
+    render();
   }
 
   /* ============================================================
@@ -840,6 +993,7 @@
       case "analysis": viewAnalysis(); break;
       case "photo": viewPhoto(); break;
       case "vocab": viewVocab(parts[1]); break;
+      case "speak": viewSpeak(); break;
       case "settings": viewSettings(); break;
       default: viewDashboard();
     }
