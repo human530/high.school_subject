@@ -538,8 +538,8 @@
       '<a class="qbtn big" href="#vocab/study">▶ 開始今日背誦（' + q.queue.length + ' 字）</a></section>' +
 
       '<section class="panel"><h2>🎤 口語練習</h2>' +
-      '<p class="muted">用真人語音範讀＋手機語音辨識評分，跟著念出日常會話與學測句型，練發音與口說流利度。</p>' +
-      '<a class="qbtn" href="#speak">▶ 開始口語練習</a></section>' +
+      '<p class="muted">用真人語音範讀＋手機語音辨識評分，練發音與口說流利度：<b>單句跟讀</b>背句型，<b>情境對話</b>沉浸式多輪練習。</p>' +
+      '<a class="qbtn" href="#speak">▶ 單句跟讀</a> <a class="qbtn" href="#dialog">💬 情境對話</a></section>' +
 
       '<div class="cards">' +
       '<div class="card stat"><div class="big">' + s.learned + '</div><div>已學單字</div></div>' +
@@ -724,7 +724,9 @@
     app.innerHTML = "";
     app.appendChild(el(
       '<div class="view"><a class="back" href="#vocab">← 回背單字</a>' +
-      '<h1>🎤 英文口語練習</h1>' + support +
+      '<h1>🎤 英文口語練習</h1>' +
+      '<div class="speakmodes"><span class="modeon">單句跟讀</span><a class="modeoff" href="#dialog">情境對話 →</a></div>' +
+      support +
       '<div class="ctrl"><label style="margin:0">主題：</label><select id="spkCat">' + catOpts + "</select>" +
       '<span class="muted mini">' + (avg === null ? "尚未練習" : "平均分 " + avg + "　·　已練 " + st.count + " 句") + "</span></div>" +
       '<section class="panel vocabcard speakcard">' +
@@ -807,6 +809,124 @@
       window.speechSynthesis.onvoiceschanged = function () { };
     }
     render();
+  }
+
+  /* ============================================================
+   * 情境對話：多輪對話，對方由 App 範讀、輪到你時語音評分
+   * ============================================================ */
+  function viewDialogList() {
+    var dlgs = window.DIALOGUES || [];
+    var cards = dlgs.map(function (d) {
+      var youTurns = d.turns.filter(function (t) { return t.who === "you"; }).length;
+      return '<a class="chapcard" href="#dialog/' + d.id + '">' +
+        '<div class="ct">' + d.title + '</div>' +
+        '<div class="tags"><span>' + d.cat + '</span><span>' + d.turns.length + ' 輪</span><span>你說 ' + youTurns + ' 句</span></div>' +
+        '<div class="muted mini">' + d.scene + '</div></a>';
+    }).join("");
+    app.innerHTML = "";
+    app.appendChild(el(
+      '<div class="view"><a class="back" href="#vocab">← 回背單字</a>' +
+      '<h1>💬 情境對話練習</h1>' +
+      '<div class="speakmodes"><a class="modeoff" href="#speak">← 單句跟讀</a><span class="modeon">情境對話</span></div>' +
+      '<p class="muted">選一個情境，對方的話由 App 念給你聽，輪到你時看中文提示開口說，App 即時評分。沉浸式練口說。</p>' +
+      '<div class="chaplist">' + cards + '</div></div>'
+    ));
+  }
+
+  var DlgState = { dlg: null, i: 0, scores: [], recog: null, listening: false };
+
+  function viewDialog(id) {
+    var dlg = (window.DIALOGUES || []).filter(function (d) { return d.id === id; })[0];
+    if (!dlg) { viewDialogList(); return; }
+    var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    var hasSTT = !!SR, hasTTS = ("speechSynthesis" in window);
+    DlgState = { dlg: dlg, i: 0, scores: [], recog: null, listening: false };
+
+    app.innerHTML = "";
+    app.appendChild(el(
+      '<div class="view"><a class="back" href="#dialog">← 回對話列表</a>' +
+      '<h1>💬 ' + dlg.title + '</h1>' +
+      '<p class="muted">📍 ' + dlg.scene + '</p>' +
+      (hasSTT ? '' : '<p class="bad mini">⚠️ 此環境不支援語音辨識，輪到你時可改用「我念好了」記錄，仍可聽範讀。</p>') +
+      '<div class="dlgchat" id="dlgChat"></div>' +
+      '<section class="panel dlgctrl" id="dlgCtrl"></section>' +
+      '</div>'
+    ));
+
+    var chat = $("#dlgChat"), ctrl = $("#dlgCtrl");
+    function bubble(side, en, zh, scoreHtml) {
+      var b = el('<div class="bubble ' + side + '">' +
+        '<div class="b-en">' + (scoreHtml || speakEsc(en)) + '</div>' +
+        '<div class="b-zh">' + speakEsc(zh) + '</div></div>');
+      chat.appendChild(b); b.scrollIntoView({ block: "end" });
+    }
+    function stop() {
+      DlgState.listening = false;
+      if (DlgState.recog) { try { DlgState.recog.stop(); } catch (e) { } }
+    }
+    function finish() {
+      stop();
+      var avg = DlgState.scores.length ? Math.round(DlgState.scores.reduce(function (a, b) { return a + b; }, 0) / DlgState.scores.length) : 0;
+      var s = speakStats(); s.count = (s.count || 0) + DlgState.scores.length;
+      s.sum = (s.sum || 0) + DlgState.scores.reduce(function (a, b) { return a + b; }, 0);
+      if (avg > (s.best || 0)) s.best = avg; saveSpeakStats(s);
+      ctrl.innerHTML = '<h2>🎉 對話完成！</h2>' +
+        (DlgState.scores.length ? '<div class="vok">本次平均 ' + avg + ' 分</div>' : '') +
+        '<div class="vbtns"><a class="qbtn" href="#dialog/' + dlg.id + '">重新練一次 ↻</a>' +
+        '<a class="ghost" href="#dialog">換個情境 →</a></div>';
+    }
+    function step() {
+      var t = dlg.turns[DlgState.i];
+      if (!t) { finish(); return; }
+      if (t.who === "partner") {
+        bubble("partner", t.en, t.zh);
+        if (hasTTS) speakTTS(t.en, 0.95);
+        ctrl.innerHTML = '<div class="muted mini">對方說話中…</div>' +
+          '<div class="vbtns">' + (hasTTS ? '<button class="ghost" id="dlgReplay">🔊 再聽一次</button>' : '') +
+          '<button class="qbtn" id="dlgGo">繼續 ▶</button></div>';
+        if ($("#dlgReplay")) $("#dlgReplay").onclick = function () { speakTTS(t.en, 0.95); };
+        $("#dlgGo").onclick = function () { DlgState.i++; step(); };
+      } else {
+        ctrl.innerHTML = '<div class="dlgprompt">🗣️ 換你說：<b>' + speakEsc(t.zh) + '</b></div>' +
+          (t.tip ? '<div class="muted mini">💡 ' + speakEsc(t.tip) + '</div>' : '') +
+          '<div class="vbtns">' +
+          (hasTTS ? '<button class="ghost" id="dlgHint">🔊 聽範讀</button>' : '') +
+          (hasSTT ? '<button class="qbtn" id="dlgSay">🎤 我來說</button>'
+            : '<button class="qbtn" id="dlgSelf">✅ 我念好了</button>') +
+          '<button class="ghost" id="dlgSkip">略過 ⏭</button></div>' +
+          '<div id="dlgSayResult"></div>';
+        if ($("#dlgHint")) $("#dlgHint").onclick = function () { speakTTS(t.en, 0.9); };
+        if ($("#dlgSkip")) $("#dlgSkip").onclick = function () { stop(); bubble("you", t.en, t.zh); DlgState.i++; step(); };
+        if ($("#dlgSelf")) $("#dlgSelf").onclick = function () { DlgState.scores.push(100); bubble("you", t.en, t.zh); DlgState.i++; step(); };
+        if (hasSTT && $("#dlgSay")) {
+          $("#dlgSay").onclick = function () {
+            if (DlgState.listening) { stop(); return; }
+            var rec = new SR(); DlgState.recog = rec;
+            rec.lang = "en-US"; rec.interimResults = false; rec.maxAlternatives = 3;
+            DlgState.listening = true;
+            this.textContent = "● 聆聽中…"; this.classList.add("rec-on");
+            rec.onresult = function (ev) {
+              var best = null, bestScore = -1, heard = "";
+              for (var k = 0; k < ev.results[0].length; k++) {
+                var alt = ev.results[0][k].transcript;
+                var r = speakScore(t.en, alt);
+                if (r.score > bestScore) { bestScore = r.score; best = r; heard = alt; }
+              }
+              DlgState.scores.push(bestScore);
+              bubble("you", t.en, t.zh, best.html + '<div class="muted mini">你說：' + speakEsc(heard) + '　·　' + bestScore + ' 分</div>');
+              DlgState.i++; step();
+            };
+            rec.onerror = function (ev) {
+              var r = $("#dlgSayResult"); if (r) r.innerHTML = '<div class="hint mini">辨識失敗（' + (ev.error || "未知") + "）。可再試或按「略過」。</div>";
+              stop(); var bb = $("#dlgSay"); if (bb) { bb.textContent = "🎤 我來說"; bb.classList.remove("rec-on"); }
+            };
+            rec.onend = function () { DlgState.listening = false; var bb = $("#dlgSay"); if (bb) { bb.textContent = "🎤 我來說"; bb.classList.remove("rec-on"); } };
+            try { rec.start(); } catch (e) { stop(); }
+          };
+        }
+      }
+    }
+    step();
   }
 
   /* ============================================================
@@ -994,6 +1114,7 @@
       case "photo": viewPhoto(); break;
       case "vocab": viewVocab(parts[1]); break;
       case "speak": viewSpeak(); break;
+      case "dialog": parts[1] ? viewDialog(parts[1]) : viewDialogList(); break;
       case "settings": viewSettings(); break;
       default: viewDashboard();
     }

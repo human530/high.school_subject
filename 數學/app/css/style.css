@@ -311,6 +311,27 @@ label { display: block; margin: .5rem 0; font-weight: 600; }
 .qbtn.rec-on, button.rec-on { background: var(--berry) !important; border-color: var(--berry); color: #fff; animation: recpulse 1s ease-in-out infinite; }
 @keyframes recpulse { 0%, 100% { box-shadow: 4px 4px 0 var(--line); } 50% { box-shadow: 4px 4px 0 var(--berry); transform: translateY(-1px); } }
 
+/* 口語模式切換（單句 / 對話） */
+.speakmodes { display: flex; gap: .5rem; margin: .2rem 0 .6rem; flex-wrap: wrap; }
+.speakmodes .modeon, .speakmodes .modeoff {
+  padding: .3rem .8rem; border-radius: 12px 14px 11px 15px; font-weight: 700; font-size: .92rem; border: 2.5px solid var(--line);
+}
+.speakmodes .modeon { background: var(--brand); color: #fff; box-shadow: 3px 3px 0 var(--line); }
+.speakmodes .modeoff { background: var(--card); color: var(--ink-soft); }
+.speakmodes .modeoff:hover { background: var(--paper2); text-decoration: none; }
+
+/* 情境對話：聊天泡泡 */
+.dlgchat { display: flex; flex-direction: column; gap: .6rem; margin: 1rem 0; }
+.bubble { max-width: 85%; padding: .6rem .8rem; border: 2.5px solid var(--line); }
+.bubble .b-en { font-size: 1.1rem; font-weight: 700; line-height: 1.5; }
+.bubble .b-zh { font-size: .85rem; color: var(--ink-soft); margin-top: .2rem; }
+.bubble.partner { align-self: flex-start; background: var(--card); border-radius: 4px 18px 18px 18px; box-shadow: 3px 3px 0 rgba(147, 164, 193, .4); }
+.bubble.you { align-self: flex-end; background: linear-gradient(160deg, #dde6f5, #eef1f7); border-radius: 18px 4px 18px 18px; box-shadow: 3px 3px 0 rgba(147, 164, 193, .4); }
+.bubble.you .b-en .wmatch { color: var(--leaf-ink); }
+.bubble.you .b-en .wmiss { color: var(--berry); text-decoration: underline wavy var(--berry); }
+.dlgctrl { text-align: center; }
+.dlgprompt { font-size: 1.05rem; margin-bottom: .3rem; }
+
 /* ============================================================
  * 首頁布局：磁磚啟動器 + 底部分頁列（不把功能全列頂部）
  * ============================================================ */
