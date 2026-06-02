@@ -1,0 +1,194 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <!-- full-bleed app-icon area (no transparent corners) -->
+    <clipPath id="squircle">
+      <rect x="0" y="0" width="512" height="512"/>
+    </clipPath>
+
+    <!-- night sky -->
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="#131c44"/>
+      <stop offset="0.55" stop-color="#1f3061"/>
+      <stop offset="1"   stop-color="#2c4276"/>
+    </linearGradient>
+
+    <!-- desk wood -->
+    <linearGradient id="desk" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="#caa06d"/>
+      <stop offset="1"   stop-color="#a3774a"/>
+    </linearGradient>
+    <linearGradient id="deskShade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0"   stop-color="#2a3866" stop-opacity="0.55"/>
+      <stop offset="0.5" stop-color="#2a3866" stop-opacity="0.0"/>
+      <stop offset="1"   stop-color="#ffcf86" stop-opacity="0.0"/>
+    </linearGradient>
+
+    <!-- warm lamp glow -->
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0"   stop-color="#ffe2a0" stop-opacity="0.95"/>
+      <stop offset="0.45" stop-color="#ffd07a" stop-opacity="0.45"/>
+      <stop offset="1"   stop-color="#ffd07a" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- tablet screen -->
+    <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3f8fe"/>
+      <stop offset="1" stop-color="#dfeaf8"/>
+    </linearGradient>
+
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+  </defs>
+
+  <g clip-path="url(#squircle)">
+    <!-- ===== SKY ===== -->
+    <rect x="0" y="0" width="512" height="512" fill="url(#sky)"/>
+
+    <!-- stars -->
+    <g fill="#ffffff">
+      <circle cx="70"  cy="70"  r="2.4" opacity="0.9"/>
+      <circle cx="120" cy="48"  r="1.6" opacity="0.7"/>
+      <circle cx="168" cy="92"  r="2"   opacity="0.85"/>
+      <circle cx="232" cy="58"  r="1.5" opacity="0.6"/>
+      <circle cx="300" cy="80"  r="2.2" opacity="0.9"/>
+      <circle cx="356" cy="50"  r="1.6" opacity="0.7"/>
+      <circle cx="408" cy="96"  r="1.8" opacity="0.8"/>
+      <circle cx="452" cy="64"  r="1.5" opacity="0.65"/>
+      <circle cx="96"  cy="140" r="1.5" opacity="0.6"/>
+      <circle cx="200" cy="128" r="1.7" opacity="0.7"/>
+      <circle cx="270" cy="150" r="1.4" opacity="0.55"/>
+      <circle cx="384" cy="150" r="1.6" opacity="0.65"/>
+      <circle cx="440" cy="132" r="1.5" opacity="0.6"/>
+    </g>
+    <!-- twinkle sparkles -->
+    <g fill="#ffe9ad">
+      <path d="M148 150 l4 12 12 4 -12 4 -4 12 -4 -12 -12 -4 12 -4 z" opacity="0.95"/>
+      <path d="M330 120 l3 9 9 3 -9 3 -3 9 -3 -9 -9 -3 9 -3 z" opacity="0.9"/>
+      <path d="M412 178 l2.5 7.5 7.5 2.5 -7.5 2.5 -2.5 7.5 -2.5 -7.5 -7.5 -2.5 7.5 -2.5 z" opacity="0.85"/>
+    </g>
+
+    <!-- ===== WINDOW FRAME ===== -->
+    <g>
+      <rect x="36" y="20" width="440" height="300" rx="20" fill="none" stroke="#33457a" stroke-width="16"/>
+      <!-- inner highlight -->
+      <rect x="44" y="28" width="424" height="284" rx="14" fill="none" stroke="#46598f" stroke-width="3" opacity="0.7"/>
+      <!-- mullions -->
+      <rect x="305" y="28" width="12" height="284" fill="#33457a"/>
+      <rect x="44" y="150" width="424" height="12" fill="#33457a"/>
+    </g>
+
+    <!-- ===== DESK ===== -->
+    <rect x="0" y="300" width="512" height="212" fill="url(#desk)"/>
+    <rect x="0" y="300" width="512" height="212" fill="url(#deskShade)"/>
+    <rect x="0" y="300" width="512" height="10" fill="#d8b687" opacity="0.6"/>
+
+    <!-- lamp warm glow (under everything on desk, over desk) -->
+    <ellipse cx="372" cy="300" rx="190" ry="150" fill="url(#glow)" filter="url(#soft)"/>
+
+    <!-- ===== PLANT (left) ===== -->
+    <g>
+      <path d="M70 366 q-18 -46 -4 -70 q12 18 8 46 z" fill="#5ba074"/>
+      <path d="M84 360 q4 -52 26 -66 q4 24 -10 56 z" fill="#6fb583"/>
+      <path d="M92 366 q26 -34 52 -34 q-12 26 -42 40 z" fill="#4f9468"/>
+      <path d="M64 364 h60 l-8 40 q-2 8 -10 8 h-24 q-8 0 -10 -8 z" fill="#eae3d2"/>
+      <path d="M64 364 h60 l-2 12 h-56 z" fill="#d6cdb6"/>
+    </g>
+
+    <!-- ===== TABLET (left-center) ===== -->
+    <g transform="rotate(-6 200 330)">
+      <rect x="120" y="214" width="172" height="150" rx="14" fill="#26314f"/>
+      <rect x="131" y="225" width="150" height="128" rx="7" fill="url(#screen)"/>
+      <!-- header bar -->
+      <rect x="131" y="225" width="150" height="26" rx="7" fill="#4a6fa6"/>
+      <rect x="143" y="234" width="40" height="8" rx="4" fill="#cfe0f3"/>
+      <!-- mini chart -->
+      <rect x="205" y="258" width="64" height="40" rx="5" fill="#eef4fc"/>
+      <path d="M210 292 l14 -16 12 8 18 -22 v30 z" fill="#6ea8dc"/>
+      <path d="M210 292 l14 -16 12 8 18 -22" fill="none" stroke="#3f78b8" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+      <!-- checklist rows -->
+      <g>
+        <rect x="143" y="262" width="13" height="13" rx="3" fill="#5cba8c"/>
+        <path d="M146 268 l3 3 5 -6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="163" y="266" width="34" height="6" rx="3" fill="#c2d2e6"/>
+        <rect x="143" y="284" width="13" height="13" rx="3" fill="#5cba8c"/>
+        <path d="M146 290 l3 3 5 -6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="163" y="288" width="34" height="6" rx="3" fill="#c2d2e6"/>
+        <rect x="143" y="306" width="13" height="13" rx="3" fill="none" stroke="#9db4cf" stroke-width="2"/>
+        <rect x="163" y="310" width="48" height="6" rx="3" fill="#c2d2e6"/>
+        <rect x="143" y="328" width="13" height="13" rx="3" fill="none" stroke="#9db4cf" stroke-width="2"/>
+        <rect x="163" y="332" width="42" height="6" rx="3" fill="#c2d2e6"/>
+      </g>
+    </g>
+
+    <!-- ===== BOOKS (right) ===== -->
+    <g>
+      <rect x="398" y="356" width="92" height="20" rx="4" fill="#33507f"/>
+      <rect x="404" y="338" width="92" height="20" rx="4" fill="#3f8092"/>
+      <rect x="410" y="320" width="80" height="20" rx="4" fill="#5a7fb0"/>
+      <rect x="404" y="361" width="92" height="4" fill="#ffffff" opacity="0.25"/>
+    </g>
+
+    <!-- ===== PENCIL CUP ===== -->
+    <g transform="translate(316 300)">
+      <rect x="0" y="-30" width="6" height="34" rx="3" fill="#e8b84a"/>
+      <rect x="9" y="-38" width="6" height="42" rx="3" fill="#d96b5c"/>
+      <rect x="18" y="-34" width="6" height="38" rx="3" fill="#5fa9c4"/>
+      <path d="M-8 0 h40 l-5 44 q-1 8 -9 8 h-12 q-8 0 -9 -8 z" fill="#33445f"/>
+      <path d="M-8 0 h40 l-1 10 h-38 z" fill="#46597a"/>
+    </g>
+
+    <!-- ===== DESK LAMP (right) ===== -->
+    <g stroke-linecap="round">
+      <ellipse cx="392" cy="486" rx="58" ry="12" fill="#7a5630" opacity="0.5"/>
+      <rect x="360" y="470" width="64" height="14" rx="7" fill="#e7cf9c"/>
+      <path d="M392 470 L392 392" stroke="#e7cf9c" stroke-width="11" fill="none"/>
+      <path d="M392 392 L336 336" stroke="#e7cf9c" stroke-width="11" fill="none"/>
+      <circle cx="392" cy="392" r="9" fill="#d8b87a"/>
+      <g transform="rotate(28 336 336)">
+        <path d="M312 322 h48 a8 8 0 0 1 8 8 l-10 26 h-44 l-10 -26 a8 8 0 0 1 8 -8 z" fill="#f0d9a8"/>
+        <ellipse cx="336" cy="356" rx="22" ry="6" fill="#fff3cf"/>
+      </g>
+    </g>
+
+    <!-- ===== OPEN NOTEBOOK (center-bottom) ===== -->
+    <g transform="rotate(-3 250 430)">
+      <!-- shadow -->
+      <ellipse cx="250" cy="470" rx="170" ry="26" fill="#5e4225" opacity="0.35"/>
+      <!-- cover -->
+      <rect x="104" y="370" width="300" height="104" rx="10" fill="#cdb88a"/>
+      <!-- left page -->
+      <path d="M120 378 h128 v92 h-122 q-6 0 -6 -6 z" fill="#f5ecd5"/>
+      <!-- right page -->
+      <path d="M256 378 h128 q4 0 4 6 v80 q0 6 -6 6 h-126 z" fill="#fbf4e0"/>
+      <!-- center binding -->
+      <rect x="248" y="376" width="10" height="96" fill="#e3d6b2"/>
+      <!-- lines left -->
+      <g stroke="#cdbb8e" stroke-width="2.4">
+        <line x1="134" y1="398" x2="240" y2="398"/>
+        <line x1="134" y1="414" x2="240" y2="414"/>
+        <line x1="134" y1="430" x2="240" y2="430"/>
+        <line x1="134" y1="446" x2="240" y2="446"/>
+      </g>
+      <!-- checklist right -->
+      <g>
+        <rect x="268" y="392" width="12" height="12" rx="3" fill="#5cba8c"/>
+        <path d="M271 398 l3 3 5 -6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="288" y1="398" x2="372" y2="398" stroke="#cdbb8e" stroke-width="2.6"/>
+        <rect x="268" y="414" width="12" height="12" rx="3" fill="#5cba8c"/>
+        <path d="M271 420 l3 3 5 -6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="288" y1="420" x2="372" y2="420" stroke="#cdbb8e" stroke-width="2.6"/>
+        <rect x="268" y="436" width="12" height="12" rx="3" fill="none" stroke="#b7a576" stroke-width="2"/>
+        <line x1="288" y1="442" x2="364" y2="442" stroke="#cdbb8e" stroke-width="2.6"/>
+      </g>
+      <!-- sticky note -->
+      <rect x="120" y="360" width="46" height="40" rx="3" fill="#bcd6f0" transform="rotate(-8 143 380)"/>
+      <!-- pen -->
+      <g transform="rotate(24 300 452)">
+        <rect x="250" y="448" width="120" height="9" rx="4.5" fill="#34507f"/>
+        <path d="M370 448 l16 4.5 -16 4.5 z" fill="#d8b04a"/>
+        <rect x="250" y="448" width="14" height="9" rx="4.5" fill="#22324f"/>
+      </g>
+    </g>
+  </g>
+</svg>
