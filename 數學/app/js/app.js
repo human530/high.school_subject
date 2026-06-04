@@ -56,6 +56,7 @@
       { href: "#exam", icon: "📝", t: "模擬考", d: "學測／段考", c: "t-blue" },
       { href: "#vocab", icon: "📕", t: "背單字", d: "7000 高頻", c: "t-red" },
       { href: "#photo", icon: "📷", t: "拍照解題", d: "AI 看圖解", c: "t-blue" },
+      { href: "#answerstats", icon: "📈", t: "答案統計", d: "近十年題號分析", c: "t-blue" },
       { href: "#analysis", icon: "📊", t: "弱點分析", d: "個人化補強", c: "t-red" }
     ];
     // 口語練習為英文專屬功能，僅在英文科目顯示
@@ -510,6 +511,132 @@
     $("#resetData").onclick = function () {
       if (confirm("確定清除所有練習與成績紀錄？此動作無法復原。")) { ANALYTICS.reset(); viewAnalysis(); }
     };
+    renderMath();
+  }
+
+  /* ============================================================
+   * 學測答案統計：近十年各科選擇題答案的相同/相似題號分析
+   * ============================================================ */
+  function viewAnswerStats(subId) {
+    if (!window.ANSWERSTATS || !window.EXAM_ANSWERS) {
+      app.innerHTML = '<div class="view"><h1>📈 學測答案統計</h1><p class="muted">答案資料載入中…請重新整理。</p></div>';
+      return;
+    }
+    var list = ANSWERSTATS.subjectList();
+    if (!list.length) {
+      app.innerHTML = '<div class="view"><h1>📈 學測答案統計</h1><p class="muted">尚無答案資料。</p></div>';
+      return;
+    }
+    // 預設用目前選中的科目；若該科無資料則退回第一個有資料的科目
+    var pick = subId || CURRICULUM.active;
+    if (!list.filter(function (s) { return s.id === pick; }).length) pick = list[0].id;
+
+    var data = ANSWERSTATS.analyze(pick);
+    var meta = EXAM_ANSWERS.meta || {};
+
+    var subOpts = list.map(function (s) {
+      return '<option value="' + s.id + '"' + (s.id === pick ? ' selected' : '') + '>' + s.name + '（' + s.years + ' 年）' + (s.verified ? '' : ' ⚠未校正') + '</option>';
+    }).join("");
+
+    // 整卷選項偏好長條
+    var maxOpt = Math.max.apply(null, data.optionRows.map(function (r) { return r.count; }).concat([1]));
+    var optBars = data.optionRows.map(function (r) {
+      return '<div class="boxrow"><span class="boxlab">選項 ' + r.opt + '</span>' +
+        '<div class="minibar"><div style="width:' + Math.round(r.count / maxOpt * 100) + '%"></div></div>' +
+        '<span class="boxnum">' + r.count + ' 次（' + Math.round(r.pct * 100) + '%）</span></div>';
+    }).join("");
+    var topOpt = data.optionRows[0];
+
+    // 各題號穩定度表（各年答案＋眾數＋重複率＋最長連續）
+    var qRows = data.perQuestion.map(function (q) {
+      var pct = Math.round(q.repeatRate * 100);
+      var cls = q.repeatRate >= 0.7 ? "good" : (q.repeatRate >= 0.5 ? "mid" : "na");
+      var cells = data.years.map(function (yr) {
+        var hit = q.seq.filter(function (s) { return s.year === yr; })[0];
+        var a = hit ? hit.a : "—";
+        var same = hit && q.mode && hit.a === q.mode;
+        return '<span class="ascell' + (same ? ' amode' : '') + '">' + a + '</span>';
+      }).join("");
+      return '<tr class="' + cls + '"><td>第 ' + q.n + ' 題</td>' +
+        '<td class="asrow">' + cells + '</td>' +
+        '<td><b>' + (q.mode || '—') + '</b></td>' +
+        '<td>' + pct + '%（' + q.modeCount + '/' + q.total + '）</td>' +
+        '<td>' + q.streak + ' 年</td></tr>';
+    }).join("");
+
+    // 高重複題號（眾數占比高者）
+    var hotTop = data.hot.filter(function (q) { return q.repeatRate >= 0.5; }).slice(0, 8);
+    var hotHtml = hotTop.length
+      ? hotTop.map(function (q) {
+        return '<li><b>第 ' + q.n + ' 題</b>：常見答案 <b>' + q.mode + '</b>　' +
+          Math.round(q.repeatRate * 100) + '% 年份相同（' + q.modeCount + '/' + q.total + '）・最長連續 ' + q.streak + ' 年</li>';
+      }).join("")
+      : '<li class="muted">近十年沒有明顯偏向特定答案的題號（分布平均）。</li>';
+
+    // 相鄰年份相似度
+    var pairRows = data.yearPairs.map(function (p) {
+      var pct = Math.round(p.rate * 100);
+      var cls = p.rate >= 0.5 ? "mid" : "na";
+      return '<tr class="' + cls + '"><td>' + p.from + ' → ' + p.to + '</td>' +
+        '<td>' + p.same + ' / ' + p.total + ' 題相同</td>' +
+        '<td><div class="minibar"><div style="width:' + pct + '%"></div></div></td>' +
+        '<td>' + pct + '%</td></tr>';
+    }).join("");
+    var avgPair = data.yearPairs.length
+      ? Math.round(data.yearPairs.reduce(function (a, p) { return a + p.rate; }, 0) / data.yearPairs.length * 100)
+      : 0;
+
+    var warn = data.subject.verified
+      ? ''
+      : '<div class="panel warnbox"><b>⚠️ 此為示範／未校正資料</b><p class="muted">本科答案尚未逐題核對。正式參考前，請以<b>大考中心官方公布之參考答案</b>為準，' +
+        '並更新 <code>data/exam_answers.js</code> 後將該科 <code>verified</code> 設為 true。' + (data.subject.note ? '<br>' + data.subject.note : '') + '</p></div>';
+
+    app.innerHTML = "";
+    app.appendChild(el(
+      '<div class="view"><h1>📈 學測答案統計</h1>' +
+      '<p class="muted">分析近十年各科學測「選擇題」答案，找出每個題號跨年的答案分布、最常見答案、' +
+      '相同/相似的題號，以及整卷選項偏好，做為複習與作答策略的<b>參考</b>。</p>' +
+      '<p class="muted">資料範圍：' + (meta.yearsLabel || '') + '　·　來源：' + (meta.source || '') + '</p>' +
+
+      '<div class="ctrl"><label>選科目：<select id="asSel">' + subOpts + '</select></label></div>' +
+      warn +
+
+      '<div class="cards">' +
+      '<div class="card stat"><div class="big">' + data.totalYears + '</div><div>收錄年數</div></div>' +
+      '<div class="card stat"><div class="big">' + data.maxQ + '</div><div>分析題數</div></div>' +
+      '<div class="card stat"><div class="big">' + (topOpt ? topOpt.opt : '—') + '</div><div>最常見選項（' + (topOpt ? Math.round(topOpt.pct * 100) : 0) + '%）</div></div>' +
+      '<div class="card stat"><div class="big">' + avgPair + '%</div><div>相鄰年份平均相同率</div></div>' +
+      '</div>' +
+
+      '<section class="panel"><h2>🔥 高重複題號（最常出現同一答案）</h2>' +
+      '<p class="muted">眾數占比高＝該題號近十年常落在同一個選項；可作為「沒把握時的參考傾向」，但仍以解題為主。</p>' +
+      '<ul class="planlist">' + hotHtml + '</ul></section>' +
+
+      '<section class="panel"><h2>📊 整卷選項偏好</h2>' +
+      '<div class="boxbars">' + optBars + '</div>' +
+      '<p class="muted">各選項在近十年所有題目中出現的次數與比例。理論上應接近平均，偏高者代表命題習慣或本示範資料的偏差。</p></section>' +
+
+      '<section class="panel"><h2>🧮 各題號穩定度</h2>' +
+      '<div class="tablewrap"><table class="statstable astable"><thead><tr><th>題號</th>' +
+      '<th>各年答案（' + data.years.join(' / ') + '）</th><th>眾數</th><th>重複率</th><th>最長連續</th></tr></thead>' +
+      '<tbody>' + qRows + '</tbody></table></div>' +
+      '<p class="muted">綠=重複率≥70%・黃=50~69%・灰=分布平均。表中<b>粗體底色</b>格代表該年答案＝眾數。</p></section>' +
+
+      '<section class="panel"><h2>🔁 相鄰年份相似度</h2>' +
+      '<p class="muted">兩相鄰年份「同一題號答案相同」的數量與比例，反映年度之間答案分布的相似程度。</p>' +
+      '<table class="statstable"><thead><tr><th>年份</th><th>相同題數</th><th>相似度</th><th>比例</th></tr></thead>' +
+      '<tbody>' + pairRows + '</tbody></table></section>' +
+
+      '<section class="panel five"><h2>📌 怎麼用這份統計</h2>' +
+      '<ul class="concepts">' +
+      '<li><b>把它當參考、不是答案：</b>學測每年重新命題，過去的分布<u>不保證</u>未來；務必以理解與解題為主。</li>' +
+      '<li><b>檢查作答平衡：</b>若你整份考卷某個選項猜得特別多，對照「整卷選項偏好」可發現異常、回頭檢查。</li>' +
+      '<li><b>沒把握時的微小傾向：</b>真的完全不會、要猜時，可參考該題號的常見答案與整卷最常見選項。</li>' +
+      '<li><b>更新資料：</b>把官方答案填入 <code>data/exam_answers.js</code> 並設 <code>verified=true</code>，統計就會即時更新。</li>' +
+      '</ul></section>' +
+      '</div>'
+    ));
+    $("#asSel").onchange = function () { go("answerstats/" + this.value); };
     renderMath();
   }
 
@@ -991,6 +1118,7 @@
       case "points": viewExamPoints(parts[1]); break;
       case "exam": viewExam(); break;
       case "analysis": viewAnalysis(); break;
+      case "answerstats": viewAnswerStats(parts[1]); break;
       case "photo": viewPhoto(); break;
       case "vocab": viewVocab(parts[1]); break;
       case "speak": viewSpeak(); break;
@@ -1041,7 +1169,7 @@
     { href: "#learn", icon: tabSvg('<path d="M12 6 C9.5 4.3 6 4.2 4 5 V18 C6 17.2 9.5 17.3 12 19 C14.5 17.3 18 17.2 20 18 V5 C18 4.2 14.5 4.3 12 6 Z"/><path d="M12 6 V19"/>'), t: "教學", match: ["learn"] },
     { href: "#practice", icon: tabSvg('<path d="M5.5 18.5 L5 15 L15 5 L19 9 L9 19 L5.5 18.5 Z"/><path d="M13 7 L17 11"/>'), t: "練習", match: ["practice", "gsat", "points", "exam", "photo"] },
     { href: "#vocab", icon: tabSvg('<rect x="4" y="4.5" width="16" height="15" rx="2.2"/><path d="M9 15.5 L12 8.5 L15 15.5"/><path d="M10 13 H14"/>'), t: "單字", match: ["vocab"] },
-    { href: "#analysis", icon: tabSvg('<path d="M4 20 H20"/><path d="M7 18 V12"/><path d="M12 18 V7"/><path d="M17 18 V14"/>'), t: "我的", match: ["analysis", "settings"] }
+    { href: "#analysis", icon: tabSvg('<path d="M4 20 H20"/><path d="M7 18 V12"/><path d="M12 18 V7"/><path d="M17 18 V14"/>'), t: "我的", match: ["analysis", "answerstats", "settings"] }
   ];
   function mountTabBar() {
     var bar = document.getElementById("tabbar");

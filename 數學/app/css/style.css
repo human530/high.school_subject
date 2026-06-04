@@ -210,6 +210,19 @@ label { display: block; margin: .5rem 0; font-weight: 600; }
 .minibar { background: #e8edf2; height: 10px; border-radius: 999px; overflow: hidden; border: 2.5px solid var(--line); }
 .minibar div { height: 100%; background: var(--leaf); }
 
+/* ---- 學測答案統計 ---- */
+.tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.astable { min-width: 540px; }
+.astable .asrow { white-space: nowrap; }
+.ascell {
+  display: inline-block; min-width: 1.5em; text-align: center;
+  margin: 0 1px; padding: .05rem .25rem; border-radius: 6px;
+  font-variant-numeric: tabular-nums; color: var(--ink-soft);
+}
+.ascell.amode { background: var(--leaf); color: #fff; font-weight: 800; }
+.warnbox { border-color: var(--berry); border-style: dashed; background: #f7f3ee; }
+.warnbox b { color: var(--berry); }
+
 .foot { text-align: center; padding: 1.5rem 1rem; border-top: 4px solid var(--line); margin-top: 2rem; color: var(--ink-soft); }
 
 /* KaTeX 載入失敗時，至少把原始式子顯示出來 */
