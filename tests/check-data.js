@@ -9,7 +9,8 @@ var APP = path.join(__dirname, '..', '數學', 'app');
   'data/book1.js', 'data/book2.js', 'data/book3.js', 'data/book4.js', 'data/exampoints.js',
   'data/subj_chinese.js', 'data/subj_english.js', 'data/subj_physics.js',
   'data/subj_chemistry.js', 'data/subj_biology.js', 'data/subj_earth.js',
-  'data/vocab.js', 'js/vocab_srs.js', 'js/diagrams.js', 'js/scoring.js', 'js/analytics.js', 'js/exam.js'
+  'data/vocab.js', 'js/vocab_srs.js', 'js/diagrams.js', 'js/scoring.js', 'js/analytics.js', 'js/exam.js',
+  'data/exam_answers.js', 'js/answerstats.js'
 ].forEach(f => require(path.join(APP, f)));
 CURRICULUM.initActive();
 
@@ -41,6 +42,28 @@ CURRICULUM.subjects.forEach(function (s) {
   if (s.exampoints.length && EXAM.buildExamPoint(s.exampoints[0], 6).items.length < 1) problems.push(s.id + ' 整合考點卷失敗');
 });
 if (!window.VOCAB || window.VOCAB.length < 600) problems.push('vocab 數量異常');
+
+// 學測答案統計：資料源與分析引擎健檢
+if (!window.EXAM_ANSWERS || !Array.isArray(window.EXAM_ANSWERS.subjects) || !window.EXAM_ANSWERS.subjects.length) {
+  problems.push('EXAM_ANSWERS 資料缺失');
+} else {
+  var validOpt = /^[A-E]$/;
+  window.EXAM_ANSWERS.subjects.forEach(function (s) {
+    if (!s.id || !s.name || !Array.isArray(s.years) || !s.years.length) { problems.push('答案資料 ' + (s.id || '?') + ' 結構缺欄位'); return; }
+    var years = {};
+    s.years.forEach(function (y) {
+      if (years[y.year]) problems.push('答案資料 ' + s.id + ' 年份重複 ' + y.year); years[y.year] = 1;
+      if (!Array.isArray(y.answers) || !y.answers.length) problems.push('答案資料 ' + s.id + '/' + y.year + ' 無答案');
+      (y.answers || []).forEach(function (a) { if (a && !validOpt.test(a)) problems.push('答案資料 ' + s.id + '/' + y.year + ' 非法答案 ' + a); });
+    });
+    var an = window.ANSWERSTATS.analyze(s.id);
+    if (!an || !an.perQuestion.length || !an.optionRows.length) problems.push('answerstats 分析 ' + s.id + ' 失敗');
+    an && an.perQuestion.forEach(function (q) {
+      if (q.modeCount > q.total) problems.push('answerstats ' + s.id + ' 第' + q.n + '題 眾數計數異常');
+      if (q.streak > q.total) problems.push('answerstats ' + s.id + ' 第' + q.n + '題 連續數異常');
+    });
+  });
+}
 var vseen = {}; (window.VOCAB || []).forEach(function (x) { if (vseen[x.w]) problems.push('vocab 重複 ' + x.w); vseen[x.w] = 1; if (!x.w || !x.pos || !x.zh || !x.ex || !x.exZh || !(x.lv >= 1 && x.lv <= 6)) problems.push('vocab 缺欄位 ' + x.w); });
 
 console.log('科目 ' + CURRICULUM.subjects.length + ' | 章節 ' + Object.keys(chSeen).length + ' | 考點 ' + Object.keys(epSeen).length + ' | generator ' + Object.keys(window.GENERATORS).length + ' | vocab ' + (window.VOCAB || []).length);
