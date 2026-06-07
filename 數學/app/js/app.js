@@ -49,24 +49,25 @@
     var sub = CURRICULUM.activeSubject() || {};
     // 啟動器磁磚（不把功能全列在頂部，改成首頁卡片網格）
     var tiles = [
-      { href: "#strategy", icon: "🏆", t: "高分攻略", d: "醫科讀書法", c: "t-blue" },
-      { href: "#learn", icon: "📖", t: "教學", d: "白話＋秒殺解法", c: "t-blue" },
-      { href: "#practice", icon: "✏️", t: "無限練習", d: "參數化題庫", c: "t-red" },
-      { href: "#gsat", icon: "🧠", t: "學測題", d: "歷屆風格題", c: "t-blue" },
-      { href: "#points", icon: "🎯", t: "整合考點", d: "跨章高頻", c: "t-red" },
-      { href: "#exam", icon: "📝", t: "模擬考", d: "學測／段考", c: "t-blue" },
-      { href: "#vocab", icon: "📕", t: "背單字", d: "7000 高頻", c: "t-red" },
-      { href: "#photo", icon: "📷", t: "拍照解題", d: "AI 看圖解", c: "t-blue" },
-      { href: "#answerstats", icon: "📈", t: "答案統計", d: "近十年題號分析", c: "t-blue" },
-      { href: "#analysis", icon: "📊", t: "弱點分析", d: "個人化補強", c: "t-red" }
+      { href: "#strategy", k: "strategy", icon: "🏆", t: "高分攻略", d: "醫科讀書法", c: "t-blue" },
+      { href: "#learn", k: "learn", icon: "📖", t: "教學", d: "白話＋秒殺解法", c: "t-blue" },
+      { href: "#practice", k: "practice", icon: "✏️", t: "無限練習", d: "參數化題庫", c: "t-red" },
+      { href: "#gsat", k: "gsat", icon: "🧠", t: "學測題", d: "歷屆風格題", c: "t-blue" },
+      { href: "#points", k: "points", icon: "🎯", t: "整合考點", d: "跨章高頻", c: "t-red" },
+      { href: "#exam", k: "exam", icon: "📝", t: "模擬考", d: "學測／段考", c: "t-blue" },
+      { href: "#vocab", k: "vocab", icon: "📕", t: "背單字", d: "7000 高頻", c: "t-red" },
+      { href: "#photo", k: "photo", icon: "📷", t: "拍照解題", d: "AI 看圖解", c: "t-blue" },
+      { href: "#answerstats", k: "answerstats", icon: "📈", t: "答案統計", d: "近十年題號分析", c: "t-blue" },
+      { href: "#analysis", k: "analysis", icon: "📊", t: "弱點分析", d: "個人化補強", c: "t-red" }
     ];
     // 口語練習為英文專屬功能，僅在英文科目顯示
     if (sub.id === "english") {
-      tiles.splice(8, 0, { href: "#speak", icon: "🎤", t: "口語練習", d: "範讀＋語音評分", c: "t-blue" });
+      tiles.splice(8, 0, { href: "#speak", k: "speak", icon: "🎤", t: "口語練習", d: "範讀＋語音評分", c: "t-blue" });
     }
     var tileHtml = tiles.map(function (x) {
+      var ic = (window.TILEICONS && TILEICONS.has(x.k)) ? TILEICONS.render(x.k, x.icon) : x.icon;
       return '<a class="tile ' + x.c + '" href="' + x.href + '">' +
-        '<span class="tic">' + x.icon + '</span><span class="tit">' + x.t + '</span>' +
+        '<span class="tic">' + ic + '</span><span class="tit">' + x.t + '</span>' +
         '<span class="tid">' + x.d + '</span></a>';
     }).join("");
 
@@ -155,6 +156,12 @@
       '<section class="panel"><h2>💡 核心觀念</h2><ul class="concepts">' +
       c.concepts.map(function (k) { return '<li><b>' + k.h + '：</b>' + k.b + '</li>'; }).join("") +
       '</ul></section>' +
+
+      (c.deep && c.deep.length
+        ? '<section class="panel deep"><h2>🔬 深入講解（學測陷阱 × 解題技巧）</h2><ul class="concepts">' +
+        c.deep.map(function (k) { return '<li><b>' + k.h + '：</b>' + k.b + '</li>'; }).join("") +
+        '</ul></section>'
+        : '') +
 
       '<section class="panel trick"><h2>⚡ 秒殺解法 / 口訣</h2><ul>' +
       c.tricks.map(function (t) { return '<li>' + t + '</li>'; }).join("") +

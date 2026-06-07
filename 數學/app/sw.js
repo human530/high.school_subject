@@ -4,7 +4,7 @@
  *  - 字型/KaTeX/圖示等靜態資產走 cache-first（很少變，省流量）。
  *  - 換版時自動 skipWaiting + claim，配合頁面的 controllerchange 自動重載。
  */
-var CACHE = "math-a-v29";
+var CACHE = "math-a-v30";
 var CORE = [
   "./", "./index.html",
   "./css/style.css",
@@ -16,7 +16,7 @@ var CORE = [
   "./data/speaking.js",
   "./data/exam_answers.js",
   "./data/strategy.js",
-  "./js/generator.js", "./js/diagrams.js", "./js/llm.js", "./js/scoring.js", "./js/analytics.js", "./js/answerstats.js", "./js/exam.js", "./js/app.js",
+  "./js/generator.js", "./js/tileicons.js", "./js/diagrams.js", "./js/llm.js", "./js/scoring.js", "./js/analytics.js", "./js/answerstats.js", "./js/exam.js", "./js/app.js",
   "./manifest.webmanifest",
   "./icons/icon-192.png", "./icons/icon-512.png",
   // KaTeX 本機 vendor（核心檔；字型 woff2 由 fetch handler 動態快取）

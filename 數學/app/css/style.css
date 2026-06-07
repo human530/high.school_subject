@@ -154,6 +154,8 @@ h1, h2, h3 { letter-spacing: -.01em; }
 .back:hover { color: var(--brand); }
 .five { background: var(--brand-soft); border-color: #dbe6ff; }
 .trick { background: var(--warn-soft); border-color: #f4e6c8; }
+.deep { background: var(--good-soft); border-color: #cdeedd; border-left: 3px solid var(--good); }
+.deep h2 { color: var(--good); }
 .concepts li, .formulas li { margin: .45rem 0; }
 .formulas { list-style: none; padding-left: 0; }
 .formulas li { background: var(--bg2); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: .45rem .7rem; }
@@ -356,7 +358,8 @@ body { padding-bottom: 72px; }   /* 留給底部分頁列 */
 }
 .tile:hover { border-color: var(--brand); box-shadow: var(--shadow-md); text-decoration: none; }
 .tile:active { transform: translateY(1px); }
-.tic { font-size: 1.7rem; line-height: 1; }
+.tic { font-size: 1.7rem; line-height: 1; height: 34px; display: flex; align-items: center; justify-content: center; }
+.tic svg.tileic { display: block; width: 34px; height: 34px; }
 .tit { font-weight: 700; font-size: .95rem; color: var(--ink); }
 .tid { font-size: .74rem; color: var(--ink-soft); }
 /* 統一中性磁磚（移除原紅／藍區分，回歸簡約） */
