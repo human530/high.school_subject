@@ -49,6 +49,7 @@
     var sub = CURRICULUM.activeSubject() || {};
     // 啟動器磁磚（不把功能全列在頂部，改成首頁卡片網格）
     var tiles = [
+      { href: "#strategy", icon: "🏆", t: "高分攻略", d: "醫科讀書法", c: "t-blue" },
       { href: "#learn", icon: "📖", t: "教學", d: "白話＋秒殺解法", c: "t-blue" },
       { href: "#practice", icon: "✏️", t: "無限練習", d: "參數化題庫", c: "t-red" },
       { href: "#gsat", icon: "🧠", t: "學測題", d: "歷屆風格題", c: "t-blue" },
@@ -61,13 +62,26 @@
     ];
     // 口語練習為英文專屬功能，僅在英文科目顯示
     if (sub.id === "english") {
-      tiles.splice(7, 0, { href: "#speak", icon: "🎤", t: "口語練習", d: "範讀＋語音評分", c: "t-blue" });
+      tiles.splice(8, 0, { href: "#speak", icon: "🎤", t: "口語練習", d: "範讀＋語音評分", c: "t-blue" });
     }
     var tileHtml = tiles.map(function (x) {
       return '<a class="tile ' + x.c + '" href="' + x.href + '">' +
         '<span class="tic">' + x.icon + '</span><span class="tit">' + x.t + '</span>' +
         '<span class="tid">' + x.d + '</span></a>';
     }).join("");
+
+    // 目標導向：醫科倒數卡（連到高分攻略）
+    var goalHtml = "";
+    if (window.STRATEGY) {
+      var g = STRATEGY.goal, days = STRATEGY.daysToExam();
+      goalHtml =
+        '<section class="goalcard">' +
+        '<div><div class="gtitle">🎯 目標：' + g.school + '</div>' +
+        '<div class="gsub">採計 ' + g.subjects.join("・") + '　·　四科衝 ' + g.targetLevel + ' 級分（各 ' + g.perfectPerSubject + ' 級）</div>' +
+        '<div style="margin-top:.5rem"><a href="#strategy">查看高分攻略與讀書計畫 →</a></div></div>' +
+        '<div class="gright"><div class="gnum">' + days + '</div><div class="glab">天到 ' + STRATEGY.exam.label + '</div></div>' +
+        '</section>';
+    }
 
     app.appendChild(el(
       '<div class="view home">' +
@@ -81,6 +95,8 @@
       '<div class="herometa"><span>已達秒殺 ' + o.masteredChapters + '/' + o.totalChapters + ' 章</span>' +
       '<span>累計練習 ' + o.totalAttempts + ' 題</span></div>' +
       '</section>' +
+
+      goalHtml +
 
       '<section class="tilegrid">' + tileHtml + '</section>' +
 
@@ -97,7 +113,8 @@
    * 教學：章節列表 + 章節詳情
    * ============================================================ */
   function viewLearnList() {
-    var html = '<div class="view"><h1>📖 教學</h1><p class="muted">點章節看：5 歲也懂的白話講解、秒殺解法、公式、經典題與學測題。</p>';
+    var html = '<div class="view"><h1>📖 教學</h1><p class="muted">點章節看：5 歲也懂的白話講解、秒殺解法、公式、經典題與學測題。</p>' +
+      '<section class="panel five"><b>🏆 想最有效率拿高分？</b> 先看 <a href="#strategy">本科高分攻略與讀書計畫</a>，依攻略安排章節順序，再回來逐章精熟。</section>';
     CURRICULUM.books.forEach(function (b) {
       html += '<section class="panel"><h2>' + b.title + '</h2><div class="chaplist">';
       b.chapters.forEach(function (c) {
@@ -1103,6 +1120,80 @@
   }
 
   /* ============================================================
+   * 高分攻略：目標導向（醫科）＋各科技巧＋讀書心法＋時程＋考場 SOP
+   * ============================================================ */
+  function viewStrategy() {
+    if (!window.STRATEGY) {
+      app.innerHTML = '<div class="view"><h1>🏆 高分攻略</h1><p class="muted">攻略資料載入中…請重新整理。</p></div>';
+      return;
+    }
+    var S = window.STRATEGY;
+    var sub = CURRICULUM.activeSubject() || {};
+    var days = S.daysToExam();
+    var g = S.goal;
+
+    var methodHtml = S.methods.map(function (m) {
+      return '<div class="method"><div class="mh"><span class="mic">' + m.icon + '</span>' + m.h + '</div>' +
+        '<div>' + m.b + '</div><div class="mwhy">為什麼有效：' + m.why + '</div></div>';
+    }).join("");
+
+    var timelineHtml = S.timeline.map(function (t) {
+      return '<li><span class="tph">' + t.phase + '</span><span class="twhen">' + t.when + '</span>' +
+        '<ul>' + t.focus.map(function (f) { return '<li>' + f + '</li>'; }).join("") + '</ul></li>';
+    }).join("");
+
+    var tips = S.tipsFor(sub.id);
+    var tipsHtml = tips.length
+      ? tips.map(function (t) { return '<div class="tipitem"><div class="tih">' + t.h + '</div><div class="tib">' + t.b + '</div></div>'; }).join("")
+      : '<p class="muted">此科尚未收錄專屬技巧，先用下方通用心法與時程；可切換上方科目列看其他科技巧。</p>';
+
+    var sciHtml = "";
+    if (S.isScience(sub.id)) {
+      var sl = S.scienceLiteracy;
+      sciHtml = '<section class="panel"><h2>🔬 ' + sl.title + '</h2>' +
+        sl.points.map(function (p) { return '<div class="tipitem"><div class="tih">' + p.h + '</div><div class="tib">' + p.b + '</div></div>'; }).join("") +
+        '<p class="hint">' + sl.tactic + '</p></section>';
+    }
+
+    var cramHtml = '<ul class="checklist">' + S.cram.map(function (c) { return '<li>' + c + '</li>'; }).join("") + '</ul>';
+    var examDayHtml = S.examDay.map(function (e) { return '<div class="tipitem"><div class="tih">' + e.h + '</div><div class="tib">' + e.b + '</div></div>'; }).join("");
+
+    app.innerHTML = "";
+    app.appendChild(el(
+      '<div class="view"><h1>🏆 高分攻略</h1>' +
+      '<p class="muted">以補教名師的視角，把「考取醫學系、衝滿級分」拆成可執行的招式：各科技巧、讀書心法、時程與考場策略。</p>' +
+
+      '<section class="goalbar"><h2>🎯 目標：' + g.school + '</h2>' +
+      '<div>採計 <b>' + g.subjects.join("・") + '</b></div>' +
+      '<div class="gmeta">' +
+      '<div class="gm"><div class="gmnum">' + g.targetLevel + '</div><div class="gmlab">目標總級分</div></div>' +
+      '<div class="gm"><div class="gmnum">' + g.perfectPerSubject + '</div><div class="gmlab">每科滿級</div></div>' +
+      '<div class="gm"><div class="gmnum">' + days + '</div><div class="gmlab">天到' + S.exam.label + '</div></div>' +
+      '</div><p>' + g.note + '</p></section>' +
+
+      '<section class="panel"><h2>📌 ' + (sub.name || "本科") + '高分技巧</h2>' +
+      '<p class="muted mini">切換上方科目列，可看各科專屬技巧。</p>' + tipsHtml + '</section>' +
+
+      sciHtml +
+
+      '<section class="panel"><h2>🧠 五大高分心法（附原理）</h2><div class="methodgrid">' + methodHtml + '</div></section>' +
+
+      '<section class="panel"><h2>🗓️ 一年備考時程</h2><ul class="timeline">' + timelineHtml + '</ul></section>' +
+
+      '<section class="panel"><h2>🔥 考前 30 天衝刺清單</h2>' + cramHtml + '</section>' +
+
+      '<section class="panel"><h2>📝 考場作答 SOP</h2>' + examDayHtml +
+      '<p class="muted mini">沒把握必須猜時，可參考 <a href="#answerstats">答案統計</a> 的整卷選項分布，避免猜題集中某選項。</p></section>' +
+
+      '<section class="panel"><h2>下一步</h2>' +
+      '<a class="qbtn" href="#analysis">看我的弱點分析 →</a> ' +
+      '<a class="qbtn" href="#exam">做一份模考檢測 →</a></section>' +
+      '</div>'
+    ));
+    renderMath();
+  }
+
+  /* ============================================================
    * 路由
    * ============================================================ */
   function router() {
@@ -1120,6 +1211,7 @@
       case "analysis": viewAnalysis(); break;
       case "answerstats": viewAnswerStats(parts[1]); break;
       case "photo": viewPhoto(); break;
+      case "strategy": viewStrategy(); break;
       case "vocab": viewVocab(parts[1]); break;
       case "speak": viewSpeak(); break;
       case "settings": viewSettings(); break;
@@ -1166,7 +1258,7 @@
   }
   var TABS = [
     { href: "#dashboard", icon: tabSvg('<path d="M4 11 L12 4 L20 11"/><path d="M6 10 V20 H18 V10"/>'), t: "首頁", match: ["", "dashboard"] },
-    { href: "#learn", icon: tabSvg('<path d="M12 6 C9.5 4.3 6 4.2 4 5 V18 C6 17.2 9.5 17.3 12 19 C14.5 17.3 18 17.2 20 18 V5 C18 4.2 14.5 4.3 12 6 Z"/><path d="M12 6 V19"/>'), t: "教學", match: ["learn"] },
+    { href: "#learn", icon: tabSvg('<path d="M12 6 C9.5 4.3 6 4.2 4 5 V18 C6 17.2 9.5 17.3 12 19 C14.5 17.3 18 17.2 20 18 V5 C18 4.2 14.5 4.3 12 6 Z"/><path d="M12 6 V19"/>'), t: "教學", match: ["learn", "strategy"] },
     { href: "#practice", icon: tabSvg('<path d="M5.5 18.5 L5 15 L15 5 L19 9 L9 19 L5.5 18.5 Z"/><path d="M13 7 L17 11"/>'), t: "練習", match: ["practice", "gsat", "points", "exam", "photo"] },
     { href: "#vocab", icon: tabSvg('<rect x="4" y="4.5" width="16" height="15" rx="2.2"/><path d="M9 15.5 L12 8.5 L15 15.5"/><path d="M10 13 H14"/>'), t: "單字", match: ["vocab"] },
     { href: "#analysis", icon: tabSvg('<path d="M4 20 H20"/><path d="M7 18 V12"/><path d="M12 18 V7"/><path d="M17 18 V14"/>'), t: "我的", match: ["analysis", "answerstats", "settings"] }
