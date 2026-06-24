@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>英文學習 — 學測滿級分計畫</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- 頂部標題 -->
+  <header class="app-header">
+    <h1 class="app-title">📚 英文學習</h1>
+    <div class="streak-badge" id="streakBadge" title="連續學習天數">
+      <span class="streak-icon">🔥</span>
+      <span id="streakDays">0</span>
+    </div>
+  </header>
+
+  <!-- 分頁切換 -->
+  <nav class="tab-bar">
+    <button class="tab-btn active" data-tab="practice">✏️ 練習</button>
+    <button class="tab-btn" data-tab="stats">📊 統計</button>
+    <button class="tab-btn" data-tab="wrong">📝 錯題本</button>
+  </nav>
+
+  <main class="main-container">
+    <!-- 練習頁 -->
+    <section id="practice" class="tab-content active">
+      <!-- 今日進度條 -->
+      <div class="progress-card">
+        <div class="progress-label">
+          <span>今日進度</span>
+          <span id="progressText">0 / 10</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <!-- 練習卡片 -->
+      <div class="practice-card" id="practiceCard">
+        <div class="card-header">
+          <span class="level-badge" id="levelBadge">Level 1</span>
+          <span class="pos-badge" id="posBadge">n.</span>
+        </div>
+
+        <div class="chinese-display" id="chineseDisplay">
+          載入中...
+        </div>
+
+        <div class="hint-area" id="hintArea"></div>
+
+        <form class="answer-form" id="answerForm" autocomplete="off">
+          <input
+            type="text"
+            id="answerInput"
+            class="answer-input"
+            placeholder="輸入英文拼字..."
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+            required
+          />
+          <button type="submit" class="submit-btn">確認</button>
+        </form>
+
+        <!-- 答對/答錯回饋 -->
+        <div class="feedback" id="feedback"></div>
+      </div>
+
+      <!-- 提示工具列 -->
+      <div class="tool-row">
+        <button class="tool-btn" id="hintBtn" title="顯示首字母提示">💡 提示</button>
+        <button class="tool-btn" id="skipBtn" title="跳過此題">⏭️ 跳過</button>
+      </div>
+    </section>
+
+    <!-- 統計頁 -->
+    <section id="stats" class="tab-content">
+      <h2 class="section-title">學習統計</h2>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-value" id="todayCorrect">0</div>
+          <div class="stat-label">今日答對</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">❌</div>
+          <div class="stat-value" id="todayWrong">0</div>
+          <div class="stat-label">今日答錯</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📖</div>
+          <div class="stat-value" id="totalLearned">0</div>
+          <div class="stat-label">已學單字</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-value" id="accuracyRate">—</div>
+          <div class="stat-label">總正確率</div>
+        </div>
+      </div>
+
+      <h3 class="section-subtitle">熟練度分布</h3>
+      <div class="level-distribution" id="levelDistribution">
+        <!-- 由 JS 動態產生 -->
+      </div>
+
+      <h3 class="section-subtitle">目標進度</h3>
+      <div class="goal-card">
+        <div class="goal-row">
+          <span>學測單字目標(7000)</span>
+          <span id="goalText">0 / 7000</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="goalFill"></div>
+        </div>
+        <p class="goal-hint" id="goalHint">每天 30 分鐘,持續累積!</p>
+      </div>
+
+      <div class="action-row">
+        <button class="danger-btn" id="resetBtn">⚠️ 重置所有資料</button>
+      </div>
+    </section>
+
+    <!-- 錯題本 -->
+    <section id="wrong" class="tab-content">
+      <h2 class="section-title">錯題本</h2>
+      <p class="section-hint">這裡顯示你答錯過的單字,加強複習!</p>
+      <div class="wrong-list" id="wrongList">
+        <!-- 由 JS 動態產生 -->
+      </div>
+    </section>
+  </main>
+
+  <!-- 答對/答錯全螢幕動畫覆蓋層 -->
+  <div class="overlay" id="overlay"></div>
+
+  <script src="words.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
