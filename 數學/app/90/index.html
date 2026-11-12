@@ -1921,10 +1921,326 @@ KG('kl109-n1',C,U3,'2-3-平衡係數','f','平衡下列反應式（係數取最�
 KG('ss110-f8',S,'單元07','07-兩平行線','f','在坐標平面上，有一個圓 $O:x^2+y^2-4x-2y+3=0$ 與兩條直線 $L_1:3x-4y=h$、$L_2:3x-4y=k$。若圓 $O$ 與 $L_1$ 交於 $A$、$B$ 兩點，且圓 $O$ 與 $L_2$ 交於 $C$、$D$ 兩點，且 $A$、$B$、$C$、$D$ 恰好形成一個正方形，則 $h+k$ 為何？',null,'4','圓心 $(2,1)$、$r=\\sqrt2$。內接正方形邊長 2，兩條弦各離圓心 1：$\\dfrac{|6-4-h|}{5}=1$，$h=7$ 或 $-3$，k 是另一個，$h+k=4$。',SS);
 })();
 
+/* ---------- 英文段考模擬卷題庫（仿段考卷：字彙、文法、綜合測驗、閱讀、句型翻譯；範圍 B1 L4–L6＋Basic U3–U4） ---------- */
+var EX={};
+/* 字彙題：[單字, 詞性 n/v/a/d/p, 題幹, 排除當誘答的字, 指定誘答（片語用）] */
+EX.v=[
+["asset","n","Her ability to speak three languages is a great ______ to the company.",["investment","property","possession"]],
+["token","n","He gave her a small gift as a ______ of his thanks.",["symbol","representation","reward"]],
+["format","n","The teacher asked us to send our reports in digital ______, not on paper."],
+["embrace","v","Young people tend to ______ new technology quickly, while some older people are afraid of it.",["create"]],
+["investment","n","Buying a house in this area turned out to be a good ______; its price doubled in ten years.",["asset","property","possession"]],
+["equivalent","a","One US dollar is roughly ______ to 32 Taiwan dollars."],
+["property","n","Please do not touch the paintings; they are the ______ of the museum.",["possession","asset","ownership"]],
+["possession","n","The ring had been in the family's ______ for over a hundred years.",["property","ownership","asset"]],
+["negotiate","v","The workers tried to ______ with the company for higher pay."],
+["transaction","n","Every ______ you make with your credit card is recorded by the bank."],
+["trail","n","The hunters followed the animal's ______ of footprints into the forest."],
+["ensure","v","Please check your answers again to ______ that you haven't made any careless mistakes.",["guarantee","predict"]],
+["exclusive","a","Only members can enter this ______ club."],
+["ownership","n","The ______ of the land was not clear, so the two families went to court.",["property","possession"]],
+["guarantee","v","The shop will ______ to replace the phone if it breaks within a year.",["ensure","manage"]],
+["latitude","n","Taipei is located at a ______ of about 25 degrees north."],
+["abundance","n","Fruit grows in ______ on the island, so it is very cheap there.",["resource"]],
+["resource","n","Water is a precious natural ______ that we must not waste.",["substance","asset","abundance"]],
+["extremely","d","The mountain road is ______ dangerous in heavy rain.",["obviously"]],
+["budget","n","We are traveling on a tight ______, so we will stay in cheap hostels."],
+["folklore","n","In Taiwanese ______, the Kitchen God reports on each family to heaven every year."],
+["broaden","v","Traveling abroad can ______ your view of the world."],
+["sightseeing","n","We spent the whole afternoon ______ in Kyoto, visiting temples and old streets."],
+["take in","p","From the top of the tower, you can ______ the whole view of the city.",null,["carry out","pack up","end up"]],
+["ferry","n","There is no bridge to the island, so visitors have to take a ______."],
+["inland","d","The typhoon moved ______ and brought heavy rain to the central mountains."],
+["steep","a","The path up to the temple is very ______, so take your time and rest often."],
+["awe-inspiring","a","The ______ view of the Grand Canyon left all the tourists speechless.",["heavenly","attractive"]],
+["cliff","n","Don't stand too close to the edge of the ______; you might fall into the sea."],
+["glacier","n","Because of global warming, the ______ is melting faster than ever."],
+["rural","a","Many young people leave ______ areas and move to big cities to find jobs.",["isolated"]],
+["civilization","n","Ancient Egypt gave birth to a great ______ along the Nile River."],
+["isolated","a","The village is so ______ that the nearest store is two hours away by car.",["rural"]],
+["heavenly","a","The cake tasted ______; it was the best I'd ever had.",["attractive"]],
+["sensitive","a","My skin is very ______ to the sun, so I always wear sunscreen.",["keen"]],
+["keen","a","Eagles have ______ eyesight and can spot a rabbit from far away.",["sensitive"]],
+["detect","v","The machine at the airport can ______ metal objects hidden in bags.",["locate"]],
+["item","n","Please list every ______ you want to buy before going to the supermarket.",["product"]],
+["accomplish","v","If you work hard every day, you will ______ your goal."],
+["accomplishment","n","Winning the national contest was a great ______ for our small school.",["reward"]],
+["disease","n","Washing your hands often helps prevent the spread of ______.",["infection"]],
+["infected","a","The doctor cleaned the cut so that it would not get ______."],
+["infect","v","The virus can ______ people through the air.",["poison"]],
+["locate","v","With the help of the map app, we were able to ______ the hotel easily.",["detect"]],
+["location","n","The ______ of the new shop is perfect—it is right next to the MRT station."],
+["reward","n","The dog got a treat as a ______ for finding the lost child.",["token"]],
+["ability","n","Bats have the ______ to find their way in the dark by using sound."],
+["predict","v","Nobody can ______ exactly when the next earthquake will happen."],
+["manage","v","I don't know how she can ______ to work and take care of three kids at the same time."],
+["management","n","Good time ______ is the key to doing well in school."],
+["create","v","The artist used old bottles to ______ a beautiful lamp.",["produce"]],
+["creation","n","The ______ of the new park took more than two years.",["production"]],
+["creative","a","Mary is very ______; she always comes up with new ideas."],
+["expose","v","Parents should not ______ young children to violent video games."],
+["exposure","n","Too much ______ to the sun can damage your skin."],
+["perform","v","Doctors have to ______ the operation as soon as possible."],
+["performance","n","The band's ______ last night was so amazing that the crowd asked for more."],
+["behavior","n","The teacher praised the students for their good ______ during the field trip."],
+["behave","v","Children should learn to ______ politely in public places."],
+["alert","n","Thanks to the earthquake ______ on my phone, I had a few seconds to hide under the table."],
+["complete","a","The new library is not ______ yet; it will open next spring."],
+["assign","v","The teacher will ______ each student a different topic for the report."],
+["assignment","n","I have to hand in my English ______ by Friday."],
+["specific","a","Can you give me a ______ example instead of talking in general terms?"],
+["due to","p","The baseball game was canceled ______ the heavy rain.",null,["even though","close to","as always"]],
+["all of a sudden","p","We were walking in the park when, ______, it started to pour.",null,["due to","close to","even though"]],
+["turn out","p","Don't worry. I'm sure everything will ______ fine in the end.",null,["pack up","carry out","take in"]],
+["come across","p","If you ______ any new words while reading, look them up in the dictionary.",null,["end up","pack up","turn out"]],
+["carry out","p","The scientists will ______ an experiment to test the new medicine.",null,["come along","end up","turn out"]],
+["plastic","a","Please bring your own bag instead of using ______ bags."],
+["convenience","n","For the sake of ______, many people order food online."],
+["eagerly","d","The kids waited ______ for the summer vacation to begin.",["properly"]],
+["eager","a","The new students were ______ to make friends."],
+["surround","v","Tall trees ______ the small lake, making it quiet and peaceful."],
+["surroundings","n","It took the new student a few weeks to get used to his new ______.",["environment"]],
+["drift","v","Without wind, the small boat began to ______ slowly out to sea."],
+["envy","v","Many people ______ her because she seems to have a perfect life."],
+["crowded","a","The night market is always ______ on weekends."],
+["crowd","n","A large ______ gathered in front of the stage to see the singer."],
+["obviously","d","He was ______ tired; he kept yawning during the meeting.",["extremely"]],
+["obvious","a","It was ______ that she was upset, because she didn't say a word all day."],
+["product","n","This new ______ is cheaper and works better than the old model.",["item"]],
+["produce","v","This factory can ______ thousands of plastic bottles a day.",["create"]],
+["consume","v","Americans ______ a huge amount of fast food every year."],
+["consumer","n","Every ______ has the right to know what is in the food they buy."],
+["poisonous","a","Some mushrooms are ______, so never eat wild ones you can't identify.",["harmful"]],
+["poison","v","Chemicals from the factory may ______ the river and kill the fish.",["infect"]],
+["substance","n","Lead is a dangerous ______ that can damage the brain.",["resource"]],
+["recycling","n","______ helps reduce the amount of trash we send to landfills."],
+["recycle","v","We should ______ paper, glass, and cans instead of throwing them away."],
+["harm","n","Smoking does great ______ to your health."],
+["harmful","a","Too much sugar is ______ to children's teeth.",["poisonous"]],
+["environment","n","We should protect the ______ for future generations.",["surroundings"]],
+["properly","d","If you don't throw away batteries ______, they can pollute the soil."],
+["proper","a","Wearing ______ clothes to a job interview is important."],
+["come along","p","Wait here; the next bus will ______ in five minutes.",null,["carry out","pack up","take in"]],
+["pack up","p","It's late. Let's ______ our things and go home.",null,["turn out","come along","come across"]],
+["for a while","p","Let's take a break and rest ______ before we continue.",null,["due to","close to","even though"]],
+["end up","p","If you keep spending money like this, you will ______ having nothing left.",null,["carry out","take in","come across"]],
+["freedom","n","The Statue of Liberty stands for ______ and democracy.",["independence"]],
+["statue","n","There is a bronze ______ of Sun Yat-sen in front of the school.",["monument","landmark"]],
+["remove","v","Please ______ your shoes before you enter the temple."],
+["celebration","n","There will be a big ______ in the square on New Year's Eve."],
+["celebrate","v","Taiwanese people ______ the Moon Festival by having barbecues."],
+["independence","n","The United States declared its ______ from Britain in 1776.",["freedom"]],
+["independent","a","After moving out, she learned to be ______ and take care of herself."],
+["monument","n","This ______ was built to honor the soldiers who died in the war.",["statue","landmark"]],
+["symbolize","v","In Chinese culture, the color red is used to ______ good luck.",["represent"]],
+["symbol","n","The dove is a ______ of peace.",["token","representation"]],
+["firmly","d","She ______ believes that hard work will pay off.",["obviously"]],
+["firm","a","Make sure the ladder stands on ______ ground before you climb it."],
+["represent","v","The fifty stars on the US flag ______ the fifty states.",["symbolize"]],
+["ancient","a","The Great Wall was first built in ______ times, more than two thousand years ago."],
+["slavery","n","Abraham Lincoln worked hard to end ______ in the United States.",["treatment"]],
+["unfair","a","It's ______ that only boys can join the school team."],
+["treatment","n","The workers protested against the poor ______ they received from their boss."],
+["tourism","n","______ is an important industry in Hualien; many hotels depend on visitors."],
+["attraction","n","Sun Moon Lake is a popular tourist ______ in central Taiwan.",["landmark"]],
+["attract","v","The free concert is expected to ______ a large crowd."],
+["attractive","a","The beach is very ______ to tourists because of its white sand.",["heavenly","awe-inspiring"]],
+["landmark","n","Taipei 101 is a famous ______ that people can see from far away.",["monument","attraction","statue"]],
+["globe","n","Climate change affects people all around the ______."],
+["global","a","______ warming is causing sea levels to rise."],
+["even though","p","______ it was raining hard, they still went hiking.",null,["due to","all of a sudden","close to"]],
+["close to","p","The statue weighs ______ 200 tons.",null,["due to","even though","as always"]],
+["over time","p","Practice every day, and your English will improve ______.",null,["due to","even though","close to"]],
+["pay a visit to","p","We will ______ our grandparents in Tainan this weekend.",null,["come across","carry out","end up"]],
+["as always","p","______, Grandma cooked a huge dinner for the whole family.",null,["due to","close to","even though"]]
+];
+
+/* 詞性變化（字彙題的一部分）：[題幹, 正解, 誘答1, 誘答2, 誘答3, 解析] */
+EX.f=[
+["The ______ of plastic bags uses a lot of oil and water.","production","produce","productive","productively","the ___ of → 名詞。production 生產（名詞）；produce 是動詞、productive 是形容詞、productively 是副詞。"],
+["Teachers should encourage students' ______ instead of asking them to memorize everything.","creativity","create","creative","creatively","所有格 students' 後面接名詞 → creativity 創意。"],
+["Dogs can be trained to ______ diseases such as cancer.","detect","detection","detective","detectable","to 後面接原形動詞 → detect 偵測。"],
+["The city is famous for its ______ beaches.","attractive","attract","attraction","attractively","名詞 beaches 前面放形容詞 → attractive 吸引人的。"],
+["Many people don't sort their trash ______, so recycling becomes difficult.","properly","proper","property","improper","修飾動詞 sort → 副詞 properly。property 是「財產」，拼字很像，是陷阱。"],
+["The broken chain at the statue's feet is ______ of freedom from slavery.","symbolic","symbol","symbolize","symbolically","be 動詞後面、of 前面 → 形容詞 symbolic（be symbolic of 象徵）。symbol 是可數名詞，前面要有 a。"],
+["Plastic bags can stay in the ______ for hundreds of years.","environment","environmental","environmentally","environmentalist","the 後面接名詞，而且意思是「環境」→ environment。environmentalist 是「環保人士」。"],
+["It was ______ that he had not done his homework.","obvious","obviously","obviousness","more obviously","It was + 形容詞 + that（虛主詞句型）→ obvious。"],
+["The children waited ______ for Santa Claus to arrive.","eagerly","eager","eagerness","more eager","修飾動詞 waited → 副詞 eagerly。"],
+["She has the ______ to speak four languages.","ability","able","enable","ably","the 後面接名詞 → ability（have the ability to V）。"],
+["The doctor said the wound had become ______, so he gave me some medicine.","infected","infect","infection","infects","become 後面接形容詞 → infected 遭感染的。"],
+["Many young people want to be financially ______ of their parents.","independent","independence","independently","depend","be 動詞後接形容詞 → independent of 不依賴⋯⋯。"],
+["The whole town gathered in the square for the ______ of the festival.","celebration","celebrate","celebrated","celebratory","the ___ of → 名詞 celebration。"],
+["Good time ______ helps students reduce stress.","management","manage","managed","manageably","time management 時間管理（名詞當主詞）。"],
+["Some chemicals in plastic are ______ to our health.","harmful","harm","harmfully","harmed","be 動詞後接形容詞 → be harmful to 對⋯⋯有害。"],
+["The painting is a ______ of the war.","representation","represent","represented","representing","a 後面接名詞 → representation 描繪、表現。"],
+["The local government hopes to develop ______ in the area by building a new hotel.","tourism","tourist","touristy","toured","develop 後面接名詞，而且要不可數的「觀光業」→ tourism。tourist 是可數名詞，前面要有 a。"],
+["Climbing Jade Mountain was a big ______ for me.","accomplishment","accomplish","accomplished","accomplishing","a big ___ → 名詞 accomplishment 成就。"]
+];
+
+/* 文法選擇：[題型, 單元, 題幹, [正解, 誘答×3], [誘答錯因×3], 解析] */
+EX.g=[
+["關代選擇","關係子句","The dog ______ found the missing boy was given a medal.",["that","whom","whose","what"],["whom 是受格，這裡空格後直接接動詞 found，缺的是主詞","whose 後面一定要接名詞","what 前面不能有先行詞（the dog）"],"空格後直接接動詞 → 主格關代，指動物用 that／which。"],
+["關代選擇","關係子句","Mr. Lee, ______ son is a firefighter, lives next door.",["whose","who","that","which"],["who 後面要接動詞，但這裡接的是名詞 son","that 不能放在逗號後面（非限定）","which 指物，而且後面不接名詞"],"空格後是名詞 son → 所有格 whose（他的兒子）。"],
+["關代選擇","關係子句","Taipei 101, ______ was once the tallest building in the world, attracts millions of tourists.",["which","that","who","where"],["that 不能用在逗號後面（非限定子句）","who 指人","where 後面要接完整句子（主詞＋動詞），這裡缺主詞"],"逗號後、指物、缺主詞 → which。"],
+["關代選擇","關係子句","This is the house ______ my grandfather built fifty years ago.",["that","where","what","whose"],["where 後面要接完整句子，但 built 缺受詞","what 前面不能有先行詞（the house）","whose 後面要接名詞"],"built 缺受詞 → 受格關代 that／which。"],
+["關代選擇","關係子句","The girl ______ I met at the party is from Japan.",["whom","which","whose","what"],["which 指物","whose 後面要接名詞","what 前面不能有先行詞"],"指人、當 met 的受詞 → whom（也可用 who／that 或省略）。"],
+["關代選擇","關係子句","I have a friend ______ father works at the zoo.",["whose","who","that","which"],["who 後面要接動詞，這裡接名詞 father","that 後面不接名詞","which 指物"],"空格後是名詞 father → whose。"],
+["關代選擇","關係子句","He passed the test, ______ surprised everyone.",["which","that","what","it"],["that 不能放在逗號後，也不能代替前面整句","what 不能接在逗號後當關代","用 it 會變成兩個句子只用逗號連接，文法錯誤"],"逗號＋which 可以代替前面整句話（他通過考試這件事）。"],
+["動詞一致","關係子句","Dogs that ______ well trained can help the police find drugs.",["are","is","be","being"],["is 是單數，但先行詞 Dogs 是複數","關代後面要接有時態的動詞，不能用原形","being 不是有時態的動詞"],"關代 that 的動詞跟著先行詞 Dogs（複數）→ are。"],
+["動詞一致","關係子句","One of the students who ______ in the contest is my cousin.",["take part","takes part","taking part","to take part"],["以為先行詞是 One；其實 who 前面最近的名詞是 students（複數）","關代後面要接有時態的動詞","關代後面要接有時態的動詞"],"who 的先行詞是 students → take part；整句主詞 One → is。"],
+["多餘代名詞","關係子句","下列哪一句正確？",["The man who I talked to is my coach.","The man who I talked to him is my coach.","The man to who I talked is my coach.","The man to that I talked is my coach."],["him 多餘：關代已經代替 the man 了","介系詞後面要用 whom，不能用 who","介系詞後面不能接 that"],"關代已經代替先行詞，子句裡不能再出現代名詞。"],
+["關代選擇","關係子句","This is the town ______ I grew up.",["in which","which","in that","who"],["grow up 是不及物動詞，後面要有 in 才能接地點","介系詞後面不能接 that","who 指人"],"grow up in the town → in which（＝where）。"],
+["省略","關係子句","下列哪一句的關係代名詞可以省略？",["The book that I borrowed is interesting.","The boy who won the race is my brother.","My dad, who is a doctor, works hard.","The dog that barks all night is noisy."],["who 是主格（後面直接接動詞 won），不能省","非限定（逗號後）的關代不能省","that 是主格（後面直接接 barks），不能省"],"只有受格關代可以省略：borrowed 缺受詞 → that 可省。"],
+["使役","使役與because","My mom made me ______ my room before dinner.",["clean","to clean","cleaning","cleaned"],["使役動詞 make 主動時不加 to","make + O 後面不接 V-ing","房間是「我」主動打掃，不用過去分詞"],"make + O + 原形動詞。"],
+["使役","使役與because","I had my hair ______ yesterday.",["cut","to cut","cutting","cuts"],["have + O 後面不接 to V","頭髮是「被」剪，不用 V-ing","have + O 後面不接有時態的動詞"],"頭髮被剪 → have + O + p.p.（cut 三態同形）。"],
+["使役","使役與because","The teacher let us ______ home early because of the typhoon.",["go","to go","going","went"],["let 後面不加 to","let + O 後面不接 V-ing","let + O 後面不接過去式"],"let + O + 原形動詞。"],
+["使役","使役與because","I was made ______ the dishes by my father.",["to wash","wash","washing","washed"],["被動時要把 to 還回來：be made to V","被動後面不接 V-ing","washed 不合文法"],"make 改成被動 be made 時，後面要接 to V。"],
+["使役","使役與because","Can you get your brother ______ you with your homework?",["to help","help","helping","helped"],["get 不是 make／have／let，主動要接 to V","get + O 後面主動不接 V-ing","弟弟是主動幫忙，不用過去分詞"],"get + O + to V（說服某人去做）。"],
+["使役","使役與because","She had the mechanic ______ her car.",["repair","repaired","to repair","repairing"],["mechanic 是主動修車的人，不用 p.p.","have + O 主動時不加 to","have + O 後面不接 V-ing（本課公式）"],"受詞是人、主動做 → have + O + 原形。"],
+["because","使役與because","The flight was delayed ______ the heavy fog.",["because of","because","so","although"],["because 後面要接句子，這裡是名詞片語","so 表結果，後面要接句子","although 表讓步，意思不通且要接句子"],"後面是名詞 the heavy fog → because of。"],
+["because","使役與because","We stayed home ______ it was raining hard.",["because","because of","due to","despite"],["because of 後面接名詞，不接句子","due to 後面接名詞","despite 意思是「儘管」，而且接名詞"],"後面是句子 it was raining → because。"],
+["because","使役與because","______ the typhoon, all the schools were closed.",["Due to","Because","Although","So"],["Because 後面要接句子","Although 表讓步，意思不通","So 不能放句首接名詞"],"後面是名詞 the typhoon → Due to（＝Because of）。"],
+["because","使役與because","Plastic bags are cheap and light. ______, people use them every day.",["As a result","Because","Because of","Even though"],["Because 是連接詞，不能單獨放句首接逗號","Because of 後面要接名詞","Even though 是「儘管」，意思相反"],"前句是原因、後句是結果，兩句已用句號分開 → As a result（因此）。"],
+["so/such","強調句與so/such","It was ______ a hot day that we all went swimming.",["such","so","very","too"],["so 後面接形容詞或副詞，不能接 a + 名詞","very 不能接 that 子句","too 是 too…to 句型"],"such + a + 形容詞 + 名詞 + that。"],
+["so/such","強調句與so/such","The statue is ______ tall that you can see it from miles away.",["so","such","such a","very"],["such 後面要接名詞","such a 後面要接名詞","very 不能接 that 子句"],"so + 形容詞 + that。"],
+["so/such","強調句與so/such","She has ______ many books that she needs a new shelf.",["so","such","such a","very"],["many／much／few／little 前面用 so","such a 不接 many","very 不能接 that 子句"],"so many + 名詞 + that（many 前面固定用 so）。"],
+["so/such","強調句與so/such","They are ______ kind people that everyone likes them.",["such","so","such a","very"],["so 後面不能接名詞 people","people 是複數，不能加 a","very 不能接 that 子句"],"such + 形容詞 + 複數名詞 + that（不加 a）。"],
+["強調句","強調句與so/such","It was in 1886 ______ the Statue of Liberty was given to the United States.",["that","when","which","what"],["強調句公式固定是 It is／was … that，課本不用 when","which 不能用在強調句","what 不能用在強調句"],"拿掉 It was…that 後句子完整 → 強調句，用 that。"],
+["強調句","強調句與so/such","It was my sister ______ broke the vase, not me.",["who","which","whom","what"],["which 指物，強調的是人","whom 是受格，但這裡要當 broke 的主詞","what 不能用在強調句"],"強調人可以用 that 或 who。"],
+["強調句","強調句與so/such","______ was the dog's keen nose that helped find the missing child.",["It","This","That","There"],["強調句固定用 It 開頭","強調句固定用 It 開頭","There 不能用在強調句"],"It was ＋ 被強調的部分 ＋ that ＋ 其餘句子。"],
+["強調句","強調句與so/such","下列哪一句是強調句？",["It was at the park that I lost my wallet.","It is important that we protect the environment.","It is clear that he is lying.","It is a pity that you can't come."],["拿掉 It is…that 後剩 important we protect…，不成句 → 虛主詞句","拿掉後剩 clear he is lying，不成句 → 虛主詞句","拿掉後剩 a pity you can't come，不成句 → 虛主詞句"],"拿掉 It was…that 後剩 I lost my wallet at the park，句子完整 → 強調句。"],
+["L4 綜合-綜合","L4 綜合","Millions of plastic bags ______ every day.",["are used","use","are using","have used"],["袋子不會自己「使用」，要用被動","are using 是主動進行式","have used 是主動完成式"],"袋子是被使用的 → 被動 be + p.p.。"],
+["L4 綜合-綜合","L4 綜合","The Statue of Liberty ______ a symbol of freedom since 1886.",["has been","is","was","has being"],["看到 since → 現在完成式，不能只用現在式","看到 since → 現在完成式，不能只用過去式","has 後面接 p.p.（been），不接 being"],"since + 過去時間點 → 現在完成式 has been。"]
+];
+
+/* 綜合測驗：每篇 5 格。格子寫成 [[1]]；qs：[題型, 正解, 誘答×3, 解析] */
+EX.c=[
+{id:"c1",title:"Sniffer Dogs at the Airport",text:"At many airports, you may [[1]] a dog walking around with a police officer. These dogs are not pets; they are working dogs [[2]] job is to find drugs, bombs, or even fruit that travelers are not allowed to bring in. A dog's sense of smell is thousands of times stronger than ours, so it can [[3]] tiny amounts of a substance hidden deep in a suitcase. When a dog finds something, it sits down quietly [[4]] barking. This way, travelers are not frightened. After a job well done, the dog usually gets a toy or a treat [[5]] a reward.",
+qs:[["片語","come across","carry out","turn out","pack up","come across 偶然遇到。carry out 執行、turn out 結果是、pack up 打包。"],
+["關代選擇","whose","who","which","that","空格後是名詞 job → 所有格 whose（牠們的工作）。"],
+["字義","detect","predict","assign","envy","detect 偵測到。predict 預測、assign 指派、envy 羨慕。"],
+["片語","instead of","because of","due to","as well as","instead of 而不是（坐下而不是吠叫）。because of／due to 是原因，意思不通。"],
+["介系詞搭配","as","like","to","by","as a reward 作為獎勵（as＝作為）。"]]},
+{id:"c2",title:"Dogs That Smell Disease",text:"Scientists have discovered that some dogs can smell diseases [[1]] cancer and diabetes. In one study, dogs were trained to sniff samples of people's breath. The dogs were [[2]] accurate that they found the sick people more than 90% of the time. The reason is simple: when people are sick, their bodies give off special smells [[3]] humans cannot notice. Of course, dogs cannot replace doctors. [[4]], they may one day help doctors find diseases earlier, [[5]] could save many lives.",
+qs:[["片語","such as","as well","so as","as if","such as 例如（後面列舉 cancer、diabetes）。"],
+["so/such","so","such","very","too","so + 形容詞 accurate + that。"],
+["關代選擇","that","what","whose","where","notice 缺受詞、先行詞 smells → 受格關代 that。"],
+["L4 綜合-綜合","However","Therefore","Because","Besides","前句「不能取代醫生」、後句「可以幫忙」→ 轉折 However。"],
+["關代選擇","which","that","what","it","逗號後代替前面整句（及早發現疾病這件事）→ which。"]]},
+{id:"c3",title:"A Bag's Short Life",text:"A plastic bag is used for an average of only twelve minutes. After that, it is [[1]] away. Some bags are recycled, but most of them [[2]] in landfills or in the ocean. Because plastic does not break down easily, a single bag can stay in the [[3]] for hundreds of years. Sea turtles often eat plastic bags [[4]] they look like jellyfish. To reduce plastic waste, many stores now make customers [[5]] for bags, hoping people will bring their own.",
+qs:[["L4 綜合-綜合","thrown","throwing","throw","to throw","袋子是被丟掉的 → be + p.p.（thrown）。"],
+["片語","end up","pack up","come along","take in","end up in 最後落得在⋯⋯。"],
+["字義","environment","convenience","production","location","stay in the environment 留在環境中。"],
+["because","because","because of","due to","so","後面是句子 they look like jellyfish → because。"],
+["使役","pay","to pay","paying","paid","make + O + 原形 → pay。"]]},
+{id:"c4",title:"A Week Without Plastic",text:"Last month, my family decided to try living without plastic for a week. It was harder than we expected. [[1]], almost everything in the supermarket was wrapped in plastic. My mom had to buy vegetables at a traditional market [[2]] she could put them in her own basket. We also stopped buying bottled water, [[3]] we carried our own bottles everywhere. By the end of the week, we [[4]] that we were throwing away much less trash. The experiment made us realize how much we depend [[5]] plastic.",
+qs:[["L4 綜合-綜合","For example","However","Instead","Otherwise","前句說「比想像中難」，後句舉例說明 → For example。"],
+["關代選擇","where","which","that","what","後面是完整句子（she could put them…），先行詞是地點 market → where。"],
+["because","so","because","although","unless","不買瓶裝水 → 所以自己帶水壺（結果）→ so。"],
+["L4 綜合-綜合","noticed","notice","have noticed","will notice","By the end of the week 是過去的時間，全文用過去式 → noticed。"],
+["介系詞搭配","on","with","at","for","depend on 依賴。"]]},
+{id:"c5",title:"A Gift from France",text:"The Statue of Liberty was a gift from the people of France to the United States. It was given [[1]] the friendship between the two countries. The statue holds a torch in her right hand and a tablet in her left. The tablet [[2]] with the date July 4, 1776, the day the US declared its [[3]]. At her feet lies a broken chain, which [[4]] freedom from slavery. Since 1886, the statue [[5]] millions of immigrants arriving in New York by ship.",
+qs:[["to後接法","to celebrate","celebrating","celebrated","celebration","表目的「為了慶祝」→ to + 原形。"],
+["L4 綜合-綜合","is carved","carves","carved","is carving","石板是被刻上日期 → 被動 is carved。"],
+["字義","independence","slavery","treatment","tourism","declare its independence 宣布獨立。"],
+["字義","symbolizes","predicts","removes","consumes","symbolize 象徵。"],
+["L4 綜合-綜合","has welcomed","welcomes","welcomed","is welcoming","Since 1886 → 現在完成式 has welcomed。"]]},
+{id:"c6",title:"Building a Giant",text:"Building the Statue of Liberty was not an easy job. The statue is [[1]] tall that workers had to build a huge iron frame inside it. The frame was designed by Gustave Eiffel, the same man [[2]] later built the Eiffel Tower. The statue was first built in France. Then it was taken apart and [[3]] across the Atlantic in 214 boxes. [[4]] the statue was brown when it was first built, today it is green. Over time, its copper surface reacted with air and water and changed color. It is [[5]] green color that makes the statue so easy to recognize today.",
+qs:[["so/such","so","such","very","too","so + 形容詞 + that。"],
+["關代選擇","who","which","whose","what","先行詞 the same man、空格後接動詞 → who。"],
+["L4 綜合-綜合","shipped","shipping","to ship","ships","was taken apart and (was) shipped，兩個被動並列 → shipped。"],
+["L4 綜合-綜合","Although","Because","Since","Unless","當初是棕色、現在是綠色 → 前後相反 → Although。"],
+["強調句","this","such","so","what","It is this green color that…（強調句，強調「這個綠色」）。"]]},
+{id:"c7",title:"Who Owns a Digital Picture?",text:"In the past, if you bought a painting, you could hang it on your wall, and everyone knew it was your [[1]]. Today, many artworks exist only in digital [[2]]. Since a digital picture can be copied easily, how can anyone prove [[3]] of it? One answer is a special digital [[4]] that records who the owner is. Every time the artwork is sold, the [[5]] is recorded online so that everyone can check it.",
+qs:[["字義","property","budget","folklore","latitude","property 所有物、財產。"],
+["字義","format","glacier","trail","ferry","in digital format 以數位格式。"],
+["字義","ownership","abundance","civilization","sightseeing","prove ownership 證明所有權。"],
+["字義","token","cliff","statue","slave","digital token 數位代幣、憑證。"],
+["字義","transaction","exposure","treatment","harm","transaction 交易。"]]},
+{id:"c8",title:"Summer in Norway",text:"Norway is a country at a high [[1]], so in summer the sun hardly sets. Last year, my family took a [[2]] along the coast and saw many waterfalls falling down [[3]] cliffs. We also visited a huge [[4]] that has been there for thousands of years. Although Norway is [[5]] expensive, it is well worth a visit if you love nature.",
+qs:[["字義","latitude","budget","format","property","high latitude 高緯度（所以夏天太陽幾乎不下山）。"],
+["字義","ferry","glacier","asset","token","take a ferry 搭渡輪。"],
+["字義","steep","rural","exclusive","equivalent","steep cliffs 陡峭的懸崖。"],
+["字義","glacier","transaction","investment","ownership","glacier 冰河（存在幾千年）。"],
+["字義","extremely","eagerly","properly","firmly","extremely expensive 非常貴。"]]}
+];
+
+/* 閱讀測驗：每篇 4 題。qs：[題型, 題目, 正解, 誘答×3, 解析] */
+EX.r=[
+{id:"r1",title:"Daisy's Nose",text:"Daisy was an ordinary Labrador until her owner, Claire Guest, noticed something strange. Daisy kept staring at Claire and pushing her chest with her nose. Claire later went to see a doctor and found out that she had breast cancer at an early stage. Because the cancer was found early, she was able to recover after treatment.\n\nThe experience changed Claire's life. She started a charity that trains dogs to detect diseases. Since then, Daisy has helped find cancer in hundreds of samples. Scientists believe that sick cells give off chemicals with a special smell. Humans cannot notice it, but dogs, with their keen noses, can. Today, Claire's team is also training dogs to sniff out other illnesses, such as Parkinson's disease and malaria.",
+qs:[["主旨","What is the passage mainly about?","How a dog's nose led to a new way of finding diseases.","Why Labradors are the most popular pets.","How doctors treat breast cancer.","Why some dogs behave strangely.","全文從 Daisy 發現主人生病，談到訓練狗偵測疾病 → 主旨是「狗鼻子帶來找出疾病的新方法」。"],
+["細節","What did Daisy do that surprised Claire?","She kept pushing Claire's chest with her nose.","She refused to eat for days.","She barked at the doctor.","She ran away from home.","第一段：Daisy kept staring at Claire and pushing her chest with her nose。"],
+["指涉","In the second paragraph, what does \"it\" in \"Humans cannot notice it\" refer to?","The special smell.","The cancer treatment.","The dog's nose.","The charity.","前一句 chemicals with a special smell → it 指那個特殊氣味。"],
+["推論","What can we infer from the passage?","Finding cancer early can make recovery more likely.","All dogs can detect cancer without training.","Claire was a doctor before she met Daisy.","Dogs have already replaced doctors.","文中說 Because the cancer was found early, she was able to recover → 及早發現較容易康復。其他三項文中沒說或相反（狗需要訓練）。"]]},
+{id:"r2",title:"The Great Pacific Garbage Patch",text:"Between Hawaii and California lies an area of the Pacific Ocean that is full of trash. It is called the Great Pacific Garbage Patch. Many people imagine it as a floating island of garbage, but in fact, most of it consists of tiny pieces of plastic called microplastics, which are hard to see with the naked eye.\n\nOcean currents carry trash from many countries and gather it in this area. Fish and seabirds often mistake the plastic for food. When people eat fish, they may also take in these harmful substances. Cleaning up the patch is extremely difficult because the pieces are so small. Experts say the best solution is to stop plastic from entering the ocean in the first place.",
+qs:[["細節","Why is the garbage patch hard to clean up?","Most of the plastic pieces are very small.","It is too far from any country.","The water there is too cold.","Nobody knows where it is.","Cleaning up the patch is extremely difficult because the pieces are so small。"],
+["細節","Which of the following is TRUE?","Ocean currents bring trash to the area.","The patch is a solid island people can walk on.","Only one country causes the problem.","Seabirds avoid eating plastic.","Ocean currents carry trash from many countries and gather it in this area。其他選項都和文章相反。"],
+["字義","\"Fish and seabirds often mistake the plastic for food\" means that these animals ______.","think the plastic is food","refuse to eat food","turn plastic into food","are hurt by food","mistake A for B＝把 A 誤認為 B。"],
+["推論","What does the writer suggest?","Using less plastic is the best way to solve the problem.","People should stop eating fish.","Scientists should build more ships.","The patch will disappear soon.","最後一句：the best solution is to stop plastic from entering the ocean in the first place → 從源頭少用塑膠。"]]},
+{id:"r3",title:"Lady Liberty's Secrets",text:"Most visitors to the Statue of Liberty take photos of her torch and crown, but few know about her hidden details. For example, the seven rays on her crown represent the seven continents and seven seas, showing that liberty is for the whole world. Her right foot is raised, as if she is walking forward—a symbol that America is moving toward freedom.\n\nThe torch that visitors see today is not the original one. The first torch was damaged and replaced in 1986; the old one is now displayed in the museum on the island. Visitors used to be able to climb up to the torch, but it has been closed since 1916 for safety reasons. Today, people can still climb 162 steps to the crown—if they book their tickets months in advance.",
+qs:[["細節","What do the seven rays on the crown stand for?","The seven continents and seven seas.","The seven days of the week.","The first seven states of the US.","The seven people who built the statue.","the seven rays on her crown represent the seven continents and seven seas。"],
+["細節","Why is the statue's right foot raised?","To show that America is moving toward freedom.","Because the statue was damaged.","To help it stand firmly.","Because the artist made a mistake.","as if she is walking forward—a symbol that America is moving toward freedom。"],
+["細節","Which of the following is NOT true?","Visitors can still climb to the torch today.","The original torch is in a museum.","The torch was replaced in 1986.","Tickets to the crown should be booked early.","火炬從 1916 年就關閉了（has been closed since 1916），所以「現在還能爬到火炬」不正確。"],
+["推論","Where would this passage most likely be found?","In a travel magazine.","In a science textbook.","In a cookbook.","In a sports report.","介紹景點的小祕密、參觀與訂票資訊 → 旅遊雜誌。"]]},
+{id:"r4",title:"Traveling on a Budget",text:"Traveling abroad doesn't have to be expensive. If you are on a tight budget, here are some tips. First, travel in the off-season. Prices for flights and hotels can drop by up to 50% when there are fewer tourists. Second, stay in a hostel or rent a room from a local family. Not only is it cheaper, but you can also learn about local folklore and customs from your hosts.\n\nThird, instead of joining expensive sightseeing tours, walk or ride a bike. You will be able to take in the scenery at your own pace, and you may come across places that are not in any guidebook. Finally, eat where the locals eat. Food in tourist areas is often overpriced.",
+qs:[["推論","Who is this passage written for?","People who want to travel without spending much money.","Hotel owners.","Travel agents who plan tours.","People who never travel.","開頭 If you are on a tight budget, here are some tips → 寫給想省錢旅行的人。"],
+["細節","Why does the writer suggest staying with a local family?","It is cheaper, and you can learn about local culture.","It is safer than a hotel.","Local families give free tours.","You can learn to cook local food.","Not only is it cheaper, but you can also learn about local folklore and customs。"],
+["字義","\"Take in the scenery\" is closest in meaning to ______.","enjoy looking at the view","trick other tourists","take photos of strangers","clean up the place","take in 在這裡＝參觀、欣賞（Basic U4）。"],
+["細節","According to the passage, what is true about food in tourist areas?","It often costs too much.","It is the best local food.","It is only sold in the off-season.","It cannot be found in guidebooks.","Food in tourist areas is often overpriced（價格過高）。"]]},
+{id:"r5",title:"A Name Worth Millions",text:"In the 1990s, a young man paid only a few dollars to register a domain name. Years later, a big company wanted to use that name for its website and offered him millions of dollars. After weeks of negotiating, the two sides finally agreed on a price. Stories like this show that a domain name can be a valuable asset.\n\nHowever, buying a domain name only to sell it at a high price is not always legal. In many countries, if you register a famous company's name on purpose, the company can take the name back through the courts. Experts suggest that small businesses register their names early to ensure that no one else takes them.",
+qs:[["主旨","What is the main idea of the passage?","Domain names can be valuable, but there are rules about owning them.","Big companies always lose in court.","Small businesses don't need websites.","Registering a domain name is very expensive.","第一段說網域名稱很值錢，第二段說擁有它有法律限制 → 兩段合起來就是主旨。"],
+["細節","How did the young man finally sell the name?","He negotiated with the company for weeks.","He won a court case.","He gave it away for free.","He sold it to a small business.","After weeks of negotiating, the two sides finally agreed on a price。"],
+["細節","Why do experts suggest registering names early?","To make sure no one else takes them.","To sell them at high prices.","Because prices go down over time.","Because the courts require it.","to ensure that no one else takes them（ensure＝確保）。"],
+["字義","The word \"asset\" in the passage is closest in meaning to ______.","something useful and valuable","a kind of tax","a website designer","a legal problem","asset 資產、有價值的東西（Basic U3）。"]]},
+{id:"r6",title:"From Garbage Island to Recycling Star",text:"Thirty years ago, Taiwan was called \"Garbage Island.\" Trash piled up in the streets, and landfills were almost full. Today, Taiwan has one of the highest recycling rates in the world. How did this happen?\n\nFirst, the government made people pay for trash by requiring them to buy special garbage bags. The more trash you throw away, the more you pay. Second, garbage trucks come at fixed times, playing music such as Beethoven's \"Für Elise.\" People must bring their trash to the truck themselves, and volunteers check that it is properly sorted. This system has not only reduced trash but also made recycling part of everyday life. Many countries have sent officials to Taiwan to learn from its success.",
+qs:[["細節","Why was Taiwan once called \"Garbage Island\"?","Trash piled up, and landfills were almost full.","It sent its trash to other countries.","It had no garbage trucks at all.","It was an island made of trash.","Trash piled up in the streets, and landfills were almost full。"],
+["細節","How does the special garbage bag system work?","People who throw away more trash pay more.","The bags are free for every family.","Only recyclable trash goes into the bags.","Volunteers buy the bags for people.","The more trash you throw away, the more you pay。"],
+["推論","Why do the garbage trucks probably play music?","To let people know the truck is coming.","To entertain the volunteers.","To teach people about Beethoven.","To make people pay more.","垃圾車定時來、大家要自己拿垃圾出去 → 音樂是提醒「車來了」。"],
+["推論","What is the writer's attitude toward Taiwan's recycling system?","Positive.","Angry.","Worried.","Doubtful.","用 success、Recycling Star、別國派官員來學 → 正面肯定。"]]}
+];
+
+/* 句型與翻譯：[題型, 單元, 題目, [正解, 誘答×3], 解析] */
+EX.s=[
+["合併","關係子句","合併句子：The dog found the bomb. It was given a medal.",["The dog that found the bomb was given a medal.","The dog found the bomb was given a medal.","The dog which it found the bomb was given a medal.","The dog, that found the bomb, was given a medal."],"用主格關代 that 代替 It；限定用法不加逗號，that 也不能放逗號後。"],
+["合併","關係子句","合併句子：I visited the town. My father was born in the town.",["I visited the town where my father was born.","I visited the town which my father was born.","I visited the town where my father was born in it.","I visited the town in that my father was born."],"in the town → where（＝in which）；where 後面不能再有 in it；介系詞後不能接 that。"],
+["合併","關係子句","合併句子：Ms. Wang is my English teacher. Her son is a pilot.",["Ms. Wang, whose son is a pilot, is my English teacher.","Ms. Wang, who son is a pilot, is my English teacher.","Ms. Wang, that her son is a pilot, is my English teacher.","Ms. Wang, whose her son is a pilot, is my English teacher."],"Her son → whose son；專有名詞後用非限定（逗號），whose 後面不能再放 her。"],
+["so/such","強調句與so/such","改寫：The movie was so boring that I fell asleep. ＝ It was ______ that I fell asleep.",["such a boring movie","so a boring movie","such boring movie","such a boring"],"so + 形容詞 → such + a + 形容詞 + 名詞。"],
+["so/such","強調句與so/such","改寫：They are such lovely kids that everyone likes them. ＝ The kids are ______ that everyone likes them.",["so lovely","such lovely","so lovely kids","very lovely"],"such + 形容詞 + 名詞 → so + 形容詞（後面不能再接名詞）。"],
+["強調句","強調句與so/such","強調 yesterday：Tom broke the window yesterday.",["It was yesterday that Tom broke the window.","It is yesterday that Tom broke the window.","It was yesterday which Tom broke the window.","That was yesterday it Tom broke the window."],"過去的事用 It was；強調句固定用 that；被強調的部分放在 It was 和 that 中間。"],
+["使役","使役與because","中譯英：老師要我們重寫作文。",["The teacher made us rewrite our compositions.","The teacher made us to rewrite our compositions.","The teacher made us rewriting our compositions.","The teacher made us rewritten our compositions."],"make + O + 原形動詞。"],
+["使役","使役與because","中譯英：我們被要求八點前到校。",["We were made to arrive at school before eight.","We were made arrive at school before eight.","We made to arrive at school before eight.","We were made arriving at school before eight."],"被動 be made + to V（to 要還回來）。"],
+["使役","使役與because","中譯英：我昨天請人修了腳踏車。",["I had my bike repaired yesterday.","I had my bike repair yesterday.","I had my bike to repair yesterday.","I had repaired my bike by someone yesterday."],"腳踏車被修 → have + O + p.p.。"],
+["because","使役與because","中譯英：因為颱風，所有航班都取消了。",["All flights were canceled because of the typhoon.","All flights were canceled because the typhoon.","All flights were canceled because of the typhoon came.","Because of the typhoon, so all flights were canceled."],"because of + 名詞；because of 後面不接句子；because 和 so 不能同時用。"],
+["because","使役與because","中譯英：因為下雨，我們待在家。",["Because it rained, we stayed home.","Because it rained, so we stayed home.","Because of it rained, we stayed home.","Due to it rained, we stayed home."],"because + 句子；because 和 so 不能同時用；because of／due to 後面接名詞。"],
+["句型翻譯","二段綜合","中譯英：雖然他很累，他還是完成了作業。",["Even though he was tired, he finished his homework.","Even though he was tired, but he finished his homework.","Even he was tired, he finished his homework.","Even though of being tired, he finished his homework."],"even though + 句子；中文的「雖然⋯⋯但是」英文只能用一個連接詞。"],
+["句型翻譯","二段綜合","中譯英：他最後睡在車站。",["He ended up sleeping at the station.","He ended up to sleep at the station.","He ended up slept at the station.","He ended up sleep at the station."],"end up + V-ing（最後落得⋯⋯）。"],
+["句型翻譯","二段綜合","中譯英：那個謠言結果是假的。",["The rumor turned out to be false.","The rumor was turned out to be false.","The rumor turned out being false.","The rumor turned out be false."],"turn out to be + 形容詞；turn out 不用被動。"],
+["合併","關係子句","My brother, who lives in Tainan, is a doctor. 這句話的意思最接近哪一個？",["我（只有一個）哥哥是醫生，他住在台南。","我有好幾個哥哥，住在台南的那個是醫生。","我哥哥住在台南的時候是醫生。","我的醫生哥哥打算搬到台南。"],"非限定（有逗號）＝補充說明，表示先行詞只有一個；沒有逗號才是「好幾個裡面的那一個」。"],
+["句型翻譯","二段綜合","中譯英：這座雕像象徵自由。",["The statue symbolizes freedom.","The statue is symbolized freedom.","The statue symbolic freedom.","The statue symbolizes for freedom."],"symbolize 是及物動詞，後面直接接受詞；symbolic 是形容詞，不能當動詞。"],
+["句型翻譯","二段綜合","中譯英：我偶然看到一篇關於塑膠袋的文章。",["I came across an article about plastic bags.","I came cross an article about plastic bags.","I came across to an article about plastic bags.","I was come across an article about plastic bags."],"come across + 名詞（偶然遇到），中間不加 to，也不用被動。"],
+["句型翻譯","二段綜合","中譯英：這週末我們要去拜訪祖父母。",["We will pay a visit to our grandparents this weekend.","We will pay a visit our grandparents this weekend.","We will pay a visiting to our grandparents this weekend.","We will paid a visit to our grandparents this weekend."],"pay a visit to + 人／地方；will 後面接原形。"],
+["使役","使役與because","中譯英：爸媽讓我自己決定。",["My parents let me decide on my own.","My parents let me to decide on my own.","My parents let me deciding on my own.","My parents let me decided on my own."],"let + O + 原形；on one's own 靠自己。"],
+["強調句","強調句與so/such","中譯英：正是狗敏銳的鼻子找到了這個孩子。",["It was the dog's keen nose that found the child.","It was the dog's keen nose found the child.","This was the dog's keen nose that found the child.","It was the dog's keen nose what found the child."],"強調句 It was ＋ 強調部分 ＋ that ＋ 其餘句子；that 不能省、不能換成 what。"]
+];
+
+/* 新增教學：克漏字、閱讀測驗、句型翻譯（單元掛在「二段綜合」） */
+L("英文","二段綜合","綜合測驗（克漏字）：先看空格前後",["克漏字"],"克漏字一格只考一件事。先看四個選項長什麼樣子判斷考什麼，再只看空格前後一兩句找線索，不用整篇翻譯。",
+[["四個選項詞性一樣、意思不同","字義題：看前後文的意思和搭配詞"],["選項是同一個字的不同形態","文法題：看位置要什麼詞性、時態、主被動"],["選項是 However／For example／As a result","轉折題：看前後兩句是相反、舉例還是因果"],["選項是 who／which／whose／where","關代題：看空格後缺主詞、缺受詞、接名詞還是完整句"],["空格後是介系詞或固定搭配","片語題：depend on、as a reward 這類要背"]],
+{q:"Plastic does not break down easily. ___, it can stay in the ocean for hundreds of years. (A) As a result (B) However (C) For example (D) Instead",s:[["選項是四個轉折詞 → 轉折題","先判斷考什麼"],["前句：塑膠不易分解（原因）","找前一句的角色"],["後句：可以留在海裡幾百年（結果）","找後一句的角色"],["原因 → 結果 → (A) As a result","對應關係選詞"]]},
+[["Dogs can smell diseases ___ cancer. 選項 such as／as well／as if／so as",["such as","as well","as if","so as"],"後面列出例子 → such as。"],["The dogs were ___ accurate that they found most sick people.",["so","such","very","too"],"so + 形容詞 + that。"]]);
+L("英文","二段綜合","閱讀測驗：四種題目四種找法",["閱讀測驗"],"段考閱讀只有四種題目：主旨、細節、指涉、推論。先讀題目再回文章找，細節題答案一定在文章裡找得到原句，推論題要選「文章能支持」的那個，不能選「聽起來對」的。",
+[["What is the passage mainly about?","主旨：看第一段最後和每段第一句，選涵蓋全文的"],["According to the passage／Which is TRUE／NOT true","細節：用關鍵字回文章找原句，逐項刪"],["it／they／this 指的是什麼","指涉：往前找最近、單複數相同的名詞"],["infer／suggest／most likely","推論：文章有證據支持的才選；太絕對（all、always）的先刪"],["The word … is closest in meaning to","字義：把選項代回原句，看意思通不通"]],
+{q:"Humans cannot notice it, but dogs can. 「it」指什麼？前一句：Sick cells give off chemicals with a special smell.",s:[["it 是單數","先看單複數"],["往前找單數名詞：a special smell","找最近的候選"],["代回去：Humans cannot notice the special smell ✓","代回原句檢查"]]},
+[["題目問 Which is NOT true，要怎麼做？",["每個選項回文章對，找出文章沒說或相反的那個","選最長的選項","選和自己常識不同的","選第一段提到的"],"NOT true 要逐項比對原文。"],["推論題的選項出現 all dogs can…，通常是？",["太絕對，先刪掉","一定是答案","代表主旨","代表細節題"],"all、always、never 這類絕對字，文章很少能支持。"]]);
+L("英文","二段綜合","句型與翻譯：先抓骨架再填句型",["句型翻譯"],"翻譯和合併題先找出句子的骨架（主詞＋動詞），再判斷要套哪個課本句型。中文常說「雖然⋯⋯但是」「因為⋯⋯所以」，英文只能留一個連接詞。",
+[["雖然⋯⋯但是","Even though／Although + 句子，後面不加 but"],["因為⋯⋯所以","Because + 句子，後面不加 so；because of／due to + 名詞"],["最後（落得）⋯⋯","end up + V-ing"],["結果是⋯⋯","turn out to be + 形容詞"],["偶然遇到⋯⋯","come across + 名詞"]],
+{q:"中譯英：雖然下雨，我們還是去爬山。",s:[["骨架：我們去爬山 we went hiking","先找主要句子"],["「雖然下雨」→ Even though it rained","套句型"],["後面不加 but：Even though it rained, we still went hiking.","中文兩個連接詞，英文只留一個"]]},
+[["「因為他生病，所以他沒來。」哪一句正確？",["Because he was sick, he didn't come.","Because he was sick, so he didn't come.","Because of he was sick, he didn't come.","Due to he was sick, he didn't come."],"because 和 so 只能留一個；because of 接名詞。"],["「他最後花光了所有的錢。」",["He ended up spending all his money.","He ended up to spend all his money.","He ended up spent all his money.","He ended up spend all his money."],"end up + V-ing。"]]);
+
 (function(){
 'use strict';
 var SUBJ=DATA.subjects;
-var MODE={'new':'新題練習','drill':'題型特訓','redo':'錯題重練','lesson':'教學鷹架','vocab':'單字'};
+var MODE={'new':'新題練習','drill':'題型特訓','redo':'錯題重練','lesson':'教學鷹架','vocab':'單字','exam':'段考模擬'};
 var MONO={'歷史':'史'};
 function $(s,r){return (r||document).querySelector(s)}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
@@ -2075,9 +2391,9 @@ function initDb(){
 function roundsOf(s,modes){return ST.rounds.filter(function(r){return r.s===s&&modes.indexOf(r.mode)>=0})}
 function eff(it){return (it.sc||0)*((it.g||it.h)?0.4:1)}
 function subjStat(s){
-  var rs=roundsOf(s,['new','drill']),items=[];rs.forEach(function(r){(r.items||[]).forEach(function(it){items.push(it)})});
+  var rs=roundsOf(s,['new','drill','exam']),items=[];rs.forEach(function(r){(r.items||[]).forEach(function(it){items.push(it)})});
   var last=items.slice(-30),acc=last.length?avgOf(last.map(function(it){return it.sc||0})):null;
-  var judged=rs.filter(function(r){return r.mode==='new'&&r.n>=5}),l3=judged.slice(-3).map(function(r){return r.pct});
+  var judged=rs.filter(function(r){return (r.mode==='new'||r.mode==='exam')&&r.n>=5}),l3=judged.slice(-3).map(function(r){return r.pct});
   var stable=l3.length===3&&l3.every(function(p){return p>=90});
   var st=acc==null?'none':(stable?'ok':(acc>=0.8?'near':'low'));
   var label=acc==null?'尚未作答':(stable?'穩定 90':(acc>=0.9?'達標，待連三輪':(acc>=0.8?'接近':'待加強')));
@@ -2274,7 +2590,7 @@ function pPractice(s){
   if(sampleFn)h+='<section class="card stack"><h2>請 Claude 現出新題</h2><p class="muted">依上面選的範圍和你較弱的題型，現出 5 題沒做過的單選題，大約等 20 到 60 秒，會用到你自己的 Claude 用量。這些題目沒有經過人工校對，覺得答案或題目怪怪的，請按「這題有問題」。</p>'
     +'<div class="row"><button class="btn" data-act="aigen"'+(AI.busy||!sel.length?' disabled':'')+'>'+(AI.busy?'出題中…':'出 5 題新題')+'</button><span class="muted">'+esc(AI.msg)+'</span></div></section>';
   h+='<section class="card"><h2>錯題重練</h2>'+(wr?'<div class="row"><span>答錯過、還沒改對的題目有 <b class="num">'+wr+'</b> 題。</span><span class="sp"></span><button class="btn" data-act="redo">重練 '+Math.min(wr,10)+' 題</button></div><p class="muted">這裡會出現做過的題目，不算進「穩定 90」。</p>':'<p class="muted">目前沒有待重練的錯題。</p>')+'</section>';
-  return h;
+  return (s==="英文"?enExamCard():"")+h;
 }
 function pNotes(s){
   var ls=LS.filter(function(l){return l.s===s});
@@ -2365,15 +2681,15 @@ function startRound(s,units,n,opt){
   V.view='round';V.s=s;render();window.scrollTo(0,0);return true;
 }
 function roundDoc(){
-  var sum=0,n=0;R.items.forEach(function(it){if(!it.x){sum+=it.sc;n++}});
-  var d={id:R.id,ts:R.t0,d:today(new Date(R.t0)),s:R.s,mode:R.mode,units:R.units,n:n,nx:R.items.length-n,sum:Math.round(sum*100)/100,pct:n?Math.round(sum/n*100):0,secs:Math.round((Date.now()-R.t0)/1000),items:R.items};
+  var sum=0,n=0,wg=0,wt=0;R.items.forEach(function(it){if(!it.x){sum+=it.sc;n++;wg+=it.sc*(it.pt||1);wt+=(it.pt||1)}});
+  var d={id:R.id,ts:R.t0,d:today(new Date(R.t0)),s:R.s,mode:R.mode,units:R.units,n:n,nx:R.items.length-n,sum:Math.round(sum*100)/100,pct:n?Math.round(wg/wt*100):0,secs:Math.round((Date.now()-R.t0)/1000),items:R.items};
   if(R.lesson)d.lesson=R.lesson;return d;
 }
 function record(q,c,pk){
   var it={id:q.id,u:q.u,t:q.t,k:q.k,sc:Math.round(c.sc*100)/100,ok:c.ok?1:0};
   if(!c.ok&&pk)it.p=String(pk).slice(0,40);
   if(!c.ok&&c.why&&q.k==='s')it.w=c.why.slice(0,60);
-  if(c.hint)it.h=1;if(q.extra)it.x=1;if(c.dunno)it.n=1;
+  if(c.hint)it.h=1;if(q.extra)it.x=1;if(q.pt){it.pt=q.pt;it.sec=q.sec}if(c.dunno)it.n=1;
   if(q.gen||q.ai)it.q=q.q.slice(0,90);
   R.items.push(it);q._r=!!c.ok;
   (ST.seen[R.s]||(ST.seen[R.s]={}))[q.id]=1;
@@ -2419,7 +2735,7 @@ function vRound(){
   var q=R.qs[R.i],c=R.cur,last=R.i===R.qs.length-1,l=lessonFor(q.s,q.t,q.u),bar='';
   var h='<div class="page sj-'+sIndex(R.s)+'"><div class="rbar">'+seal(R.s,'sm')+'<b>'+(R.label||MODE[R.mode])+'</b><span class="muted num">第 '+(R.i+1)+' / '+R.qs.length+' 題</span><span class="sp"></span><button class="btn sm" data-act="quit">結束這一輪</button></div>'
     +'<div class="dots" aria-hidden="true">'+R.qs.map(function(x,j){return '<i class="'+(x._r===true?'ok':(x._r===false?'bad':(j===R.i?'cur':'')))+'"></i>'}).join('')+'</div>'
-    +'<section class="card stack"><div class="qmeta"><span class="pill none">'+esc(q.u)+'</span>'+(q.k==='m'?'<span class="pill pen">多選</span>':'')+(q.k==='f'?'<span class="pill pen">填充　紙上算</span>':'')+(q.gen?'<span class="pill pen">新出的題</span>':'')+(q.ai?'<span class="pill near">Claude 現出</span>':'')+(q.extra?'<span class="pill near">同型補練　不計分</span>':'')+(q.src?(isKG(q)?'<span class="pill pen">考古｜'+esc(q.src)+'</span>':'<span>'+esc(q.src)+'</span>'):'')+'</div>'
+    +'<section class="card stack"><div class="qmeta"><span class="pill none">'+esc(q.u)+'</span>'+(q.sec?'<span class="pill pen">'+esc(q.sec)+'　每題 '+q.pt+' 分</span>':'')+(q.k==='m'?'<span class="pill pen">多選</span>':'')+(q.k==='f'?'<span class="pill pen">填充　紙上算</span>':'')+(q.gen?'<span class="pill pen">新出的題</span>':'')+(q.ai?'<span class="pill near">Claude 現出</span>':'')+(q.extra?'<span class="pill near">同型補練　不計分</span>':'')+(q.src?(isKG(q)?'<span class="pill pen">考古｜'+esc(q.src)+'</span>':'<span>'+esc(q.src)+'</span>'):'')+'</div>'
     +(q.ctx?'<div class="ctx">'+stemHtml(q.ctx)+'</div>':'')+'<div class="stem">'+stemHtml(q.q)+'</div>';
   if(q.opts){
     h+='<div class="opts">'+q.opts.map(function(o,i){var cls='opt';if(c.done){if(o.ok)cls+=' right';else if(c.sel[i])cls+=' wrong';else cls+=' dim'}else if(c.sel[i])cls+=' sel';
@@ -2452,7 +2768,7 @@ function vRound(){
   return h+'</section>'+actbar(bar)+'</div>';
 }
 function vSummary(){
-  var d=SUM.doc,pass=d.pct>=90,judged=d.mode==='new'||d.mode==='drill',wrong=d.items.filter(function(it){return !it.ok}),byTag={},qmap={};
+  var d=SUM.doc,pass=d.pct>=90,judged=d.mode==='new'||d.mode==='drill'||d.mode==='exam',wrong=d.items.filter(function(it){return !it.ok}),byTag={},qmap={};
   wrong.forEach(function(it){(byTag[it.t]=byTag[it.t]||[]).push(it)});SUM.qs.forEach(function(q){qmap[q.id]=q});
   var tags=Object.keys(byTag).sort(function(a,b){return byTag[b].length-byTag[a].length}),topL=null;
   tags.forEach(function(t){if(!topL)topL=lessonFor(d.s,t)});
@@ -2460,11 +2776,13 @@ function vSummary(){
   if(d.mode==='drill')cta='<button class="btn primary" data-act="pnew" data-id="'+d.s+'">接著做混合新題 '+pref(d.s).n+' 題</button>';
   else if(d.mode==='new'&&!pass&&topL)cta='<button class="btn primary" data-act="lesson" data-id="'+topL.id+'">先學：'+esc(topL.title)+'</button><button class="btn" data-act="again">再來一輪新題</button>';
   else if(d.mode==='new')cta='<button class="btn primary" data-act="again">再來一輪新題</button>';
+  if(d.mode==='exam')cta=(!pass&&topL?'<button class="btn primary" data-act="lesson" data-id="'+topL.id+'">先學：'+esc(topL.title)+'</button>':'')+'<button class="btn'+(!pass&&topL?'':' primary')+'" data-act="enexam" data-k="full">再一份段考模擬卷</button>';
   cta+='<button class="btn" data-act="back">回到'+d.s+'</button>';
   var h='<div class="page sj-'+sIndex(d.s)+'"><section class="card stack"><div class="row">'+seal(d.s,'sm')+'<b>'+d.s+'　'+MODE[d.mode]+'</b><span class="sp"></span>'+(judged?'<span class="stamp '+(pass?'ok':'bad')+'">'+(pass?'過關':'補考')+'</span>':'')+'</div>'
     +'<div class="score num '+(pass?'pass':'fail')+'">'+d.pct+'<small>分</small></div>'
     +'<p>作答 '+d.n+' 題，全對 '+okN+' 題'+(d.nx?'，另外補練同型 '+d.nx+' 題（不計分）':'')+'，用時 '+Math.floor(d.secs/60)+' 分 '+(d.secs%60)+' 秒。'+(judged?(pass?'90 以上，過關。':'未達 90。依你的規則要補考：先把下面的題型弄懂，再開一輪新題。'):'')+'</p>'
     +'<div class="row">'+cta+'</div></section>';
+  if(d.mode==='exam')h+=exSecTable(d);
   if(wrong.length){
     h+='<section class="card"><h2>這一輪錯的題型</h2>'+tags.map(function(t,j){var l=lessonFor(d.s,t);
       return '<div class="lrow'+(j?'':' first')+'"><span class="lt">'+esc(t)+'</span><span class="muted num">錯 '+byTag[t].length+' 題</span><span class="sp"></span>'+(l?'<button class="btn sm" data-act="lesson" data-id="'+l.id+'">學這一型</button>':'')+'</div>'}).join('')+'</section>';
@@ -2635,7 +2953,7 @@ function vCheck(){
 /* ---------- 事件 ---------- */
 /* ---------- 成績紀錄頁：多邊形（雷達）統計＋長條圖＋明細表 ---------- */
 function scRecords(s){
-  var a=roundsOf(s,['new','drill','redo']).filter(function(r){return r.n>=3}).map(function(r){return {d:r.d,p:r.pct,k:'site',i:MODE[r.mode]+'　'+r.n+' 題'}});
+  var a=roundsOf(s,['new','drill','redo','exam']).filter(function(r){return r.n>=3}).map(function(r){return {d:r.d,p:r.pct,k:'site',i:MODE[r.mode]+'　'+r.n+' 題'}});
   var b=(DATA.scores||[]).filter(function(x){return x.s===s}).map(function(x){return {d:x.d,p:x.p,k:'paper',i:x.i}});
   return a.concat(b).sort(function(x,y){return x.d<y.d?-1:x.d>y.d?1:0});
 }
@@ -2696,6 +3014,67 @@ function vScores(){
   return h;
 }
 
+/* ---------- 英文段考模擬卷：組卷（仿段考卷五大題，配分換算 100） ---------- */
+var EXSEC={v:['一、字彙題',2],g:['二、文法選擇',2],c:['三、綜合測驗',2],r:['四、閱讀測驗',2.5],s:['五、句型與翻譯',4]};
+var EXPLAN={full:{v:8,f:4,g:10,c:2,r:2,s:4},half:{v:4,f:2,g:5,c:1,r:1,s:2}};
+function exZ(w){for(var i=0;i<DATA.vocab.length;i++)if(DATA.vocab[i].w===w)return DATA.vocab[i].z;return ''}
+function exMk(id,u,t,sec,q,ans,ds,whys,e,ctx){
+  var o={id:id,s:'英文',u:u,t:t,k:'s',q:q,opts:[{txt:ans,ok:true}].concat(ds.map(function(d,i){return {txt:d,ok:false,why:(whys&&whys[i])||''}})),e:e,shuffle:true,gen:true,sec:EXSEC[sec][0],pt:EXSEC[sec][1]};
+  if(ctx)o.ctx=ctx;return o;
+}
+function exVocab(x){
+  var w=x[0],pos=x[1],stem=x[2],ex=x[3]||[],ds=x[4];
+  if(!ds){
+    var art=/\ban ______/.test(stem)?'v':(/\ba ______/.test(stem)?'c':''),st=w.slice(0,5);
+    var pool=EX.v.filter(function(y){return y[1]===pos&&y[0]!==w&&ex.indexOf(y[0])<0&&y[0].slice(0,5)!==st&&(!art||(/^[aeiou]/.test(y[0])===(art==='v')))});
+    if(pool.length<3)pool=EX.v.filter(function(y){return y[1]===pos&&y[0]!==w&&ex.indexOf(y[0])<0});
+    ds=shuffle(pool).slice(0,3).map(function(y){return y[0]});
+  }
+  var z=exZ(w);
+  return exMk('xv:'+w,'單字用法','字義','v',stem,w,ds,ds.map(function(d){var zd=exZ(d);return zd?d+' 的意思是「'+zd+'」，放進句子意思不通':''}),'**'+w+'**'+(z?'：'+z:'')+'。整句意思要通、搭配要對。');
+}
+function exFam(x,i){return exMk('xf:'+i,'單字用法','衍生字','v',x[0],x[1],[x[2],x[3],x[4]],null,x[5])}
+function exGram(x,i){return exMk('xg:'+i,x[1],x[0],'g',x[2],x[3][0],x[3].slice(1),x[4],x[5])}
+function exPatt(x,i){return exMk('xs:'+i,x[1],x[0],'s',x[2],x[3][0],x[3].slice(1),null,x[4])}
+function exClozeCtx(p,k){return '**'+p.title+'**\n'+p.text.replace(/\[\[(\d)\]\]/g,function(m,n){return +n===k?'==（'+n+'）＿＿＿==':'＿('+n+')＿'})}
+function exCloze(p){return p.qs.map(function(x,j){var u=/關代/.test(x[0])?'關係子句':(/使役|because/.test(x[0])?'使役與because':(/so\/such|強調句/.test(x[0])?'強調句與so/such':(/字義|片語|介系詞|to後接法/.test(x[0])?'單字用法':'二段綜合')));
+  var t=u==='二段綜合'?'克漏字':x[0];
+  return exMk('xc:'+p.id+':'+(j+1),u,t,'c','第 '+(j+1)+' 格應填入？',x[1],[x[2],x[3],x[4]],null,x[5],exClozeCtx(p,j+1))})}
+function exRead(p){return p.qs.map(function(x,j){return exMk('xr:'+p.id+':'+(j+1),'二段綜合','閱讀測驗','r',(j+1)+'. '+x[1],x[2],[x[3],x[4],x[5]],null,x[6],'**'+p.title+'**\n'+p.text)})}
+function exSeen(){return ST.seen['英文']||{}}
+function exPick(list,n,idf){var seen=exSeen(),a=[],b=[];list.forEach(function(x,i){(seen[idf(x,i)]?b:a).push({x:x,i:i})});return shuffle(a).concat(shuffle(b)).slice(0,n)}
+function exPassages(list,pre,n){var seen=exSeen();return list.map(function(p){var c=0;for(var k=1;k<=p.qs.length;k++)if(seen[pre+p.id+':'+k])c++;return {p:p,c:c,r:Math.random()}}).sort(function(a,b){return a.c-b.c||a.r-b.r}).slice(0,n).map(function(o){return o.p})}
+function exGramPool(){return EX.g.map(function(x,i){return {k:'n',x:x,i:i,id:'xg:'+i}}).concat(QS.filter(function(q){return q.s==='英文'&&q.k==='s'&&q.opts&&!q.old&&['關係子句','使役與because','強調句與so/such'].indexOf(q.u)>=0}).map(function(q){return {k:'q',q:q,id:q.id}}))}
+function buildEnExam(kind){
+  var P=EXPLAN[kind]||EXPLAN.full,out=[],seen=exSeen();
+  exPick(EX.v,P.v,function(x){return 'xv:'+x[0]}).forEach(function(o){out.push(exVocab(o.x))});
+  exPick(EX.f,P.f,function(x,i){return 'xf:'+i}).forEach(function(o){out.push(exFam(o.x,o.i))});
+  var v=out.splice(0);out=shuffle(v);
+  var gp=exGramPool(),ga=shuffle(gp.filter(function(o){return !seen[o.id]})).concat(shuffle(gp.filter(function(o){return seen[o.id]}))).slice(0,P.g);
+  ga.forEach(function(o){if(o.k==='n')out.push(exGram(o.x,o.i));else{var c={};for(var k in o.q)c[k]=o.q[k];c.sec=EXSEC.g[0];c.pt=EXSEC.g[1];out.push(c)}});
+  exPassages(EX.c,'xc:',P.c).forEach(function(p){out=out.concat(exCloze(p))});
+  exPassages(EX.r,'xr:',P.r).forEach(function(p){out=out.concat(exRead(p))});
+  exPick(EX.s,P.s,function(x,i){return 'xs:'+i}).forEach(function(o){out.push(exPatt(o.x,o.i))});
+  return out;
+}
+function exLeft(){var seen=exSeen(),n=function(list,f){return list.filter(function(x,i){return !seen[f(x,i)]}).length};
+  var cp=function(list,pre){return list.filter(function(p){for(var k=1;k<=p.qs.length;k++)if(seen[pre+p.id+':'+k])return false;return true}).length};
+  return {v:n(EX.v,function(x){return 'xv:'+x[0]})+n(EX.f,function(x,i){return 'xf:'+i}),g:exGramPool().filter(function(o){return !seen[o.id]}).length,c:cp(EX.c,'xc:'),r:cp(EX.r,'xr:'),s:n(EX.s,function(x,i){return 'xs:'+i})}}
+function startEnExam(kind){var qs=buildEnExam(kind);startRound('英文',unitsOf('英文'),qs.length,{qs:qs,mode:'exam',label:kind==='half'?'段考模擬卷（半份）':'段考模擬卷'})}
+function enExamCard(){
+  var L=exLeft(),rows=[['一、字彙題','字義＋詞性變化','12 題 × 2 分',L.v+' 題沒做過'],['二、文法選擇','關代、使役、because、so/such、強調句','10 題 × 2 分',L.g+' 題沒做過'],['三、綜合測驗','克漏字 2 篇 × 5 格','10 題 × 2 分',L.c+' 篇沒做過'],['四、閱讀測驗','2 篇 × 4 題（主旨、細節、指涉、推論）','8 題 × 2.5 分',L.r+' 篇沒做過'],['五、句型與翻譯','合併、改寫、中譯英','4 題 × 4 分',L.s+' 題沒做過']];
+  return '<section class="card stack"><h2>段考模擬卷</h2><p class="muted">比照段考英文卷的五大題順序和配分出題，範圍 B1 L4–L6＋高頻字彙 Basic U3–U4。整份換算 100 分，90 分才算過。題目優先出沒做過的，綜合測驗和閱讀一篇文章連考幾題，文章會固定在題目上方。</p>'
+    +'<div class="tw"><table><thead><tr><th>大題</th><th>考什麼</th><th>配分</th><th>題庫</th></tr></thead><tbody>'+rows.map(function(r){return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td class="num">'+r[2]+'</td><td class="num muted">'+r[3]+'</td></tr>'}).join('')+'</tbody></table></div>'
+    +'<div class="row"><button class="btn primary" data-act="enexam" data-k="full">整份 44 題（約 40 分鐘）</button><button class="btn" data-act="enexam" data-k="half">半份 22 題</button></div></section>';
+}
+function exSecTable(d){
+  var by={},order=[];d.items.forEach(function(it){if(it.x||!it.sec)return;var o=by[it.sec];if(!o){o=by[it.sec]={g:0,t:0,n:0,ok:0};order.push(it.sec)}o.g+=it.sc*(it.pt||1);o.t+=(it.pt||1);o.n++;if(it.ok)o.ok++});
+  if(!order.length)return '';
+  var low=order.slice().sort(function(a,b){return by[a].g/by[a].t-by[b].g/by[b].t})[0];
+  return '<section class="card"><h2>各大題得分</h2><div class="tw"><table><thead><tr><th>大題</th><th>對幾題</th><th>得分</th><th>得分率</th></tr></thead><tbody>'+order.map(function(k){var o=by[k],r=Math.round(o.g/o.t*100);return '<tr><td>'+esc(k)+'</td><td class="num">'+o.ok+' / '+o.n+'</td><td class="num">'+(Math.round(o.g*10)/10)+' / '+o.t+'</td><td class="num'+(r>=90?' good':'')+'">'+r+'%</td></tr>'}).join('')+'</tbody></table></div>'
+    +'<p class="muted">最需要補的是「'+esc(low)+'」。先從下面「這一輪錯的題型」點進教學，弄懂再做下一份。</p></section>';
+}
+
 function leave(){if(R)finishRound(true);if(VS)vFinish(true);LP=null}
 function go(s){
   leave();
@@ -2741,6 +3120,7 @@ document.addEventListener('click',function(ev){
     case 'unit':p=pref(s);q=el.getAttribute('data-u');if(p.units[q])delete p.units[q];else p.units[q]=1;saveLocal();render();break;
     case 'cnt':pref(s).n=+el.getAttribute('data-n');saveLocal();render();break;
     case 'start':p=pref(s);startRound(s,selUnits(s),p.n,{old:p.old,mode:'new'});break;
+    case 'enexam':startEnExam(el.getAttribute('data-k'));break;
     case 'kaogu':p=pref(s);startRound(s,selUnits(s),p.n,{old:p.old,mode:'new',src:true,label:'各校考古'});break;
     case 'quick10':leave();startRound(id,unitsOf(id),10,{mode:'new'});break;
     case 'pnew':leave();p=pref(id);q=selUnits(id);startRound(id,q.length?q:unitsOf(id),p.n,{mode:'new',old:p.old});break;
