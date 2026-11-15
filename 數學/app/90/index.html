@@ -2407,6 +2407,142 @@ GEN['2-2-百分組成']={s:'化學',u:'2-2 化學式',f:function(){
 }};
 })();
 
+// 無限出題（2026-11-15）：沒有計算題出題器的單元，用「敘述庫」自動組題。
+// TF(科目,單元,題型,主題,[正確敘述...],[[錯誤敘述,錯在哪]...])：每次抽 1 對 3 錯出「何者正確」，或 3 對 1 錯出「何者錯誤」。
+// 另有英文文法與生物機率的組合式出題器。全部掛在 GEN 上，和數學、化學的計算題出題器同一套機制。
+(function(){
+function pk(a){return a[Math.floor(Math.random()*a.length)]}
+function some(a,n){var b=a.map(function(x,i){return i}),o=[];while(o.length<n&&b.length)o.push(b.splice(Math.floor(Math.random()*b.length),1)[0]);return o.sort(function(x,y){return x-y})}
+function TF(s,u,tag,topic,T,Fs){
+  GEN[tag]={s:s,u:u,tf:[T.length,Fs.length],f:function(){
+    if(Math.random()<0.6){
+      var t=Math.floor(Math.random()*T.length),f=some(Fs,3);
+      return {key:'p'+t+'-'+f.join('.'),q:'關於'+topic+'，下列敘述何者正確？',o:[T[t]].concat(f.map(function(i){return [Fs[i][0],Fs[i][1]]})),e:'其他三項錯在：'+f.map(function(i){return '「'+Fs[i][0]+'」→ '+Fs[i][1]}).join('；')+'。'};
+    }
+    var x=Math.floor(Math.random()*Fs.length),ts=some(T,3);
+    return {key:'n'+x+'-'+ts.join('.'),q:'關於'+topic+'，下列敘述何者「錯誤」？',o:[Fs[x][0]].concat(ts.map(function(i){return [T[i],'這項敘述是正確的，題目要選錯誤的']})),e:'錯誤的原因：'+Fs[x][1]+'。其他三項都是正確的敘述。'};
+  }};
+}
+
+/* ---------- 國文 ---------- */
+TF("國文","L5 師說","師說-敘述判斷","〈師說〉",
+["作者韓愈是唐代古文運動的領袖","本文是為了贈給學生李蟠而寫","文中主張擇師的標準是有沒有「道」，不看地位與年紀","「聖人無常師」是說聖人沒有固定的老師","「不恥相師」的「師」是動詞，意思是學習","文中拿巫醫樂師百工之人和士大夫作對比","「句讀」的「讀」音ㄉㄡˋ，指文章的斷句","「小學而大遺」批評學了句讀卻放著疑惑不解","「六藝經傳」的「六藝」指六經","「弟子不必不如師」的「不必」是「不一定」","「聖益聖，愚益愚」的「益」是「更加」","「作師說以貽之」的「貽」是贈送"],
+[["韓愈是宋代人","韓愈是唐代人"],["本文是韓愈寫給兒子的家書","本文是贈給學生李蟠的"],["文中主張老師一定要比學生年長","文中說「無長無少」，不看年紀"],["文中稱讚士大夫樂於互相學習","文中批評士大夫恥於從師"],["「師道之不傳也久矣」的「師道」指老師的待遇","「師道」指從師求學的風氣"],["文中認為學習句讀比解決疑惑重要","文中批評「小學而大遺」，解惑才是大事"],["孔子的老師郯子等人，賢能都勝過孔子","文中說「其賢不及孔子」"],["韓愈提倡駢文、反對古文","韓愈提倡古文、反對駢文"],["「君子不齒」的「齒」是談論的意思","「不齒」是不屑與之並列"],["「不拘於時」的「時」指上課的時間","「時」指當時恥於從師的風氣"],["文中認為老師必須各方面都勝過學生","文中說「師不必賢於弟子」"]]);
+TF("國文","L6 發現事理的樂趣","發現事理-敘述判斷","〈發現事理的樂趣〉",
+["講述者費曼是美國物理學家，曾獲諾貝爾物理獎","本文由訪談內容整理而成，語言口語化","文中認為知道事物的名稱，不等於了解事物","文中的父親會把書上的數字換成具體的畫面來說明","本文主張發現事理的過程本身就是樂趣","費曼不看重獎項與頭銜","文中用作者童年和父親相處的例子來說理","文中的父親重視引導孩子觀察與追問"],
+[["費曼是英國的生物學家","費曼是美國的物理學家"],["本文大量引用古書典故來說理","本文口語化，用生活中的例子說理"],["文中認為記住越多名稱，就越了解事物","文中強調名稱不等於理解"],["文中的父親要求費曼把百科全書背起來","父親重視理解，不是背誦"],["費曼認為得獎是做研究最大的目的","他不看重獎項，在乎的是發現事理"],["本文是虛構人物的寓言故事","文中是作者自己的真實經歷"],["文中主張學習應該以權威的說法為準","本文不主張盲從權威"],["本文的文體是章回小說","本文是由訪談整理而成的散文"]]);
+TF("國文","L7 范進中舉","范進中舉-敘述判斷","〈范進中舉〉",
+["出自清代吳敬梓的《儒林外史》","《儒林外史》是章回體的諷刺小說","范進中舉後歡喜過度，一時發瘋","胡屠戶對范進的態度前倨後恭","眾人請胡屠戶打范進一巴掌，讓他清醒","張鄉紳在范進中舉之後才來送銀子和房子","作者不直接評論，讓人物的言行自己露出醜態","明清時期通過鄉試的人稱為舉人","本文批判科舉制度扭曲人心，以及社會的趨炎附勢","本文採第三人稱敘事"],
+[["出自《紅樓夢》","出自《儒林外史》"],["作者是明代的羅貫中","作者是清代的吳敬梓"],["范進中舉後平靜地接受眾人道賀","他歡喜過度而發瘋"],["胡屠戶自始至終都很敬重范進","中舉之前他常辱罵范進"],["張鄉紳從前就常常接濟范進","兩人從前並無往來"],["作者在文中直接痛罵胡屠戶的勢利","作者不直接評論"],["明清時期通過鄉試的人稱為秀才","通過院試的是秀才，通過鄉試的是舉人"],["本文以第一人稱「我」來敘事","本文是第三人稱敘事"],["范進是因為生病才發瘋","他是喜極而瘋"],["胡屠戶打了范進之後毫不在意","他覺得手痛，擔心打了文曲星"]]);
+TF("國文","L8 孔乙己","孔乙己-敘述判斷","〈孔乙己〉",
+["作者魯迅，本名周樹人","〈孔乙己〉收在小說集《吶喊》","敘事者是咸亨酒店的小伙計","孔乙己是站著喝酒而穿長衫的唯一的人","孔乙己沒有考上秀才","孔乙己因為偷了丁舉人家的東西，被打斷了腿","文中多次寫眾人的笑，襯托孔乙己的悲哀","掌櫃惦記的是孔乙己還欠十九個錢","孔乙己在店裡從不拖欠酒錢，品行比別人好","本文批判科舉制度與社會的冷漠"],
+[["〈孔乙己〉收在散文集《朝花夕拾》","收在小說集《吶喊》"],["本文由孔乙己以第一人稱自述","敘事者是酒店的小伙計"],["孔乙己是酒店裡最有錢的客人","他很窮，只能站著喝酒"],["孔乙己後來考中了舉人","他連秀才也沒考上"],["孔乙己的腿是喝醉酒摔斷的","是被丁舉人家打斷的"],["眾人都很同情並照顧孔乙己","眾人把他當成取笑的對象"],["小伙計很認真地向孔乙己學寫字","小伙計不耐煩，懶得理他"],["作者是老舍","作者是魯迅"],["孔乙己常常賴帳不還","他從不拖欠，欠了不久就還清"],["文末明確交代孔乙己搬到外地生活","文末說他「大約的確死了」"]]);
+
+/* ---------- 化學 ---------- */
+TF("化學","2-1 化學鍵","化學鍵-敘述判斷","化學鍵與物質的性質",
+["金屬元素與非金屬元素之間通常形成離子鍵","非金屬元素之間通常以共用電子對形成共價鍵","離子化合物在熔融態與水溶液中可以導電","金屬能導電，是因為有可以自由移動的價電子","氮分子的兩個原子之間是參鍵","水分子中的氧原子有 2 對孤電子對","氨分子中的氮原子有 1 對孤電子對","鑽石、石英屬於網狀共價固體，熔點很高","離子化合物的化學式是實驗式","氯化鈉固體不導電，是因為離子不能自由移動"],
+[["氯化鈉固體可以導電","固態時離子不能移動，不導電"],["二氧化碳是離子化合物","碳和氧都是非金屬，是共價化合物"],["氧分子的兩個原子之間是參鍵","氧分子是雙鍵，氮分子才是參鍵"],["金屬能導電，是因為有可以自由移動的陰離子","金屬靠自由電子導電"],["水分子中的氧原子有 1 對孤電子對","有 2 對"],["鑽石屬於分子固體","鑽石是網狀共價固體"],["離子鍵是原子之間共用電子對形成的","離子鍵是電子轉移後，陰、陽離子之間的靜電吸引力"],["鎂離子（+2）與氮離子（−3）形成的化合物，鎂與氮的個數比是 2：3","總電荷要為 0，鎂與氮的個數比是 3：2"],["氨分子中的氮原子沒有孤電子對","有 1 對"],["網狀共價固體熔融後可以導電","任何狀態都不導電"]]);
+TF("化學","2-4 化學反應熱","反應熱-敘述判斷","化學反應熱",
+["放熱反應的 ΔH 小於 0","吸熱反應進行時，周圍的溫度下降","斷鍵吸收能量，成鍵放出能量","反應熱與反應物的莫耳數成正比","熱化學方程式必須標明物質的狀態","反應式逆寫時，ΔH 的數值相同、正負號相反","放熱反應中，生成物的熱含量比反應物低","把熱量寫在生成物那一邊，表示放熱","燃燒是放熱反應"],
+[["放熱反應的 ΔH 大於 0","放熱的 ΔH 小於 0"],["吸熱反應一定要加熱才會發生","有些吸熱反應在室溫就會自己發生，例如冷敷包"],["成鍵要吸收能量","成鍵放出能量，斷鍵才吸收能量"],["反應熱和物質的狀態無關","反應熱和物質的狀態有關"],["反應式的係數加倍，ΔH 不變","係數加倍，ΔH 也加倍"],["吸熱反應中，生成物的熱含量比反應物低","吸熱反應的生成物熱含量較高"],["把熱量寫在反應物那一邊，表示放熱","寫在反應物那一邊表示吸熱"],["燃燒需要點火，所以是吸熱反應","點火只是提供反應開始所需的能量，燃燒是放熱反應"],["反應式逆寫時，ΔH 不變","逆寫時 ΔH 要變號"]]);
+TF("化學","3-1 溶液的種類與特性","溶液-敘述判斷","溶液、膠體與電解質",
+["溶液是均勻的混合物","空氣、合金都是溶液","膠體溶液會出現廷得耳效應","膠體粒子帶電，加入電解質會凝聚","蔗糖是非電解質","醋酸是弱電解質，在水中只有部分解離","濃度相同時，氯化鈣水溶液的離子總濃度比氯化鈉水溶液高","膠體粒子可以通過濾紙","牛奶、豆漿是膠體溶液","電解質水溶液導電，靠的是離子的移動"],
+[["泥水是溶液","泥水會沉澱分層，是懸浮液"],["糖水會出現廷得耳效應","糖水是真溶液，粒子太小，不會散射光"],["蔗糖是強電解質","蔗糖溶於水不解離，是非電解質"],["醋酸在水中完全解離","醋酸只有部分解離"],["膠體粒子可以用濾紙濾出","膠體粒子可以通過濾紙"],["溶液一定是液態","也有氣態溶液（空氣）和固態溶液（合金）"],["電解質水溶液導電，靠的是自由電子","靠的是離子的移動"],["氯化鈉固體是良好的導體","固態時離子不能移動，不導電"],["膠體粒子比懸浮液的粒子大","膠體粒子比懸浮液的粒子小"],["加入電解質會使膠體溶液更穩定","會中和膠體粒子的電荷，使它凝聚"]]);
+
+/* ---------- 生物 ---------- */
+TF("生物","2-1 性狀的遺傳","遺傳-敘述判斷","性狀的遺傳",
+["孟德爾以豌豆作為遺傳實驗的材料","完全顯性時，基因型 Aa 與 AA 的表徵相同","Aa 與 Aa 交配，子代的表徵比是 3：1","試交是把待測個體和隱性個體交配","ABO 血型由三種等位基因控制","O 型的基因型是 ii","AB 型是共顯性的例子","紅綠色盲是 X 染色體上的隱性遺傳","人類子代的性別，由精子帶 X 還是帶 Y 決定","身高、膚色屬於多基因遺傳","紫茉莉的花色是不完全顯性的例子"],
+[["Aa 與 Aa 交配，子代的基因型比是 3：1","基因型比是 1：2：1，表徵比才是 3：1"],["表徵相同的個體，基因型一定相同","AA 與 Aa 的表徵相同、基因型不同"],["父母都是 O 型，可能生出 A 型的子女","父母都是 ii，子女只可能是 O 型"],["人類子代的性別由卵決定","卵都帶 X，性別由精子決定"],["紅綠色盲的基因位在 Y 染色體上","位在 X 染色體上"],["基因型 AaBb 的個體可以產生 2 種配子","兩對基因獨立時可以產生 4 種配子"],["試交是把待測個體和顯性純種交配","要和隱性個體交配"],["母親色盲、父親正常，兒子的色覺都正常","兒子的 X 來自母親，全部色盲"],["AB 型的人，基因型是 ii","ii 是 O 型"],["多基因遺傳的性狀，可以清楚地分成兩類","多基因遺傳的表徵呈連續變化"]]);
+TF("生物","2-2 遺傳物質","遺傳物質-敘述判斷","遺傳物質",
+["DNA 的核苷酸含有去氧核糖","A 與 T 配對，G 與 C 配對","A 與 T 之間有 2 個氫鍵","RNA 含有尿嘧啶，不含胸腺嘧啶","DNA 的複製方式是半保留複製","轉錄是以 DNA 為模板合成 RNA","真核細胞的轉錄在細胞核中進行","轉譯在核糖體進行","mRNA 上每 3 個相鄰的鹼基決定一個胺基酸","基因是 DNA 上帶有遺傳訊息的片段","基因突變是 DNA 的鹼基序列發生改變"],
+[["RNA 的核苷酸含有去氧核糖","RNA 含的是核糖"],["A 與 G 配對","A 與 T 配對"],["G 與 C 之間有 2 個氫鍵","G 與 C 之間有 3 個氫鍵"],["DNA 含有尿嘧啶","尿嘧啶在 RNA 中"],["真核細胞的轉譯在細胞核中進行","轉譯在細胞質的核糖體進行"],["轉錄的產物是蛋白質","轉錄的產物是 RNA"],["mRNA 上每 2 個相鄰的鹼基決定一個胺基酸","每 3 個一組"],["DNA 複製後，新分子的兩股都是新合成的","每個新分子含一股舊股和一股新股"],["染色體是基因上的一個片段","基因才是 DNA 上的片段"],["雙股 DNA 中，A 的數量等於 G 的數量","A 的數量等於 T 的數量"]]);
+
+/* ---------- 地理 ---------- */
+TF("地理","3-2 地形","地形-敘述判斷","地形",
+["板塊運動、火山活動、斷層屬於內營力","中洋脊位於張裂性板塊邊界","海溝位於聚合性板塊邊界","岩層受張力作用會形成正斷層","高溫多雨的地區，化學風化旺盛","沖積扇位於河流流出山谷的谷口","曲流的凹岸侵蝕、凸岸堆積","河階代表河流曾經重新下切","潟湖是沙洲與陸地之間的水域","峽灣是冰河谷被海水淹沒形成的","U 形谷、冰斗是冰河侵蝕地形","等高線越密，坡度越陡","臺灣位於歐亞板塊與菲律賓海板塊的交界"],
+[["河流、風、冰河的侵蝕屬於內營力","這些是外營力"],["中洋脊位於聚合性板塊邊界","中洋脊位於張裂性邊界"],["岩層受張力作用會形成逆斷層","張力形成正斷層，壓力才形成逆斷層"],["乾燥的沙漠地區，化學風化最旺盛","化學風化需要水和熱，沙漠缺水"],["三角洲位於河流流出山谷的谷口","三角洲在河口，谷口的是沖積扇"],["曲流的凸岸侵蝕、凹岸堆積","凹岸侵蝕、凸岸堆積"],["沙洲、潟湖是海水侵蝕形成的地形","它們是堆積地形"],["峽灣是河谷被海水淹沒形成的","那是谷灣；峽灣是冰河谷被淹沒"],["等高線越疏，坡度越陡","等高線越密，坡度越陡"],["等高線凸向高處的地方是山脊","凸向高處是山谷，凸向低處才是山脊"],["鐘乳石是風的磨蝕形成的","鐘乳石是碳酸鈣沉澱形成的"],["V 形谷是冰河侵蝕形成的","V 形谷是河流下切形成的"]]);
+TF("地理","4 氣候","氣候-敘述判斷","氣候",
+["海拔每上升 100 公尺，氣溫約下降 0.6°C","內陸的年溫差比沿海大","夏季午後的雷陣雨屬於對流雨","臺灣五、六月的梅雨屬於鋒面雨","副熱帶高壓帶氣流下沉，乾燥少雨","北半球的信風是東北風","熱帶雨林氣候全年高溫多雨","地中海型氣候夏乾冬雨","溫帶海洋性氣候終年受西風影響","季風氣候的雨量集中在夏季","熱帶沙漠氣候的日溫差很大","背風坡氣流下沉，比較乾燥","涼流經過的沿岸，空氣穩定、不易降雨"],
+[["海拔越高，氣溫越高","海拔越高，氣溫越低"],["沿海的年溫差比內陸大","內陸的年溫差比較大"],["梅雨屬於對流雨","梅雨是鋒面雨"],["副熱帶高壓帶氣流上升，多雨","氣流下沉，乾燥少雨"],["北半球的信風是西南風","北半球的信風是東北風"],["地中海型氣候夏雨冬乾","夏乾冬雨"],["熱帶莽原氣候全年多雨","莽原氣候乾季與雨季分明"],["溫帶海洋性氣候主要受季風影響","終年受西風影響"],["迎風坡比背風坡乾燥","迎風坡多雨，背風坡乾燥"],["暖流使沿岸降溫、減濕","暖流使沿岸增溫、增濕"],["臺灣冬季南部多雨、北部乾燥","冬季北部濕冷、南部乾暖"],["7 月氣溫最低的地方位於北半球","7 月最冷代表位於南半球"]]);
+TF("地理","5 水文","水文-敘述判斷","水文",
+["水循環的動力是太陽輻射與重力","多年平均下，降水量等於蒸發散量加逕流量","逕流係數是逕流量除以降水量","都市化使逕流係數變大","都市化使洪峰流量提高、洪峰提早出現","流量等於通水斷面積乘以流速","分水嶺是集水區之間的界線","自流井的含水層上下都夾著阻水層","超抽地下水會造成地層下陷","沖積扇的湧泉帶多在扇端","副熱帶海域的表層鹽度較高","暖流是由低緯流向高緯的洋流","聖嬰現象發生時，信風減弱"],
+[["逕流係數是降水量除以逕流量","是逕流量除以降水量"],["都市化使雨水的入滲增加","不透水面增加，入滲減少"],["都市化使河川的基流量增加","入滲減少，基流量會減少"],["地層下陷的地區停止抽水後，很快會回復原狀","地層下陷幾乎無法回復"],["分水嶺位在河谷的最低處","分水嶺在山脊稜線上"],["赤道海域的表層鹽度最高","赤道多雨，鹽度不是最高；副熱帶海域才最高"],["寒流是由低緯流向高緯的洋流","由低緯流向高緯的是暖流"],["聖嬰現象發生時，秘魯沿岸的湧升流增強","湧升流減弱"],["沖積扇的湧泉帶多在扇頂","湧泉帶在扇端"],["臺灣的年雨量低於世界平均","臺灣的年雨量高於世界平均"],["逕流係數可以大於 1","逕流係數是比例，不會大於 1"],["蒸散是指水面的水直接汽化","蒸散是植物經氣孔散失水氣；水面汽化是蒸發"]]);
+
+/* ---------- 歷史 ---------- */
+TF("歷史","L3 荷鄭到清","荷鄭到清-敘述判斷","荷西、鄭氏到清領時期的臺灣",
+["荷蘭東印度公司以大員（今臺南安平）為據點","荷蘭人在臺灣經營轉口貿易，輸出鹿皮與蔗糖","西班牙人曾經占領臺灣北部的雞籠、淡水","荷蘭人在 1642 年驅逐了北部的西班牙人","鄭成功在 1662 年迫使荷蘭人投降","鄭氏時期設承天府，以及天興、萬年二縣","鄭氏時期的營盤田由軍隊屯墾","清廷在 1684 年將臺灣納入版圖，設臺灣府","清領前期實施渡臺禁令","牡丹社事件後，沈葆楨來臺推動開山撫番","臺灣在 1885 年建省，首任巡撫是劉銘傳","郭懷一事件是漢人反抗荷蘭統治的事件"],
+[["荷蘭人以雞籠為主要據點","荷蘭人以大員為據點，雞籠是西班牙人的據點"],["西班牙人占領的是臺灣南部","西班牙人占領北部"],["鄭成功驅逐的是西班牙人","鄭成功驅逐的是荷蘭人"],["鄭氏時期設一府三縣","鄭氏是一府二縣，清領初期才是一府三縣"],["王田是鄭氏時期官員的私人土地","王田是荷蘭時期公司的土地"],["清廷領臺初期積極鼓勵人民移民臺灣","清廷態度消極，實施渡臺禁令"],["臺灣建省的首任巡撫是沈葆楨","首任巡撫是劉銘傳"],["牡丹社事件發生在清法戰爭之後","牡丹社事件（1874）早於清法戰爭（1884）"],["臺灣開港通商是因為牡丹社事件","開港是因為英法聯軍後的天津、北京條約"],["清領前期，臺灣隸屬於廣東省","隸屬於福建省"],["荷蘭人來臺的主要目的是傳教","主要目的是貿易"]]);
+TF("歷史","L4 日治","日治-敘述判斷","日治時期的臺灣",
+["六三法授權總督發布與法律同等效力的律令","後藤新平主張依生物學原則治理臺灣","日本自 1919 年起改採內地延長主義","田健治郎是第一位文官總督","皇民化運動始於 1937 年中日戰爭爆發之後","西來庵事件是漢人最後一次大規模武裝抗日","霧社事件由賽德克族的莫那魯道領導","臺灣文化協會成立於 1921 年","臺灣民眾黨是臺灣人的第一個合法政黨","1935 年臺灣舉行第一次地方議員選舉","保甲制度實行連坐，協助警察維持治安","臺灣議會設置請願運動前後請願 15 次"],
+[["六三法給予臺灣人選舉權","六三法是授權總督立法，沒有給予選舉權"],["後藤新平曾經擔任臺灣總督","後藤新平是民政長官，不是總督"],["內地延長主義時期由武官擔任總督","這個時期改派文官總督"],["皇民化運動始於 1919 年","始於 1937 年"],["霧社事件是漢人發動的抗日事件","是原住民賽德克族的抗日事件"],["西來庵事件發生在霧社事件之後","西來庵事件（1915）早於霧社事件（1930）"],["臺灣文化協會是總督府成立的團體","是臺灣人自己成立的文化啟蒙團體"],["1935 年的選舉，所有成年男女都有投票權","選舉權有性別與納稅額的限制"],["臺灣民眾黨成立於臺灣文化協會之前","文化協會 1921 年、民眾黨 1927 年"],["臺灣議會設置請願運動的訴求是臺灣獨立","訴求是設立臺灣議會，在體制內爭取自治"],["五年理蕃計畫由田健治郎推動","由佐久間左馬太推動"],["皇民奉公會是臺灣人自發組成的抗日團體","是總督府成立的戰爭動員組織"]]);
+TF("歷史","L4 戰後","戰後-敘述判斷","戰後的臺灣",
+["二二八事件發生在 1947 年","二二八事件的導火線是查緝私菸","二二八事件後，行政長官公署改為臺灣省政府","臺灣本島的戒嚴從 1949 年到 1987 年","動員戡亂時期臨時條款擴大了總統的權力","韓戰爆發後，美國派第七艦隊協防臺灣","1954 年簽訂中美共同防禦條約","中華民國在 1971 年退出聯合國","1979 年美國與中華民國斷交","美麗島事件發生在 1979 年的高雄","解除戒嚴之後，開放黨禁與報禁","1996 年舉行第一次總統直選","野百合學運發生在 1990 年"],
+[["二二八事件發生在 1949 年","發生在 1947 年"],["二二八事件的導火線是選舉作票","導火線是查緝私菸；選舉作票引發的是中壢事件"],["臺灣本島的戒嚴在 1991 年解除","1987 年解除；1991 年是廢止臨時條款"],["韓戰爆發後，美國與中華民國斷交","韓戰後美國協防臺灣；斷交是 1979 年"],["中華民國在 1979 年退出聯合國","1971 年退出聯合國"],["《臺灣關係法》是中華民國立法院制定的法律","是美國國會通過的美國國內法"],["美麗島事件發生在解除戒嚴之後","美麗島事件（1979）早於解嚴（1987）"],["第一次總統直選在 2000 年舉行","在 1996 年；2000 年是第一次政黨輪替"],["野百合學運的訴求包括立即舉行總統直選","四大訴求不包括總統直選"],["雷震因為發動武裝革命而被捕","他是因為批評時政、籌組反對黨"],["萬年國會在 1987 年解嚴時結束","在 1991、1992 年國會全面改選時結束"],["中壢事件發生在美麗島事件之後","中壢事件（1977）早於美麗島事件（1979）"]]);
+
+/* ---------- 公民 ---------- */
+TF("公民","第3課","第3課-敘述判斷","我國的選舉、罷免與公民投票",
+["普通選舉是指不因財產、性別等條件限制選舉權","平等選舉是指一人一票、票票等值","我國的選舉採無記名投票","立法委員共有 113 席","區域立法委員採單一選區相對多數決","政黨票得票率達 5% 的政黨，才能分配不分區席次","立法委員選舉採單一選區兩票制","總統選舉採相對多數決","罷免案要通過，同意票須多於不同意票，且達原選區選舉人總數四分之一","公民投票的投票權人年齡為 18 歲","公投案要通過，有效同意票須多於不同意票，且達投票權人總額四分之一","我國立法委員的選舉制度屬於並立制"],
+[["以納稅金額限制投票資格，符合普通原則","這違反普通原則"],["我國的選舉採記名投票","採無記名投票"],["區域立法委員採比例代表制","採單一選區相對多數決"],["政黨票得票率達 3% 就能分配不分區席次","門檻是 5%"],["總統候選人必須得票過半才能當選","總統選舉採相對多數決，得票最多者當選"],["罷免案只要同意票多於不同意票就通過","還要達到原選區選舉人總數四分之一"],["公民投票的投票權人年齡為 20 歲","公民投票是 18 歲"],["我國立法委員的選舉制度屬於聯立制","屬於並立制"],["不分區席次依各政黨區域立委的當選人數分配","依政黨票的得票比例分配"],["比例代表制容易形成兩黨制","比例代表制容易形成多黨制"],["單一選區相對多數決對小黨比較有利","對大黨有利，小黨不易當選"],["公投案的通過門檻，以實際投票人數為分母","以投票權人總額為分母"]]);
+TF("公民","第4課","第4課-敘述判斷","民主治理與公平正義",
+["政府主動公開資訊，符合透明的要求","監察院彈劾官員屬於水平課責","選民用選票淘汰執政者屬於垂直課責","媒體與公民團體對政府的監督屬於社會課責","審議民主重視充分的資訊與公開說理","效益主義以整體幸福的最大化作為判斷標準","自由至上主義反對政府以重稅強制重分配","羅爾斯主張在無知之幕後設計制度","差異原則主張不平等必須對處境最不利的人最有利","急診室依病情輕重決定看診順序，是依需要分配","法官迴避是為了確保程序正義","合理的差別待遇是為了實現實質平等","賠償受害者的損失屬於匡正正義"],
+[["立法院監督行政院屬於垂直課責","機關之間的監督是水平課責"],["審議民主的結論一定具有法律拘束力","結論通常只供決策參考"],["效益主義最重視少數人的基本權利","效益主義看整體的總和，可能忽略少數人"],["自由至上主義主張大幅提高稅率進行重分配","自由至上主義反對強制重分配"],["無知之幕是效益主義提出的主張","無知之幕是羅爾斯提出的"],["公司依業績發放獎金，是依需要分配","依表現或貢獻分配是「應得」"],["形式平等容許合理的差別待遇","容許合理差別待遇的是實質平等"],["程序正義關心的是資源如何分配","那是分配正義；程序正義關心過程是否公正"],["治理是指政府單方面由上而下地統治","治理強調政府、企業與公民社會共同處理公共問題"],["參與式預算由行政機關全權決定經費用途","參與式預算由民眾提案、討論並投票決定"],["匡正正義處理的是決策過程是否公開","匡正正義處理損害如何補救"],["垂直課責是指政府機關之間互相監督","那是水平課責"]]);
+
+/* ---------- 生物：一對基因的機率計算 ---------- */
+(function(){
+var TR=[["豌豆的高莖","矮莖","T","t"],["豌豆的圓形種子","皺形種子","R","r"],["豌豆的黃色子葉","綠色子葉","Y","y"],["豌豆的紫花","白花","P","p"],["果蠅的長翅","殘翅","V","v"],["某植物的紅色果實","黃色果實","A","a"]];
+var CR=[[1,1,"3/4","1/4","1/4","1/2"],[1,0,"1/2","1/2","0","1/2"],[2,1,"1","0","1/2","1/2"],[2,0,"1","0","0","1"]];
+GEN["2-1-機率"]={s:"生物",u:"2-1 性狀的遺傳",f:function(){
+  var t=pk(TR),ci=Math.floor(Math.random()*CR.length),c=CR[ci],ask=Math.floor(Math.random()*3),D=t[2],d=t[3];
+  var g=function(n){return n===2?D+D:(n===1?D+d:d+d)},A=g(c[0]),B=g(c[1]);
+  var names=["表現顯性性狀","表現隱性性狀","基因型為 "+D+d],ans=[c[2],c[3],c[5]][ask];
+  var all=["0","1/4","1/2","3/4","1"],o=[ans];
+  all.forEach(function(x){if(x!==ans&&o.length<4)o.push([x,"把四種配子組合列出來，再數符合條件的有幾種"])});
+  var kids=A===D+d&&B===D+d?D+D+"、"+D+d+"、"+D+d+"、"+d+d:(A===D+d&&B===d+d?D+d+"、"+D+d+"、"+d+d+"、"+d+d:(A===D+D&&B===D+d?D+D+"、"+D+D+"、"+D+d+"、"+D+d:D+d+"、"+D+d+"、"+D+d+"、"+D+d));
+  return {key:t[2]+ci+ask,q:t[0]+"（"+D+"）對"+t[1]+"（"+d+"）為顯性。基因型 "+A+" 與 "+B+" 的個體交配，子代"+names[ask]+"的機率是多少？",o:o,fixed:all,e:A+" × "+B+" 的子代基因型為 "+kids+"，各占 1/4。"+names[ask]+"的占 "+ans+"。"};
+}};
+})();
+
+/* ---------- 英文文法：組合式出題 ---------- */
+(function(){
+var SUB=["My mother","The teacher","The coach","Our boss","Mr. Lin","Her father","The doctor","My sister"],OBJ=["me","him","her","us","the students","his son"];
+var VP=[["clean","cleaning","cleaned","the classroom"],["finish","finishing","finished","the report"],["wash","washing","washed","the dishes"],["repair","repairing","repaired","the bike"],["write","writing","written","a letter"],["take","taking","taken","the medicine"],["answer","answering","answered","the question"],["carry","carrying","carried","the boxes"]];
+var TH=[["the car","repair","repairing","repaired"],["the house","paint","painting","painted"],["her hair","dye","dyeing","dyed"],["the computer","fix","fixing","fixed"],["the windows","clean","cleaning","cleaned"],["the package","deliver","delivering","delivered"]];
+GEN["使役"]={s:"英文",u:"使役與because",f:function(){
+  var r=Math.random(),s=pk(SUB);
+  if(r<0.45){var v=pk(["made","let","had"]),o=pk(OBJ),p=pk(VP);
+    return {key:"a"+s+v+o+p[0],q:s+" "+v+" "+o+" ______ "+p[3]+".",o:[p[0],["to "+p[0],v+" ＋受詞後面接原形動詞，不加 to"],[p[1],v+" ＋受詞後面接原形動詞，不是 V-ing"],[p[2],"受詞是做動作的人，用原形動詞，不是過去分詞"]],e:"make／let／have ＋人＋原形動詞。"}}
+  if(r<0.7){var o2=pk(OBJ),p2=pk(VP);
+    return {key:"b"+s+o2+p2[0],q:s+" got "+o2+" ______ "+p2[3]+".",o:["to "+p2[0],[p2[0],"get ＋人後面要接 to V，和 make／let／have 不同"],[p2[1],"get ＋人＋ to V"],[p2[2],"受詞是做動作的人，用 to V"]],e:"get ＋人＋ to V。"}}
+  var h=pk(["had","got"]),t=pk(TH);
+  return {key:"c"+s+h+t[0],q:s+" "+h+" "+t[0]+" ______ yesterday.",o:[t[3],[t[1],"東西是「被」處理的，要用過去分詞"],["to "+t[1],"東西是「被」處理的，要用過去分詞"],[t[2],"東西是「被」處理的，要用過去分詞"]],e:"have／get ＋物＋過去分詞：東西是被處理的。"};
+}};
+var BC=[["it rained heavily","the heavy rain","the game was canceled"],["he was sick","his illness","he stayed at home"],["the traffic was bad","the bad traffic","we were late for school"],["she worked hard","her hard work","she passed the exam"],["the noise was loud","the loud noise","I couldn't sleep"],["the road was icy","the icy road","the bus arrived late"],["he was careless","his carelessness","he made many mistakes"],["the storm was strong","the strong storm","many flights were delayed"]];
+function cap(x){return x.charAt(0).toUpperCase()+x.slice(1)}
+GEN["because"]={s:"英文",u:"使役與because",f:function(){
+  var i=Math.floor(Math.random()*BC.length),b=BC[i],f=Math.floor(Math.random()*4);
+  if(f===0)return {key:i+"0",q:cap(b[2])+" ______ "+b[1]+".",o:["because of",["because","後面是名詞，不是子句，要用 because of"],["so","so 表示結果，這裡要接原因"],["although","although 表示讓步，語意不合"]],e:b[1]+" 是名詞片語，用 because of。"};
+  if(f===1)return {key:i+"1",q:cap(b[2])+" ______ "+b[0]+".",o:["because",["because of","後面是有主詞和動詞的子句，要用 because"],["due to","due to 後面接名詞"],["so","so 表示結果，這裡要接原因"]],e:b[0]+" 是子句（有主詞和動詞），用 because。"};
+  if(f===2)return {key:i+"2",q:"______ "+b[1]+", "+b[2]+".",o:["Because of",["Because","後面是名詞，不是子句，要用 Because of"],["Although","語意不合"],["So","So 不能放在這裡引導原因"]],e:b[1]+" 是名詞片語，用 because of。"};
+  return {key:i+"3",q:"______ "+b[0]+", "+b[2]+".",o:["Because",["Because of","後面是子句，要用 Because"],["Due to","Due to 後面接名詞"],["So","So 不能放在這裡引導原因"]],e:b[0]+" 是子句，用 because。"};
+}};
+var SS=[["hot","day","we went swimming","weather"],["difficult","question","nobody could answer it","test"],["interesting","book","I read it twice","story"],["heavy","box","I couldn't lift it","bag"],["expensive","watch","he couldn't afford it","car"],["boring","movie","we left early","speech"],["long","speech","some people fell asleep","meeting"],["old","house","nobody wanted to live in it","building"],["exciting","game","everyone stood up and cheered","match"]];
+GEN["so/such"]={s:"英文",u:"強調句與so/such",f:function(){
+  var i=Math.floor(Math.random()*SS.length),x=SS[i],an=/^[aeiou]/.test(x[0])?"an":"a";
+  if(Math.random()<0.5)return {key:i+"s",q:"It was ______ "+an+" "+x[0]+" "+x[1]+" that "+x[2]+".",o:["such",["so","後面有名詞 "+x[1]+"，要用 such"],["very","very 不能和 that 子句搭配"],["too","too 要搭配 to V"]],e:"such ＋ a／an ＋形容詞＋名詞＋ that。"};
+  return {key:i+"o",q:"The "+x[1]+" was ______ "+x[0]+" that "+x[2]+".",o:["so",["such","後面只有形容詞、沒有名詞，要用 so"],["very","very 不能和 that 子句搭配"],["too","too 要搭配 to V"]],e:"so ＋形容詞＋ that。"};
+}};
+var RP=[["The man","lives next door","is a doctor"],["The girl","won the speech contest","is my classmate"],["The students","finished the project early","got extra points"],["The woman","called you this morning","left a message"],["The boy","broke the window","said sorry to the owner"]];
+var RT=[["The book","is on the desk","belongs to Amy"],["The bus","goes to the airport","leaves every hour"],["The movie","won the award","was made in Taiwan"],["The phone","is ringing","is mine"],["The dog","barks all night","lives next door"]];
+var RW=[["The boy","father","is a pilot","wants to fly a plane"],["The woman","car","was stolen","called the police"],["The student","essay","won first prize","is very humble"],["The house","roof","was damaged","needs to be repaired"],["The girl","mother","is a nurse","wants to be a doctor"]];
+GEN["關代選擇"]={s:"英文",u:"關係子句",f:function(){
+  var r=Math.random(),i;
+  if(r<0.35){i=Math.floor(Math.random()*RP.length);var p=RP[i];return {key:"p"+i,q:p[0]+" ______ "+p[1]+" "+p[2]+".",o:["who",["which","先行詞是人，不用 which"],["whose","whose 後面要緊接名詞"],["whom","空格在子句裡當主詞，要用主格 who"]],e:"先行詞是人，關係代名詞在子句裡當主詞，用 who。"}}
+  if(r<0.7){i=Math.floor(Math.random()*RT.length);var t=RT[i];return {key:"t"+i,q:t[0]+" ______ "+t[1]+" "+t[2]+".",o:["which",["who","先行詞不是人，不用 who"],["whose","whose 後面要緊接名詞"],["whom","whom 用在先行詞是人、當受詞的時候"]],e:"先行詞是事物或動物，用 which（或 that）。"}}
+  i=Math.floor(Math.random()*RW.length);var w=RW[i];return {key:"w"+i,q:w[0]+" ______ "+w[1]+" "+w[2]+" "+w[3]+".",o:["whose",["who","後面緊接名詞 "+w[1]+"，表示「……的」，要用 whose"],["which","後面緊接名詞 "+w[1]+"，要用所有格 whose"],["that","that 不能表示所有格"]],e:"空格後面緊接名詞，表示「他的、它的」，用 whose。"};
+}};
+})();
+})();
+
 // 各校段考考古題（學校公開的考卷＋官方答案；詳解為本站補寫）。KG(id,科目,單元,題型,k,題幹,選項,答案,詳解,出處)
 // k：s 單選、m 多選、f 填充（紙上算、看答案自評）。選項 [[標籤,內容]...]；答案是標籤字串。
 function KG(i,s,u,t,k,q,o,a,e,r){DATA.bank.push({i:'k'+i,s:s,u:u,t:t,k:k,q:q,o:o,a:a,e:e,r:r})}
@@ -3005,7 +3141,27 @@ function draw(s,units,n,opt){
       if(sl.left<=0)slots.splice(i,1);
     }
   }
+  if(out.length<n)fillMore(out,s,units,n,opt,seen,local,gens);
   return opt.tags?shuffle(out):groupCtx(shuffle(out),s,units,n,seen,opt);
+}
+function lastDone(s){var m={},k=0;ST.rounds.forEach(function(r){if(r.s!==s)return;(r.items||[]).forEach(function(it){m[it.id]={k:++k,ok:it.ok}})});return m}
+function fillMore(out,s,units,n,opt,seen,local,gens){
+  var have={},ld=lastDone(s),gl=gens.slice();out.forEach(function(q){have[q.id]=1});
+  var rec=QS.filter(function(q){return q.s===s&&units.indexOf(q.u)>=0&&seen[q.id]&&!have[q.id]&&(opt.old||!q.old)&&(!opt.tags||opt.tags.indexOf(q.t)>=0)&&!(opt.skip&&opt.skip[q.id])&&(!opt.src||isKG(q))});
+  var rank=function(q){var o=ld[q.id];return o?(o.ok?1e6:0)+o.k:0};
+  rec=shuffle(rec).sort(function(x,y){return rank(x)-rank(y)});
+  while(out.length<n){
+    var q=null,k;
+    if(gl.length&&(!rec.length||Math.random()<0.5)){
+      var t=pick(gl),m={};for(k in seen)m[k]=1;for(k in local)m[k]=1;
+      q=t==='單字-字義'?makeVocabQ(m):makeGen(t,m);
+      if(!q)q=t==='單字-字義'?makeVocabQ(local):makeGen(t,local);
+      if(!q){gl.splice(gl.indexOf(t),1);continue}
+      local[q.id]=1;
+    }else if(rec.length){var x=rec.shift();q={};for(k in x)q[k]=x[k];q.re=true}
+    else break;
+    out.push(q);
+  }
 }
 function groupCtx(out,s,units,n,seen,opt){
   var res=[],used={},num=function(q){return q.ord!=null?q.ord:(+String(q.id).replace(/[^0-9]/g,'')||0)};
@@ -3014,7 +3170,7 @@ function groupCtx(out,s,units,n,seen,opt){
     if(!q.ctx){used[q.id]=1;res.push(q);return}
     var sib=QS.filter(function(x){return x.s===s&&x.ctx===q.ctx&&!used[x.id]&&(x.id===q.id||(!seen[x.id]&&units.indexOf(x.u)>=0&&(opt.old||!x.old)&&!(opt.skip&&opt.skip[x.id])&&(!opt.src||isKG(x))))});
     sib.sort(function(x,y){return num(x)-num(y)});
-    sib.forEach(function(x,j){used[x.id]=1;var o={};for(var k in x)o[k]=x[k];o.grp=[j+1,sib.length];res.push(sib.length>1?o:x)});
+    sib.forEach(function(x,j){used[x.id]=1;var o={};for(var k in x)o[k]=x[k];o.grp=[j+1,sib.length];if(x.id===q.id&&q.re)o.re=true;if(sib.length<2)delete o.grp;res.push(sib.length>1||o.re?o:x)});
   });
   if(res.length>n){var cut=n;while(cut<res.length&&res[cut].grp&&res[cut].grp[0]>1&&cut<n+3)cut++;res=res.slice(0,cut)}
   return res;
@@ -3149,15 +3305,15 @@ function pPractice(s){
   var h='<section class="card stack"><h2>新題練習</h2><div><p class="sec-h">範圍</p><div class="row">'+chips+'</div></div>'
     +'<div class="row"><span class="sec-h" style="margin:0">題數</span><span class="seg">'+[5,10,20].map(function(n){return '<button data-act="cnt" data-n="'+n+'" aria-pressed="'+(p.n===n)+'">'+n+'</button>'}).join('')+'</span></div>'
     +(old?'<label class="row"><input type="checkbox" id="incOld" data-act="old"'+(p.old?' checked':'')+'> 加入以前紙本寫過的考卷題（'+old+' 題）</label>':'')
-    +'<div class="row"><button class="btn primary" data-act="start"'+((avail||hasGen)&&sel.length?'':' disabled')+'>開始 '+p.n+' 題</button>'
-    +'<span class="muted">'+(sel.length?(avail||hasGen?'做過的題目不會再出現'+(hasGen?'；計算題每次換數字':''):'這個範圍的新題做完了，換範圍或勾選舊卷題'):'先選至少一個範圍')+'</span></div>'
+    +'<div class="row"><button class="btn primary" data-act="start"'+(sel.length?'':' disabled')+'>開始 '+p.n+' 題</button>'
+    +'<span class="muted">'+(sel.length?'沒做過的題目優先出；出完會自動補上自動出的新題和做過的舊題，不會沒有題目':'先選至少一個範圍')+'</span></div>'
     +'<p class="muted">一題一題作答，答完馬上告訴你錯在哪一步。不會可以先看提示；答錯可以馬上補一題同型。</p></section>';
   h+=focusCard(s);
   var seenS=ST.seen[s]||{},kg={},kgN=0,kgF=0;
   QS.forEach(function(q){if(q.s!==s||!isKG(q)||sel.indexOf(q.u)<0)return;var k=kgSchool(q.src),o=kg[k]||(kg[k]={n:0,f:0});o.n++;kgN++;if(!seenS[q.id]&&(p.old||!q.old)){o.f++;kgF++}});
   if(kgN)h+='<section class="card stack"><h2>各校考古題</h2><p class="muted">只出學校段考與大考的真題（題目旁標「考古」和出處）。範圍跟上面選的一樣。</p>'
     +'<div class="row">'+Object.keys(kg).sort(function(a,b){return kg[b].n-kg[a].n}).map(function(k){return '<span class="pill none">'+esc(k)+'　'+kg[k].f+'/'+kg[k].n+'</span>'}).join('')+'</div>'
-    +'<div class="row"><button class="btn" data-act="kaogu"'+(kgF?'':' disabled')+'>練 '+Math.min(p.n,kgF)+' 題考古</button><span class="muted">'+(kgF?'還沒做過的考古題 '+kgF+' 題':'這個範圍的考古題都做過了')+'</span></div></section>';
+    +'<div class="row"><button class="btn" data-act="kaogu">練 '+Math.min(p.n,kgN)+' 題考古</button><span class="muted">'+(kgF?'還沒做過的考古題 '+kgF+' 題':'考古題都做過了，會從做過的再出一次')+'</span></div></section>';
   if(sampleFn)h+='<section class="card stack"><h2>請 Claude 現出新題</h2><p class="muted">依上面選的範圍和你較弱的題型，現出 5 題沒做過的單選題，大約等 20 到 60 秒，會用到你自己的 Claude 用量。這些題目沒有經過人工校對，覺得答案或題目怪怪的，請按「這題有問題」。</p>'
     +'<div class="row"><button class="btn" data-act="aigen"'+(AI.busy||!sel.length?' disabled':'')+'>'+(AI.busy?'出題中…':'出 5 題新題')+'</button><span class="muted">'+esc(AI.msg)+'</span></div></section>';
   h+='<section class="card"><h2>錯題重練</h2>'+(wr?'<div class="row"><span>答錯過、還沒改對的題目有 <b class="num">'+wr+'</b> 題。</span><span class="sp"></span><button class="btn" data-act="redo">重練 '+Math.min(wr,10)+' 題</button></div><p class="muted">這裡會出現做過的題目，不算進「穩定 90」。</p>':'<p class="muted">目前沒有待重練的錯題。</p>')+'</section>';
@@ -3306,7 +3462,7 @@ function vRound(){
   var q=R.qs[R.i],c=R.cur,last=R.mode==='focus'?fDone():R.i===R.qs.length-1,l=lessonFor(q.s,q.t,q.u),bar='';
   var h='<div class="page sj-'+sIndex(R.s)+'"><div class="rbar">'+seal(R.s,'sm')+'<b>'+(R.label||MODE[R.mode])+'</b>'+(R.mode==='focus'?fHead():'<span class="muted num">第 '+(R.i+1)+' / '+R.qs.length+' 題</span>')+'<span class="sp"></span><button class="btn sm" data-act="quit">結束這一輪</button></div>'
     +'<div class="dots" aria-hidden="true">'+R.qs.map(function(x,j){return '<i class="'+(x._r===true?'ok':(x._r===false?'bad':(j===R.i?'cur':'')))+'"></i>'}).join('')+'</div>'
-    +'<section class="card stack"><div class="qmeta"><span class="pill none">'+esc(q.u)+'</span>'+(q.sec?'<span class="pill pen">'+esc(q.sec)+'　每題 '+q.pt+' 分</span>':'')+(q.grp?'<span class="pill pen">題組　第 '+q.grp[0]+' / '+q.grp[1]+' 題</span>':'')+(q.k==='m'?'<span class="pill pen">多選</span>':'')+(q.k==='f'?'<span class="pill pen">填充　紙上算</span>':'')+(q.gen?'<span class="pill pen">新出的題</span>':'')+(q.ai?'<span class="pill near">Claude 現出</span>':'')+(q.extra?'<span class="pill near">同型補練　不計分</span>':'')+(q.src?(isKG(q)?'<span class="pill pen">考古｜'+esc(q.src)+'</span>':'<span>'+esc(q.src)+'</span>'):'')+'</div>'
+    +'<section class="card stack"><div class="qmeta"><span class="pill none">'+esc(q.u)+'</span>'+(q.sec?'<span class="pill pen">'+esc(q.sec)+'　每題 '+q.pt+' 分</span>':'')+(q.grp?'<span class="pill pen">題組　第 '+q.grp[0]+' / '+q.grp[1]+' 題</span>':'')+(q.k==='m'?'<span class="pill pen">多選</span>':'')+(q.k==='f'?'<span class="pill pen">填充　紙上算</span>':'')+(q.gen?'<span class="pill pen">新出的題</span>':'')+(q.re?'<span class="pill none">做過的題　再練一次</span>':'')+(q.ai?'<span class="pill near">Claude 現出</span>':'')+(q.extra?'<span class="pill near">同型補練　不計分</span>':'')+(q.src?(isKG(q)?'<span class="pill pen">考古｜'+esc(q.src)+'</span>':'<span>'+esc(q.src)+'</span>'):'')+'</div>'
     +(q.ctx?'<div class="ctx">'+stemHtml(q.ctx)+'</div>':'')+'<div class="stem">'+stemHtml(q.q)+'</div>';
   if(q.opts){
     h+='<div class="opts">'+q.opts.map(function(o,i){var cls='opt';if(c.done){if(o.ok)cls+=' right';else if(c.sel[i])cls+=' wrong';else cls+=' dim'}else if(c.sel[i])cls+=' sel';
@@ -3685,19 +3841,19 @@ function startFocus(s,t){
   leave();
   var q=fNext(s,t,{});
   if(!q){V.msg='這個題型目前沒有可出的題目。';V.view='subject';V.s=s;V.pane='practice';render();return}
-  var goal=fGoal(s);if(!ty.gen)goal=Math.max(1,Math.min(goal,ty.n));
+  var goal=fGoal(s);if(!ty.gen&&ty.n<=3)goal=Math.max(1,Math.min(goal,ty.n));
   if(startRound(s,[ty.u],goal,{qs:[q],mode:'focus',label:'題型專練'})){R.tag=t;R.goal=goal;render()}
 }
 function fDone(){return fStreak(R.items)>=R.goal||R.qs.length>=FCAP}
 function fExtend(){
   if(R.i<R.qs.length-1||fDone())return;
   var used={};R.qs.forEach(function(q){used[q.id]=1});
-  var q=fNext(R.s,R.tag,used);if(q)R.qs.push(prep(q));else R.out=1;
+  var q=fNext(R.s,R.tag,used);if(!q){var rc={};R.qs.slice(-3).forEach(function(x){rc[x.id]=1});q=fNext(R.s,R.tag,rc)}if(q)R.qs.push(prep(q));else R.out=1;
 }
 function fHead(){var st=fStreak(R.items);return '<span class="pill pen">'+esc(R.tag)+'</span><span class="muted num">第 '+(R.i+1)+' 題</span><span class="fstreak num'+(st>=R.goal?' ok':'')+'">連對 '+st+' / '+R.goal+'</span>'}
 function fRow(x,fs,goal,first){
   var o=fs[x.t],pill=!o?'<span class="pill none">還沒練</span>':(o.st>=goal?'<span class="pill ok num">已連對 '+o.st+'</span>':'<span class="pill '+(o.ok/o.n>=0.8?'near':'low')+' num">對 '+o.ok+' / '+o.n+'</span>');
-  return '<div class="lrow'+(first?' first':'')+'"><span class="lt">'+esc(x.t)+'</span><span class="muted num">'+(x.gen?'自動出新題':'題庫 '+x.n+' 題')+'</span><span class="sp"></span>'+pill+'<button class="btn sm" data-act="focus" data-t="'+esc(x.t)+'">專練</button></div>';
+  return '<div class="lrow'+(first?' first':'')+'"><span class="lt">'+esc(x.t)+'</span><span class="muted num">'+(x.gen?'自動出新題，練不完':'題庫 '+x.n+' 題，出完會重複')+'</span><span class="sp"></span>'+pill+'<button class="btn sm" data-act="focus" data-t="'+esc(x.t)+'">專練</button></div>';
 }
 function focusCard(s){
   var m=fTypes(s),keys=Object.keys(m);if(!keys.length)return '';
